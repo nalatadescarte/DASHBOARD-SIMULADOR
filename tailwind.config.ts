@@ -52,6 +52,21 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				'nalata-orange': 'hsl(var(--nalata-orange))',
+				'nalata-orange-light': 'hsl(var(--nalata-orange-light))',
+				'nalata-orange-dark': 'hsl(var(--nalata-orange-dark))',
+				'nalata-black': 'hsl(var(--nalata-black))',
+				'nalata-gray': 'hsl(var(--nalata-gray))',
+				'chart-variable': 'hsl(var(--chart-variable))',
+				'chart-fixed': 'hsl(var(--chart-fixed))',
+				'chart-profit': 'hsl(var(--chart-profit))',
+				chart: {
+					'1': 'hsl(var(--chart-1))',
+					'2': 'hsl(var(--chart-2))',
+					'3': 'hsl(var(--chart-3))',
+					'4': 'hsl(var(--chart-4))',
+					'5': 'hsl(var(--chart-5))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

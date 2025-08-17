@@ -8,35 +8,60 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0 0% 98%;
+    --foreground: 0 0% 5%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 5%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 5%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 15 100% 55%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 5%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 15 100% 55%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 90%;
+    --input: 0 0% 95%;
+    --ring: 15 100% 55%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* NaLata Brand Colors */
+    --nalata-orange: 15 100% 55%;
+    --nalata-orange-light: 15 100% 65%;
+    --nalata-orange-dark: 15 100% 45%;
+    --nalata-black: 0 0% 5%;
+    --nalata-gray: 0 0% 45%;
+
+    /* Chart Colors */
+    --chart-variable: 15 100% 55%;
+    --chart-fixed: 0 0% 25%;
+    --chart-profit: 120 40% 50%;
+    --chart-1: 15 100% 55%;
+    --chart-2: 0 0% 25%;
+    --chart-3: 120 40% 50%;
+    --chart-4: 200 80% 60%;
+    --chart-5: 280 60% 65%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--nalata-orange)), hsl(var(--nalata-orange-light)));
+    --gradient-card: linear-gradient(135deg, hsl(var(--card)), hsl(var(--muted)));
+
+    /* Shadows */
+    --shadow-orange: 0 10px 30px -10px hsl(var(--nalata-orange) / 0.3);
+    --shadow-elegant: 0 4px 20px -2px hsl(0 0% 0% / 0.1);
 
     --sidebar-background: 0 0% 98%;
 
