@@ -34,8 +34,8 @@ export function Dashboard() {
     setDados(prev => ({ ...prev, [field]: value }));
   };
 
-  // Cálculo do "Bota-fora licenciado" baseado na fórmula da planilha
-  const botaForaLicenciado = (dados.precoGasolina * dados.distanciaDescarte * 2) / 10;
+  // Cálculo do "Bota-fora licenciado" baseado na fórmula da planilha + R$ 3,50 por lata
+  const botaForaLicenciado = ((dados.precoGasolina * dados.distanciaDescarte * 2) / 10) + (dados.vendaLatasPrimeiroMes * 3.50);
 
   return (
     <div className="min-h-screen bg-background">

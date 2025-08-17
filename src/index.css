@@ -45,10 +45,10 @@ All colors MUST be HSL.
     --nalata-black: 0 0% 5%;
     --nalata-gray: 0 0% 45%;
 
-    /* Chart Colors */
-    --chart-variable: 15 100% 55%;
-    --chart-fixed: 0 0% 25%;
-    --chart-profit: 120 40% 50%;
+    /* Chart Colors - Cores vivas para gráfico de pizza */
+    --chart-variable: 45 93% 58%; /* Amarelo vibrante */
+    --chart-fixed: 217 91% 60%; /* Azul royal */
+    --chart-profit: 142 71% 45%; /* Verde vibrante */
     --chart-1: 15 100% 55%;
     --chart-2: 0 0% 25%;
     --chart-3: 120 40% 50%;

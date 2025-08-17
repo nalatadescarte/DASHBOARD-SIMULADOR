@@ -115,11 +115,15 @@ export function CostsChart({ dados, botaForaLicenciado }: CostsChartProps) {
               paddingTop: '20px',
               fontSize: '14px'
             }}
-            formatter={(value, entry: any) => (
-              <span style={{ color: entry.color, fontWeight: 'bold' }}>
-                {value}: {formatCurrency(entry.payload.value)}
-              </span>
-            )}
+            formatter={(value, entry: any) => {
+              const total = chartData.reduce((sum, item) => sum + item.value, 0);
+              const percentage = ((entry.payload.value / total) * 100).toFixed(1);
+              return (
+                <span style={{ color: entry.color, fontWeight: 'bold' }}>
+                  {value}: {formatCurrency(entry.payload.value)} ({percentage}%)
+                </span>
+              );
+            }}
           />
         </PieChart>
       </ResponsiveContainer>
