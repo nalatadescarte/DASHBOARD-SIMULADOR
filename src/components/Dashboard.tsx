@@ -72,7 +72,7 @@ export function Dashboard() {
             />
             <div>
               <h1 className="text-2xl font-bold text-foreground">Dashboard NaLata</h1>
-              <p className="text-muted-foreground">Painel de Controle da Franquia</p>
+              <p className="text-muted-foreground">PAINEL SIMULAÇÃO FINANCEIRA - FRANQUIA</p>
             </div>
           </div>
         </div>
