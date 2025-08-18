@@ -86,7 +86,7 @@ export function RevenueChart({ dados, periodo }: RevenueChartProps) {
         <Bar 
           yAxisId="faturamento"
           dataKey="faturamento" 
-          fill="hsl(var(--nalata-orange))" 
+          fill="hsl(var(--chart-revenue-bar))" 
           name="Faturamento (R$)"
           radius={[4, 4, 0, 0]}
         />
@@ -94,10 +94,10 @@ export function RevenueChart({ dados, periodo }: RevenueChartProps) {
           yAxisId="latas"
           type="monotone" 
           dataKey="latas" 
-          stroke="hsl(var(--nalata-black))" 
+          stroke="hsl(var(--chart-revenue-line))" 
           strokeWidth={3}
           name="Crescimento de Latas"
-          dot={{ fill: "hsl(var(--nalata-black))", strokeWidth: 2, r: 4 }}
+          dot={{ fill: "hsl(var(--chart-revenue-line))", strokeWidth: 2, r: 4 }}
         />
       </ComposedChart>
     </ResponsiveContainer>

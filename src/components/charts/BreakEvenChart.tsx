@@ -108,25 +108,25 @@ export function BreakEvenChart({ dados, totalCustosVariaveis, totalCustosFixos }
           <Legend />
           <ReferenceLine 
             y={chartData.breakEvenReceita} 
-            stroke="hsl(var(--destructive))" 
+            stroke="hsl(var(--chart-breakeven-line))" 
             strokeDasharray="5 5"
             label={{ value: "Break-Even", position: "insideTopRight" }}
           />
           <Line 
             type="monotone" 
             dataKey="receita" 
-            stroke="hsl(var(--nalata-orange))" 
+            stroke="hsl(var(--chart-breakeven-revenue))" 
             strokeWidth={3}
             name="Receita Projetada"
-            dot={{ fill: "hsl(var(--nalata-orange))", strokeWidth: 2, r: 4 }}
+            dot={{ fill: "hsl(var(--chart-breakeven-revenue))", strokeWidth: 2, r: 4 }}
           />
           <Line 
             type="monotone" 
             dataKey="custoTotal" 
-            stroke="hsl(var(--nalata-black))" 
+            stroke="hsl(var(--chart-breakeven-cost))" 
             strokeWidth={3}
             name="Custo Total"
-            dot={{ fill: "hsl(var(--nalata-black))", strokeWidth: 2, r: 4 }}
+            dot={{ fill: "hsl(var(--chart-breakeven-cost))", strokeWidth: 2, r: 4 }}
           />
         </LineChart>
       </ResponsiveContainer>

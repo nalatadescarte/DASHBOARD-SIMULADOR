@@ -49,6 +49,15 @@ All colors MUST be HSL.
     --chart-variable: 45 93% 58%; /* Amarelo vibrante */
     --chart-fixed: 217 91% 60%; /* Azul royal */
     --chart-profit: 142 71% 45%; /* Verde vibrante */
+    
+    /* Revenue Chart Colors */
+    --chart-revenue-bar: 142 71% 45%; /* Verde para colunas */
+    --chart-revenue-line: 217 91% 60%; /* Azul para linha */
+    
+    /* Break-even Chart Colors */
+    --chart-breakeven-revenue: 142 71% 45%; /* Verde para receita projetada */
+    --chart-breakeven-cost: 0 84% 60%; /* Vermelho para custo total */
+    --chart-breakeven-line: 300 75% 75%; /* Rosa para linha break-even */
     --chart-1: 15 100% 55%;
     --chart-2: 0 0% 25%;
     --chart-3: 120 40% 50%;
