@@ -6,6 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RevenueChart } from "./charts/RevenueChart";
 import { CostsChart } from "./charts/CostsChart";
 import { BreakEvenChart } from "./charts/BreakEvenChart";
+import { PaybackChart } from "./charts/PaybackChart";
+import { ProfitabilityChart } from "./charts/ProfitabilityChart";
 import { Calculator, TrendingUp, PieChart, BarChart3 } from "lucide-react";
 
 interface DashboardData {
@@ -16,6 +18,7 @@ interface DashboardData {
   taxaCrescimentoMensal: number;
   salariosEncargos: number;
   aluguelPonto: number;
+  investimentoInicial: number;
 }
 
 export function Dashboard() {
@@ -28,14 +31,33 @@ export function Dashboard() {
     taxaCrescimentoMensal: 5,
     salariosEncargos: 3000,
     aluguelPonto: 2000,
+    investimentoInicial: 50000,
   });
 
   const handleInputChange = (field: keyof DashboardData, value: number) => {
     setDados(prev => ({ ...prev, [field]: value }));
   };
 
-  // Cálculo do "Bota-fora licenciado" baseado na fórmula da planilha + R$ 3,50 por lata
-  const botaForaLicenciado = ((dados.precoGasolina * dados.distanciaDescarte * 2) / 10) + (dados.vendaLatasPrimeiroMes * 3.50);
+  // Cálculos detalhados baseados nas fórmulas da planilha
+  const custosVariaveis = {
+    combustivel: (dados.vendaLatasPrimeiroMes / 2) * dados.precoGasolina,
+    botaForaLicenciado: ((dados.precoGasolina * dados.distanciaDescarte * 2) / 10) + (dados.vendaLatasPrimeiroMes * 3.50),
+    manutencaoVeiculo: 0.20 * (((dados.vendaLatasPrimeiroMes * dados.valorLocacaoLata) / dados.valorLocacaoLata) / 4) * dados.distanciaDescarte * 2,
+    energiaAguaImpostos: 800, // Valor fixo mensal estimado
+  };
+
+  const custosFixos = {
+    aluguelPonto: dados.aluguelPonto,
+    salariosEncargos: dados.salariosEncargos,
+    contabilidade: 500,
+    seguroVeiculo: 250,
+    marketingPublicidade: 300,
+    franquiaRoyalties: 1500,
+    planoCelular: 100,
+  };
+
+  const totalCustosVariaveis = Object.values(custosVariaveis).reduce((a, b) => a + b, 0);
+  const totalCustosFixos = Object.values(custosFixos).reduce((a, b) => a + b, 0);
 
   return (
     <div className="min-h-screen bg-background">
@@ -141,9 +163,25 @@ export function Dashboard() {
                   />
                 </div>
                 <div>
-                  <Label>Bota-fora Licenciado (R$)</Label>
+                  <Label htmlFor="investimento">Investimento Inicial (R$)</Label>
+                  <Input
+                    id="investimento"
+                    type="number"
+                    value={dados.investimentoInicial}
+                    onChange={(e) => handleInputChange('investimentoInicial', Number(e.target.value))}
+                    className="mt-2"
+                  />
+                </div>
+                <div>
+                  <Label>Total Custos Variáveis (R$)</Label>
                   <div className="mt-2 p-3 bg-muted rounded-md text-sm font-semibold text-muted-foreground">
-                    R$ {botaForaLicenciado.toFixed(2)}
+                    R$ {totalCustosVariaveis.toFixed(2)}
+                  </div>
+                </div>
+                <div>
+                  <Label>Total Custos Fixos (R$)</Label>
+                  <div className="mt-2 p-3 bg-muted rounded-md text-sm font-semibold text-muted-foreground">
+                    R$ {totalCustosFixos.toFixed(2)}
                   </div>
                 </div>
               </div>
@@ -188,7 +226,7 @@ export function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <CostsChart dados={dados} botaForaLicenciado={botaForaLicenciado} />
+                <CostsChart dados={dados} custosVariaveis={totalCustosVariaveis} custosFixos={totalCustosFixos} />
               </CardContent>
             </Card>
 
@@ -201,7 +239,45 @@ export function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <BreakEvenChart dados={dados} />
+                <BreakEvenChart dados={dados} totalCustosVariaveis={totalCustosVariaveis} totalCustosFixos={totalCustosFixos} />
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Novos Gráficos */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Gráfico de Lucratividade Média */}
+            <Card className="border-nalata-orange/20 shadow-elegant">
+              <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5" />
+                  Lucratividade Média Mensal
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <ProfitabilityChart 
+                  dados={dados} 
+                  periodo={periodoProjecao}
+                  totalCustosVariaveis={totalCustosVariaveis}
+                  totalCustosFixos={totalCustosFixos}
+                />
+              </CardContent>
+            </Card>
+
+            {/* Gráfico de Payback */}
+            <Card className="border-nalata-orange/20 shadow-elegant">
+              <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
+                <CardTitle className="flex items-center gap-2">
+                  <Calculator className="h-5 w-5" />
+                  Análise de Payback
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <PaybackChart 
+                  dados={dados}
+                  totalCustosVariaveis={totalCustosVariaveis}
+                  totalCustosFixos={totalCustosFixos}
+                />
               </CardContent>
             </Card>
           </div>

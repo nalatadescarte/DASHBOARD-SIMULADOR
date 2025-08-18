@@ -13,24 +13,25 @@ interface DashboardData {
 
 interface BreakEvenChartProps {
   dados: DashboardData;
+  totalCustosVariaveis: number;
+  totalCustosFixos: number;
 }
 
-export function BreakEvenChart({ dados }: BreakEvenChartProps) {
+export function BreakEvenChart({ dados, totalCustosVariaveis, totalCustosFixos }: BreakEvenChartProps) {
   const chartData = useMemo(() => {
     const data = [];
-    const custoFixoTotal = dados.salariosEncargos + dados.aluguelPonto;
-    const custoVariavelPorLata = (dados.precoGasolina * dados.distanciaDescarte * 2) / 10;
+    const custoVariavelPorLata = totalCustosVariaveis / dados.vendaLatasPrimeiroMes;
     const margemContribuicao = dados.valorLocacaoLata - custoVariavelPorLata;
     
     // Ponto de break-even em quantidade de latas
-    const breakEvenLatas = custoFixoTotal / margemContribuicao;
+    const breakEvenLatas = totalCustosFixos / margemContribuicao;
     const breakEvenReceita = breakEvenLatas * dados.valorLocacaoLata;
     
     // Gerar dados para 12 meses
     for (let mes = 1; mes <= 12; mes++) {
       const latasProjetadas = dados.vendaLatasPrimeiroMes * Math.pow(1 + dados.taxaCrescimentoMensal / 100, mes - 1);
       const receitaProjetada = latasProjetadas * dados.valorLocacaoLata;
-      const custoTotal = custoFixoTotal + (latasProjetadas * custoVariavelPorLata);
+      const custoTotal = totalCustosFixos + (latasProjetadas * custoVariavelPorLata);
       const lucro = receitaProjetada - custoTotal;
       
       data.push({
@@ -44,7 +45,7 @@ export function BreakEvenChart({ dados }: BreakEvenChartProps) {
     }
     
     return { data, breakEvenLatas: Math.round(breakEvenLatas), breakEvenReceita: Math.round(breakEvenReceita) };
-  }, [dados]);
+  }, [dados, totalCustosVariaveis, totalCustosFixos]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {

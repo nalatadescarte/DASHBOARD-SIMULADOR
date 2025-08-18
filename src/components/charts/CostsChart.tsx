@@ -13,21 +13,16 @@ interface DashboardData {
 
 interface CostsChartProps {
   dados: DashboardData;
-  botaForaLicenciado: number;
+  custosVariaveis: number;
+  custosFixos: number;
 }
 
-export function CostsChart({ dados, botaForaLicenciado }: CostsChartProps) {
+export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartProps) {
   const chartData = useMemo(() => {
     const receitaBruta = dados.vendaLatasPrimeiroMes * dados.valorLocacaoLata;
     
-    // Custos Variáveis - baseados no número de latas
-    const custosVariaveis = dados.vendaLatasPrimeiroMes * botaForaLicenciado;
-    
-    // Custos Fixos Totais
-    const custosFixosTotais = dados.salariosEncargos + dados.aluguelPonto;
-    
     // Lucro Operacional
-    const lucroOperacional = receitaBruta - custosVariaveis - custosFixosTotais;
+    const lucroOperacional = receitaBruta - custosVariaveis - custosFixos;
     
     return [
       {
@@ -37,7 +32,7 @@ export function CostsChart({ dados, botaForaLicenciado }: CostsChartProps) {
       },
       {
         name: "Custos Fixos Totais",
-        value: custosFixosTotais,
+        value: custosFixos,
         color: "hsl(var(--chart-fixed))",
       },
       {
@@ -46,13 +41,11 @@ export function CostsChart({ dados, botaForaLicenciado }: CostsChartProps) {
         color: "hsl(var(--chart-profit))",
       },
     ].filter(item => item.value > 0);
-  }, [dados, botaForaLicenciado]);
+  }, [dados, custosVariaveis, custosFixos]);
 
   const lucroInfo = useMemo(() => {
     const receitaBruta = dados.vendaLatasPrimeiroMes * dados.valorLocacaoLata;
-    const custosVariaveis = dados.vendaLatasPrimeiroMes * botaForaLicenciado;
-    const custosFixosTotais = dados.salariosEncargos + dados.aluguelPonto;
-    const lucroOperacional = receitaBruta - custosVariaveis - custosFixosTotais;
+    const lucroOperacional = receitaBruta - custosVariaveis - custosFixos;
     const margemLucro = receitaBruta > 0 ? (lucroOperacional / receitaBruta) * 100 : 0;
     
     return {
@@ -60,7 +53,7 @@ export function CostsChart({ dados, botaForaLicenciado }: CostsChartProps) {
       lucroOperacional,
       margemLucro,
     };
-  }, [dados, botaForaLicenciado]);
+  }, [dados, custosVariaveis, custosFixos]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
