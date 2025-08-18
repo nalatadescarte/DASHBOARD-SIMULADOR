@@ -21,24 +21,32 @@ export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartPr
   const chartData = useMemo(() => {
     const receitaBruta = dados.vendaLatasPrimeiroMes * dados.valorLocacaoLata;
     
-    // Lucro Operacional
-    const lucroOperacional = receitaBruta - custosVariaveis - custosFixos;
+    // Cálculo dos impostos (aproximadamente 8% da receita bruta)
+    const impostos = receitaBruta * 0.08;
+    
+    // Lucro Líquido
+    const lucroLiquido = receitaBruta - custosVariaveis - custosFixos - impostos;
     
     return [
+      {
+        name: "Lucro Líquido",
+        value: Math.max(0, lucroLiquido),
+        color: "hsl(120, 70%, 50%)", // Verde vibrante
+      },
+      {
+        name: "Custos Fixos",
+        value: custosFixos,
+        color: "hsl(var(--chart-fixed))",
+      },
       {
         name: "Custos Variáveis",
         value: custosVariaveis,
         color: "hsl(var(--chart-variable))",
       },
       {
-        name: "Custos Fixos Totais",
-        value: custosFixos,
-        color: "hsl(var(--chart-fixed))",
-      },
-      {
-        name: "Lucro Operacional",
-        value: Math.max(0, lucroOperacional),
-        color: "hsl(var(--chart-profit))",
+        name: "Impostos",
+        value: impostos,
+        color: "hsl(0, 70%, 60%)", // Vermelho para impostos
       },
     ].filter(item => item.value > 0);
   }, [dados, custosVariaveis, custosFixos]);
