@@ -3,12 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RevenueChart } from "./charts/RevenueChart";
 import { CostsChart } from "./charts/CostsChart";
 import { BreakEvenChart } from "./charts/BreakEvenChart";
 import { PaybackChart } from "./charts/PaybackChart";
 import { ProfitabilityChart } from "./charts/ProfitabilityChart";
-import { Calculator, TrendingUp, PieChart, BarChart3 } from "lucide-react";
+import { Calculator, TrendingUp, PieChart, BarChart3, DollarSign, Settings } from "lucide-react";
 
 interface DashboardData {
   vendaLatasPrimeiroMes: number;
@@ -24,14 +25,14 @@ interface DashboardData {
 export function Dashboard() {
   const [periodoProjecao, setPeriodoProjecao] = useState<"12" | "24" | "36">("12");
   const [dados, setDados] = useState<DashboardData>({
-    vendaLatasPrimeiroMes: 100,
-    valorLocacaoLata: 15.00,
-    precoGasolina: 5.50,
+    vendaLatasPrimeiroMes: 60,
+    valorLocacaoLata: 80.00,
+    precoGasolina: 6.00,
     distanciaDescarte: 20,
-    taxaCrescimentoMensal: 5,
-    salariosEncargos: 3000,
-    aluguelPonto: 2000,
-    investimentoInicial: 50000,
+    taxaCrescimentoMensal: 15,
+    salariosEncargos: 3200,
+    aluguelPonto: 1400,
+    investimentoInicial: 95000,
   });
 
   const handleInputChange = (field: keyof DashboardData, value: number) => {
@@ -79,114 +80,150 @@ export function Dashboard() {
       </header>
 
       <div className="container mx-auto px-6 py-8">
-        {/* Controles */}
-        <div className="grid gap-6 mb-8">
-          <Card className="border-nalata-orange/20 shadow-elegant">
-            <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
-              <CardTitle className="flex items-center gap-2">
-                <Calculator className="h-5 w-5" />
-                Parâmetros de Configuração
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div>
-                  <Label htmlFor="vendaLatas">Venda de Latas 1º Mês</Label>
-                  <Input
-                    id="vendaLatas"
-                    type="number"
-                    value={dados.vendaLatasPrimeiroMes}
-                    onChange={(e) => handleInputChange('vendaLatasPrimeiroMes', Number(e.target.value))}
-                    className="mt-2"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="valorLocacao">Valor Locação Lata (R$)</Label>
-                  <Input
-                    id="valorLocacao"
-                    type="number"
-                    step="0.01"
-                    value={dados.valorLocacaoLata}
-                    onChange={(e) => handleInputChange('valorLocacaoLata', Number(e.target.value))}
-                    className="mt-2"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="precoGasolina">Preço Gasolina (R$)</Label>
-                  <Input
-                    id="precoGasolina"
-                    type="number"
-                    step="0.01"
-                    value={dados.precoGasolina}
-                    onChange={(e) => handleInputChange('precoGasolina', Number(e.target.value))}
-                    className="mt-2"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="distanciaDescarte">Distância Descarte (Km)</Label>
-                  <Input
-                    id="distanciaDescarte"
-                    type="number"
-                    value={dados.distanciaDescarte}
-                    onChange={(e) => handleInputChange('distanciaDescarte', Number(e.target.value))}
-                    className="mt-2"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="taxaCrescimento">Taxa Crescimento Mensal (%)</Label>
-                  <Input
-                    id="taxaCrescimento"
-                    type="number"
-                    value={dados.taxaCrescimentoMensal}
-                    onChange={(e) => handleInputChange('taxaCrescimentoMensal', Number(e.target.value))}
-                    className="mt-2"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="salarios">Salários e Encargos (R$)</Label>
-                  <Input
-                    id="salarios"
-                    type="number"
-                    value={dados.salariosEncargos}
-                    onChange={(e) => handleInputChange('salariosEncargos', Number(e.target.value))}
-                    className="mt-2"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="aluguel">Aluguel Ponto Comercial (R$)</Label>
-                  <Input
-                    id="aluguel"
-                    type="number"
-                    value={dados.aluguelPonto}
-                    onChange={(e) => handleInputChange('aluguelPonto', Number(e.target.value))}
-                    className="mt-2"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="investimento">Investimento Inicial (R$)</Label>
-                  <Input
-                    id="investimento"
-                    type="number"
-                    value={dados.investimentoInicial}
-                    onChange={(e) => handleInputChange('investimentoInicial', Number(e.target.value))}
-                    className="mt-2"
-                  />
-                </div>
-                <div>
-                  <Label>Total Custos Variáveis (R$)</Label>
-                  <div className="mt-2 p-3 bg-muted rounded-md text-sm font-semibold text-muted-foreground">
-                    R$ {totalCustosVariaveis.toFixed(2)}
+        {/* Controles - Divididos em dois painéis */}
+        <div className="grid gap-6 mb-8 lg:grid-cols-2">
+          <TooltipProvider>
+            {/* Primeiro Painel - Parâmetros Principais */}
+            <Card className="border-nalata-orange/20 shadow-elegant">
+              <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
+                <CardTitle className="flex items-center gap-2">
+                  <Settings className="h-5 w-5" />
+                  Parâmetros de Configuração
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <Label htmlFor="vendaLatas">Venda de Latas 1º Mês</Label>
+                          <Input
+                            id="vendaLatas"
+                            type="number"
+                            value={dados.vendaLatasPrimeiroMes}
+                            onChange={(e) => handleInputChange('vendaLatasPrimeiroMes', Number(e.target.value))}
+                            className="mt-2"
+                          />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Inserir o número de latas vendidas no 1º mês</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                  <div>
+                    <Label htmlFor="taxaCrescimento">Taxa Crescimento Mensal (%)</Label>
+                    <Input
+                      id="taxaCrescimento"
+                      type="number"
+                      value={dados.taxaCrescimentoMensal}
+                      onChange={(e) => handleInputChange('taxaCrescimentoMensal', Number(e.target.value))}
+                      className="mt-2"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="investimento">Investimento Inicial (R$)</Label>
+                    <Input
+                      id="investimento"
+                      type="number"
+                      value={dados.investimentoInicial}
+                      onChange={(e) => handleInputChange('investimentoInicial', Number(e.target.value))}
+                      className="mt-2"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="valorLocacao">Valor Locação Lata</Label>
+                    <Select 
+                      value={dados.valorLocacaoLata.toString()} 
+                      onValueChange={(value) => handleInputChange('valorLocacaoLata', Number(value))}
+                    >
+                      <SelectTrigger className="mt-2">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="80">R$ 80,00</SelectItem>
+                        <SelectItem value="100">R$ 100,00</SelectItem>
+                        <SelectItem value="120">R$ 120,00</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="md:col-span-2">
+                    <Label htmlFor="distanciaDescarte">Distância Descarte (Km)</Label>
+                    <Input
+                      id="distanciaDescarte"
+                      type="number"
+                      value={dados.distanciaDescarte}
+                      onChange={(e) => handleInputChange('distanciaDescarte', Number(e.target.value))}
+                      className="mt-2"
+                    />
                   </div>
                 </div>
-                <div>
-                  <Label>Total Custos Fixos (R$)</Label>
-                  <div className="mt-2 p-3 bg-muted rounded-md text-sm font-semibold text-muted-foreground">
-                    R$ {totalCustosFixos.toFixed(2)}
+              </CardContent>
+            </Card>
+
+            {/* Segundo Painel - Custos Iniciais */}
+            <Card className="border-nalata-orange/20 shadow-elegant">
+              <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
+                <CardTitle className="flex items-center gap-2">
+                  <DollarSign className="h-5 w-5" />
+                  Custos Iniciais
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="precoGasolina">Preço Gasolina (R$)</Label>
+                    <Input
+                      id="precoGasolina"
+                      type="number"
+                      step="0.01"
+                      value={dados.precoGasolina}
+                      onChange={(e) => handleInputChange('precoGasolina', Number(e.target.value))}
+                      className="mt-2"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="salarios">Salários e Encargos</Label>
+                    <Select 
+                      value={dados.salariosEncargos.toString()} 
+                      onValueChange={(value) => handleInputChange('salariosEncargos', Number(value))}
+                    >
+                      <SelectTrigger className="mt-2">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="3200">01 colaborador - R$ 3.200,00</SelectItem>
+                        <SelectItem value="6400">02 colaboradores - R$ 6.400,00</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="aluguel">Aluguel Ponto Comercial (R$)</Label>
+                    <Input
+                      id="aluguel"
+                      type="number"
+                      value={dados.aluguelPonto}
+                      onChange={(e) => handleInputChange('aluguelPonto', Number(e.target.value))}
+                      className="mt-2"
+                    />
+                  </div>
+                  <div>
+                    <Label>Total Custos Variáveis</Label>
+                    <div className="mt-2 p-3 bg-muted rounded-md text-sm font-semibold text-muted-foreground">
+                      R$ {totalCustosVariaveis.toFixed(2)}
+                    </div>
+                  </div>
+                  <div className="md:col-span-2">
+                    <Label>Total Custos Fixos</Label>
+                    <div className="mt-2 p-3 bg-muted rounded-md text-sm font-semibold text-muted-foreground">
+                      R$ {totalCustosFixos.toFixed(2)}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </TooltipProvider>
         </div>
 
         {/* Gráficos */}
