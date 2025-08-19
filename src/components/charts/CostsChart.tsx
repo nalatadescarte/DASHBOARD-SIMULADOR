@@ -136,9 +136,21 @@ export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartPr
       {/* Gráfico de Pizza com Slider */}
       <div className="flex h-96">
         {/* Slider Vertical */}
-        <div className="flex flex-col items-center justify-center w-16 mr-4">
+        <div className="flex flex-col items-center justify-center w-20 mr-4">
           <div className="text-xs font-semibold text-muted-foreground mb-2">Mês {selectedMonth}</div>
-          <div className="h-72 flex items-center">
+          <div className="h-72 flex items-center relative">
+            {/* Linha vertical preta */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 w-px h-full bg-black z-0"></div>
+            
+            {/* Labels dos meses */}
+            <div className="absolute left-full ml-2 h-full flex flex-col justify-between text-xs font-medium z-10">
+              {['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'].map((month, index) => (
+                <span key={month} className="text-muted-foreground leading-none" style={{ transform: 'translateY(-50%)' }}>
+                  {month}
+                </span>
+              ))}
+            </div>
+            
             <Slider
               value={[selectedMonth]}
               onValueChange={(value) => setSelectedMonth(value[0])}
@@ -146,7 +158,7 @@ export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartPr
               min={1}
               step={1}
               orientation="vertical"
-              className="h-full"
+              className="h-full z-20 relative"
             />
           </div>
           <div className="text-xs text-muted-foreground mt-2">Projeção</div>
