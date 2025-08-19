@@ -1,5 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import { Slider } from "@/components/ui/slider";
 
 interface DashboardData {
   vendaLatasPrimeiroMes: number;
@@ -18,8 +19,11 @@ interface CostsChartProps {
 }
 
 export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartProps) {
+  const [selectedMonth, setSelectedMonth] = useState<number>(1);
   const chartData = useMemo(() => {
-    const receitaBruta = dados.vendaLatasPrimeiroMes * dados.valorLocacaoLata;
+    // Calcular vendas do mês selecionado com crescimento
+    const vendasMes = dados.vendaLatasPrimeiroMes * Math.pow(1 + dados.taxaCrescimentoMensal / 100, selectedMonth - 1);
+    const receitaBruta = vendasMes * dados.valorLocacaoLata;
     
     // Cálculo dos impostos (aproximadamente 8% da receita bruta)
     const impostos = receitaBruta * 0.08;
@@ -49,10 +53,11 @@ export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartPr
         color: "hsl(0, 70%, 60%)", // Vermelho para impostos
       },
     ].filter(item => item.value > 0);
-  }, [dados, custosVariaveis, custosFixos]);
+  }, [dados, custosVariaveis, custosFixos, selectedMonth]);
 
   const lucroInfo = useMemo(() => {
-    const receitaBruta = dados.vendaLatasPrimeiroMes * dados.valorLocacaoLata;
+    const vendasMes = dados.vendaLatasPrimeiroMes * Math.pow(1 + dados.taxaCrescimentoMensal / 100, selectedMonth - 1);
+    const receitaBruta = vendasMes * dados.valorLocacaoLata;
     const lucroOperacional = receitaBruta - custosVariaveis - custosFixos;
     const margemLucro = receitaBruta > 0 ? (lucroOperacional / receitaBruta) * 100 : 0;
     
@@ -61,7 +66,7 @@ export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartPr
       lucroOperacional,
       margemLucro,
     };
-  }, [dados, custosVariaveis, custosFixos]);
+  }, [dados, custosVariaveis, custosFixos, selectedMonth]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -128,42 +133,62 @@ export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartPr
         </div>
       </div>
       
-      {/* Gráfico de Pizza */}
-      <div className="h-96">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={chartData}
-              cx="50%"
-              cy="50%"
-              labelLine={false}
-              label={CustomLabel}
-              outerRadius={120}
-              fill="#8884d8"
-              dataKey="value"
-            >
-              {chartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-            <Tooltip content={<CustomTooltip />} />
-            <Legend 
-              wrapperStyle={{
-                paddingTop: '20px',
-                fontSize: '14px'
-              }}
-              formatter={(value, entry: any) => {
-                const total = chartData.reduce((sum, item) => sum + item.value, 0);
-                const percentage = ((entry.payload.value / total) * 100).toFixed(1);
-                return (
-                  <span style={{ color: entry.color, fontWeight: 'bold' }}>
-                    {value}: {formatCurrency(entry.payload.value)} ({percentage}%)
-                  </span>
-                );
-              }}
+      {/* Gráfico de Pizza com Slider */}
+      <div className="flex h-96">
+        {/* Slider Vertical */}
+        <div className="flex flex-col items-center justify-center w-16 mr-4">
+          <div className="text-xs font-semibold text-muted-foreground mb-2">Mês {selectedMonth}</div>
+          <div className="h-72 flex items-center">
+            <Slider
+              value={[selectedMonth]}
+              onValueChange={(value) => setSelectedMonth(value[0])}
+              max={12}
+              min={1}
+              step={1}
+              orientation="vertical"
+              className="h-full"
             />
-          </PieChart>
-        </ResponsiveContainer>
+          </div>
+          <div className="text-xs text-muted-foreground mt-2">Projeção</div>
+        </div>
+        
+        {/* Gráfico */}
+        <div className="flex-1">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={chartData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={CustomLabel}
+                outerRadius={120}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip content={<CustomTooltip />} />
+              <Legend 
+                wrapperStyle={{
+                  paddingTop: '20px',
+                  fontSize: '14px'
+                }}
+                formatter={(value, entry: any) => {
+                  const total = chartData.reduce((sum, item) => sum + item.value, 0);
+                  const percentage = ((entry.payload.value / total) * 100).toFixed(1);
+                  return (
+                    <span style={{ color: entry.color, fontWeight: 'bold' }}>
+                      {value}: {formatCurrency(entry.payload.value)} ({percentage}%)
+                    </span>
+                  );
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );

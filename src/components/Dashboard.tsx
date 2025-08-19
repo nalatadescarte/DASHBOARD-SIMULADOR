@@ -113,24 +113,42 @@ export function Dashboard() {
                     </Tooltip>
                   </div>
                   <div>
-                    <Label htmlFor="taxaCrescimento">Taxa Crescimento Mensal (%)</Label>
-                    <Input
-                      id="taxaCrescimento"
-                      type="number"
-                      value={dados.taxaCrescimentoMensal}
-                      onChange={(e) => handleInputChange('taxaCrescimentoMensal', Number(e.target.value))}
-                      className="mt-2"
-                    />
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <Label htmlFor="taxaCrescimento">Taxa Crescimento Mensal (%)</Label>
+                          <Input
+                            id="taxaCrescimento"
+                            type="number"
+                            value={dados.taxaCrescimentoMensal}
+                            onChange={(e) => handleInputChange('taxaCrescimentoMensal', Number(e.target.value))}
+                            className="mt-2"
+                          />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Indicado a escolha de uma taxa de crescimento acima de 15% para o primeiro ano</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                   <div>
-                    <Label htmlFor="investimento">Investimento Inicial (R$)</Label>
-                    <Input
-                      id="investimento"
-                      type="number"
-                      value={dados.investimentoInicial}
-                      onChange={(e) => handleInputChange('investimentoInicial', Number(e.target.value))}
-                      className="mt-2"
-                    />
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <Label htmlFor="investimento">Investimento Inicial (R$)</Label>
+                          <Input
+                            id="investimento"
+                            type="number"
+                            value={dados.investimentoInicial}
+                            onChange={(e) => handleInputChange('investimentoInicial', Number(e.target.value))}
+                            className="mt-2"
+                          />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>O valor de R$ 95.000,00 refere-se a - R$ 25.000,00 de taxa de franquia, - R$ 35.000,00 equipamentos, uniformes, Trade Dress e abertura empresa, -R$ 35.000,00 valor sugerido para aquisição do veículo</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                   <div>
                     <Label htmlFor="valorLocacao">Valor Locação Lata</Label>
@@ -184,29 +202,47 @@ export function Dashboard() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="salarios">Salários e Encargos</Label>
-                    <Select 
-                      value={dados.salariosEncargos.toString()} 
-                      onValueChange={(value) => handleInputChange('salariosEncargos', Number(value))}
-                    >
-                      <SelectTrigger className="mt-2">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="3200">01 colaborador - R$ 3.200,00</SelectItem>
-                        <SelectItem value="6400">02 colaboradores - R$ 6.400,00</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <Label htmlFor="salarios">Salários e Encargos</Label>
+                          <Select 
+                            value={dados.salariosEncargos.toString()} 
+                            onValueChange={(value) => handleInputChange('salariosEncargos', Number(value))}
+                          >
+                            <SelectTrigger className="mt-2">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="3200">01 colaborador - R$ 3.200,00</SelectItem>
+                              <SelectItem value="6400">02 colaboradores - R$ 6.400,00</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Indicado nos 4 primeiros meses a contratação de 01 colaborador</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                   <div>
-                    <Label htmlFor="aluguel">Aluguel Ponto Comercial (R$)</Label>
-                    <Input
-                      id="aluguel"
-                      type="number"
-                      value={dados.aluguelPonto}
-                      onChange={(e) => handleInputChange('aluguelPonto', Number(e.target.value))}
-                      className="mt-2"
-                    />
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <Label htmlFor="aluguel">Aluguel Ponto Comercial (R$)</Label>
+                          <Input
+                            id="aluguel"
+                            type="number"
+                            value={dados.aluguelPonto}
+                            onChange={(e) => handleInputChange('aluguelPonto', Number(e.target.value))}
+                            className="mt-2"
+                          />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Considerar o valor de um espaço mínimo de 50m²</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                   <div>
                     <Label>Total Custos Variáveis</Label>
