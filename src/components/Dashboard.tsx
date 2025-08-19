@@ -107,9 +107,9 @@ export function Dashboard() {
                           />
                         </div>
                       </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Inserir o número de latas vendidas no 1º mês</p>
-                      </TooltipContent>
+                       <TooltipContent>
+                         <p>Inserir o número de latas<br />vendidas no 1º mês</p>
+                       </TooltipContent>
                     </Tooltip>
                   </div>
                   <div>
@@ -126,9 +126,9 @@ export function Dashboard() {
                           />
                         </div>
                       </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Indicado a escolha de uma taxa de crescimento acima de 15% para o primeiro ano</p>
-                      </TooltipContent>
+                       <TooltipContent>
+                         <p>Indicado a escolha de uma taxa de<br />crescimento acima de 15% para o primeiro ano</p>
+                       </TooltipContent>
                     </Tooltip>
                   </div>
                   <div>
@@ -145,9 +145,9 @@ export function Dashboard() {
                           />
                         </div>
                       </TooltipTrigger>
-                      <TooltipContent>
-                        <p>O valor de R$ 95.000,00 refere-se a - R$ 25.000,00 de taxa de franquia, - R$ 35.000,00 equipamentos, uniformes, Trade Dress e abertura empresa, -R$ 35.000,00 valor sugerido para aquisição do veículo</p>
-                      </TooltipContent>
+                       <TooltipContent>
+                         <p>O valor de R$ 95.000,00 refere-se a<br />- R$ 25.000,00 de taxa de franquia,<br />- R$ 35.000,00 equipamentos, uniformes,<br />Trade Dress e abertura empresa,<br />-R$ 35.000,00 valor sugerido para aquisição do veículo</p>
+                       </TooltipContent>
                     </Tooltip>
                   </div>
                   <div>
@@ -220,9 +220,9 @@ export function Dashboard() {
                           </Select>
                         </div>
                       </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Indicado nos 4 primeiros meses a contratação de 01 colaborador</p>
-                      </TooltipContent>
+                       <TooltipContent>
+                         <p>Indicado nos 4 primeiros meses<br />a contratação de 01 colaborador</p>
+                       </TooltipContent>
                     </Tooltip>
                   </div>
                   <div>
@@ -239,9 +239,9 @@ export function Dashboard() {
                           />
                         </div>
                       </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Considerar o valor de um espaço mínimo de 50m²</p>
-                      </TooltipContent>
+                       <TooltipContent>
+                         <p>Considerar o valor de um espaço<br />mínimo de 50m²</p>
+                       </TooltipContent>
                     </Tooltip>
                   </div>
                   <div>

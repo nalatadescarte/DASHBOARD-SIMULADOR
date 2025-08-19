@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { Slider } from "@/components/ui/slider";
+import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface DashboardData {
   vendaLatasPrimeiroMes: number;
@@ -137,14 +138,23 @@ export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartPr
       <div className="flex h-96">
         {/* Slider Vertical */}
         <div className="flex flex-col items-center justify-center w-20 mr-4">
-          <div className="text-xs font-semibold text-muted-foreground mb-2">Mês {selectedMonth}</div>
+          <TooltipProvider>
+            <UITooltip>
+              <TooltipTrigger asChild>
+                <div className="text-xs font-semibold text-muted-foreground mb-2 cursor-help">Mês {selectedMonth}</div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Escolha o mês de<br />projeção</p>
+              </TooltipContent>
+            </UITooltip>
+          </TooltipProvider>
           <div className="h-72 flex items-center relative">
             {/* Linha vertical preta */}
             <div className="absolute left-1/2 transform -translate-x-1/2 w-px h-full bg-black z-0"></div>
             
-            {/* Labels dos meses */}
+            {/* Labels dos meses - invertidos */}
             <div className="absolute left-full ml-2 h-full flex flex-col justify-between text-xs font-medium z-10">
-              {['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'].map((month, index) => (
+              {['- Dez', '- Nov', '- Out', '- Set', '- Ago', '- Jul', '- Jun', '- Mai', '- Abr', '- Mar', '- Fev', '- Jan'].map((month, index) => (
                 <span key={month} className="text-muted-foreground leading-none" style={{ transform: 'translateY(-50%)' }}>
                   {month}
                 </span>
