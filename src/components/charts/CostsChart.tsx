@@ -123,7 +123,7 @@ export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartPr
         </div>
         <div className="text-center p-3 bg-muted rounded-lg">
           <p className="text-sm text-muted-foreground">Lucro Operacional</p>
-          <p className="text-lg font-bold" style={{ color: "hsl(var(--chart-profit))" }}>
+          <p className="text-lg font-bold" style={{ color: lucroInfo.lucroOperacional < 0 ? "hsl(0, 70%, 60%)" : "hsl(var(--chart-profit))" }}>
             {formatCurrency(lucroInfo.lucroOperacional)}
           </p>
         </div>
