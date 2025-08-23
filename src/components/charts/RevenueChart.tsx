@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line, ComposedChart } from "recharts";
+import { calculateMonthlyCanProjection } from "@/lib/projection-utils";
 
 interface DashboardData {
   vendaLatasPrimeiroMes: number;
@@ -22,7 +23,7 @@ export function RevenueChart({ dados, periodo }: RevenueChartProps) {
     const data = [];
     
     for (let i = 1; i <= meses; i++) {
-      const latasDoMes = dados.vendaLatasPrimeiroMes * Math.pow(1 + dados.taxaCrescimentoMensal / 100, i - 1);
+      const latasDoMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, i);
       const faturamento = latasDoMes * dados.valorLocacaoLata;
       
       data.push({

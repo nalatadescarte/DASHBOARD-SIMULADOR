@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from "recharts";
+import { calculateMonthlyCanProjection } from "@/lib/projection-utils";
 
 interface DashboardData {
   vendaLatasPrimeiroMes: number;
@@ -29,7 +30,7 @@ export function BreakEvenChart({ dados, totalCustosVariaveis, totalCustosFixos }
     
     // Gerar dados para 12 meses
     for (let mes = 1; mes <= 12; mes++) {
-      const latasProjetadas = dados.vendaLatasPrimeiroMes * Math.pow(1 + dados.taxaCrescimentoMensal / 100, mes - 1);
+      const latasProjetadas = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes);
       const receitaProjetada = latasProjetadas * dados.valorLocacaoLata;
       const custoTotal = totalCustosFixos + (latasProjetadas * custoVariavelPorLata);
       const lucro = receitaProjetada - custoTotal;

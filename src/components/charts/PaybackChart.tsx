@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
+import { calculateMonthlyCanProjection } from "@/lib/projection-utils";
 
 interface DashboardData {
   vendaLatasPrimeiroMes: number;
@@ -25,9 +26,9 @@ export function PaybackChart({ dados, totalCustosVariaveis, totalCustosFixos }: 
     let mesPayback = null;
 
     for (let mes = 1; mes <= 36; mes++) {
-      const fatorCrescimento = Math.pow(1 + dados.taxaCrescimentoMensal / 100, mes - 1);
-      const receitaMensal = dados.vendaLatasPrimeiroMes * dados.valorLocacaoLata * fatorCrescimento;
-      const custosVariaveisMensal = totalCustosVariaveis * fatorCrescimento;
+      const latasDoMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes);
+      const receitaMensal = latasDoMes * dados.valorLocacaoLata;
+      const custosVariaveisMensal = (totalCustosVariaveis / dados.vendaLatasPrimeiroMes) * latasDoMes;
       const lucroMensal = receitaMensal - custosVariaveisMensal - totalCustosFixos;
       
       lucroAcumulado += lucroMensal;

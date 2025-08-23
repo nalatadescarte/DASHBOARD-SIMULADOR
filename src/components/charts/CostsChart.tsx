@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import { Slider } from "@/components/ui/slider";
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { calculateMonthlyCanProjection } from "@/lib/projection-utils";
 
 interface DashboardData {
   vendaLatasPrimeiroMes: number;
@@ -22,8 +23,8 @@ interface CostsChartProps {
 export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartProps) {
   const [selectedMonth, setSelectedMonth] = useState<number>(1);
   const chartData = useMemo(() => {
-    // Calcular vendas do mês selecionado com crescimento
-    const vendasMes = dados.vendaLatasPrimeiroMes * Math.pow(1 + dados.taxaCrescimentoMensal / 100, selectedMonth - 1);
+    // Calcular vendas do mês selecionado com crescimento e limite de 320 latas
+    const vendasMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth);
     const receitaBruta = vendasMes * dados.valorLocacaoLata;
     
     // Cálculo dos impostos (aproximadamente 8% da receita bruta)
@@ -57,7 +58,7 @@ export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartPr
   }, [dados, custosVariaveis, custosFixos, selectedMonth]);
 
   const lucroInfo = useMemo(() => {
-    const vendasMes = dados.vendaLatasPrimeiroMes * Math.pow(1 + dados.taxaCrescimentoMensal / 100, selectedMonth - 1);
+    const vendasMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth);
     const receitaBruta = vendasMes * dados.valorLocacaoLata;
     const lucroOperacional = receitaBruta - custosVariaveis - custosFixos;
     const margemLucro = receitaBruta > 0 ? (lucroOperacional / receitaBruta) * 100 : 0;
