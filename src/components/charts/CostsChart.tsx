@@ -18,13 +18,14 @@ interface CostsChartProps {
   dados: DashboardData;
   custosVariaveis: number;
   custosFixos: number;
+  limiteLatas: number;
 }
 
-export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartProps) {
+export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas }: CostsChartProps) {
   const [selectedMonth, setSelectedMonth] = useState<number>(1);
   const chartData = useMemo(() => {
-    // Calcular vendas do mês selecionado com crescimento e limite de 320 latas
-    const vendasMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth);
+    // Calcular vendas do mês selecionado com crescimento e limite dinâmico de latas
+    const vendasMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth, limiteLatas);
     const receitaBruta = vendasMes * dados.valorLocacaoLata;
     
     // Cálculo dos impostos (aproximadamente 8% da receita bruta)
@@ -55,10 +56,10 @@ export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartPr
         color: "hsl(0, 70%, 60%)", // Vermelho para impostos
       },
     ].filter(item => item.value > 0);
-  }, [dados, custosVariaveis, custosFixos, selectedMonth]);
+  }, [dados, custosVariaveis, custosFixos, selectedMonth, limiteLatas]);
 
   const lucroInfo = useMemo(() => {
-    const vendasMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth);
+    const vendasMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth, limiteLatas);
     const receitaBruta = vendasMes * dados.valorLocacaoLata;
     const lucroOperacional = receitaBruta - custosVariaveis - custosFixos;
     const margemLucro = receitaBruta > 0 ? (lucroOperacional / receitaBruta) * 100 : 0;
@@ -68,7 +69,7 @@ export function CostsChart({ dados, custosVariaveis, custosFixos }: CostsChartPr
       lucroOperacional,
       margemLucro,
     };
-  }, [dados, custosVariaveis, custosFixos, selectedMonth]);
+  }, [dados, custosVariaveis, custosFixos, selectedMonth, limiteLatas]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {

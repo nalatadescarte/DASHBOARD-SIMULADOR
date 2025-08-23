@@ -15,15 +15,16 @@ interface DashboardData {
 interface RevenueChartProps {
   dados: DashboardData;
   periodo: "12" | "24" | "36";
+  limiteLatas: number;
 }
 
-export function RevenueChart({ dados, periodo }: RevenueChartProps) {
+export function RevenueChart({ dados, periodo, limiteLatas }: RevenueChartProps) {
   const chartData = useMemo(() => {
     const meses = parseInt(periodo);
     const data = [];
     
     for (let i = 1; i <= meses; i++) {
-      const latasDoMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, i);
+      const latasDoMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, i, limiteLatas);
       const faturamento = latasDoMes * dados.valorLocacaoLata;
       
       data.push({
@@ -34,7 +35,7 @@ export function RevenueChart({ dados, periodo }: RevenueChartProps) {
     }
     
     return data;
-  }, [dados, periodo]);
+  }, [dados, periodo, limiteLatas]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {

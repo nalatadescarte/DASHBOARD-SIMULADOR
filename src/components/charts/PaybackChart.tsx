@@ -17,16 +17,17 @@ interface PaybackChartProps {
   dados: DashboardData;
   totalCustosVariaveis: number;
   totalCustosFixos: number;
+  limiteLatas: number;
 }
 
-export function PaybackChart({ dados, totalCustosVariaveis, totalCustosFixos }: PaybackChartProps) {
+export function PaybackChart({ dados, totalCustosVariaveis, totalCustosFixos, limiteLatas }: PaybackChartProps) {
   const chartData = useMemo(() => {
     const meses = [];
     let lucroAcumulado = -dados.investimentoInicial;
     let mesPayback = null;
 
     for (let mes = 1; mes <= 36; mes++) {
-      const latasDoMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes);
+      const latasDoMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes, limiteLatas);
       const receitaMensal = latasDoMes * dados.valorLocacaoLata;
       const custosVariaveisMensal = (totalCustosVariaveis / dados.vendaLatasPrimeiroMes) * latasDoMes;
       const lucroMensal = receitaMensal - custosVariaveisMensal - totalCustosFixos;
@@ -46,7 +47,7 @@ export function PaybackChart({ dados, totalCustosVariaveis, totalCustosFixos }: 
     }
 
     return { meses, mesPayback };
-  }, [dados, totalCustosVariaveis, totalCustosFixos]);
+  }, [dados, totalCustosVariaveis, totalCustosFixos, limiteLatas]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {

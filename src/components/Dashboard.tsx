@@ -20,6 +20,7 @@ interface DashboardData {
   salariosEncargos: number;
   aluguelPonto: number;
   investimentoInicial: number;
+  etapaCrescimento: "primeira" | "expansao";
 }
 
 export function Dashboard() {
@@ -33,11 +34,16 @@ export function Dashboard() {
     salariosEncargos: 3200,
     aluguelPonto: 1400,
     investimentoInicial: 95000,
+    etapaCrescimento: "primeira",
   });
 
-  const handleInputChange = (field: keyof DashboardData, value: number) => {
+  const handleInputChange = (field: keyof DashboardData, value: number | string) => {
     setDados(prev => ({ ...prev, [field]: value }));
   };
+
+  // Multiplicador para expansão (segunda unidade)
+  const multiplicador = dados.etapaCrescimento === "expansao" ? 2 : 1;
+  const limiteLatas = dados.etapaCrescimento === "expansao" ? 640 : 320;
 
   // Cálculos detalhados baseados nas fórmulas da planilha
   const custosVariaveis = {
@@ -57,8 +63,8 @@ export function Dashboard() {
     planoCelular: 100,
   };
 
-  const totalCustosVariaveis = Object.values(custosVariaveis).reduce((a, b) => a + b, 0);
-  const totalCustosFixos = Object.values(custosFixos).reduce((a, b) => a + b, 0);
+  const totalCustosVariaveis = Object.values(custosVariaveis).reduce((a, b) => a + b, 0) * multiplicador;
+  const totalCustosFixos = Object.values(custosFixos).reduce((a, b) => a + b, 0) * multiplicador;
 
   return (
     <div className="min-h-screen bg-background">
@@ -166,7 +172,7 @@ export function Dashboard() {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="md:col-span-2">
+                  <div>
                     <Label htmlFor="distanciaDescarte">Distância Descarte (Km)</Label>
                     <Input
                       id="distanciaDescarte"
@@ -175,6 +181,30 @@ export function Dashboard() {
                       onChange={(e) => handleInputChange('distanciaDescarte', Number(e.target.value))}
                       className="mt-2"
                     />
+                  </div>
+                  <div>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <Label htmlFor="etapaCrescimento">Etapa de Crescimento</Label>
+                          <Select 
+                            value={dados.etapaCrescimento} 
+                            onValueChange={(value) => handleInputChange('etapaCrescimento', value)}
+                          >
+                            <SelectTrigger className="mt-2">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="primeira">1. Primeira unidade</SelectItem>
+                              <SelectItem value="expansao">2. Expansão (segunda unidade)</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Simule o ponto de partida do seu<br />negócio e projete sua expansão com<br />a abertura da segunda unidade</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                 </div>
               </CardContent>
@@ -285,7 +315,7 @@ export function Dashboard() {
               </div>
             </CardHeader>
             <CardContent className="p-6">
-              <RevenueChart dados={dados} periodo={periodoProjecao} />
+              <RevenueChart dados={dados} periodo={periodoProjecao} limiteLatas={limiteLatas} />
             </CardContent>
           </Card>
 
@@ -299,7 +329,7 @@ export function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <CostsChart dados={dados} custosVariaveis={totalCustosVariaveis} custosFixos={totalCustosFixos} />
+                <CostsChart dados={dados} custosVariaveis={totalCustosVariaveis} custosFixos={totalCustosFixos} limiteLatas={limiteLatas} />
               </CardContent>
             </Card>
 
@@ -312,7 +342,7 @@ export function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <BreakEvenChart dados={dados} totalCustosVariaveis={totalCustosVariaveis} totalCustosFixos={totalCustosFixos} />
+                <BreakEvenChart dados={dados} totalCustosVariaveis={totalCustosVariaveis} totalCustosFixos={totalCustosFixos} limiteLatas={limiteLatas} />
               </CardContent>
             </Card>
           </div>
@@ -333,6 +363,7 @@ export function Dashboard() {
                   periodo={periodoProjecao}
                   totalCustosVariaveis={totalCustosVariaveis}
                   totalCustosFixos={totalCustosFixos}
+                  limiteLatas={limiteLatas}
                 />
               </CardContent>
             </Card>
@@ -350,6 +381,7 @@ export function Dashboard() {
                   dados={dados}
                   totalCustosVariaveis={totalCustosVariaveis}
                   totalCustosFixos={totalCustosFixos}
+                  limiteLatas={limiteLatas}
                 />
               </CardContent>
             </Card>

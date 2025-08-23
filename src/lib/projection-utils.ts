@@ -1,6 +1,6 @@
 /**
- * Calculates monthly can projections with a 320 can limit
- * When projection exceeds 320, it caps at 320 for all subsequent months
+ * Calculates monthly can projections with a dynamic can limit (320 or 640)
+ * When projection exceeds the limit, it caps at the limit for all subsequent months
  */
 export function calculateMonthlyCanProjection(
   initialCans: number,
@@ -27,7 +27,7 @@ export function calculateMonthlyCanProjection(
 }
 
 /**
- * Generates an array of monthly can projections with the 320 can limit
+ * Generates an array of monthly can projections with a dynamic can limit (320 or 640)
  */
 export function generateMonthlyCanProjections(
   initialCans: number,

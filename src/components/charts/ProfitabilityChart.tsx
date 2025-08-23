@@ -18,15 +18,16 @@ interface ProfitabilityChartProps {
   periodo: "12" | "24" | "36";
   totalCustosVariaveis: number;
   totalCustosFixos: number;
+  limiteLatas: number;
 }
 
-export function ProfitabilityChart({ dados, periodo, totalCustosVariaveis, totalCustosFixos }: ProfitabilityChartProps) {
+export function ProfitabilityChart({ dados, periodo, totalCustosVariaveis, totalCustosFixos, limiteLatas }: ProfitabilityChartProps) {
   const chartData = useMemo(() => {
     const meses = parseInt(periodo);
     const data = [];
     
     for (let mes = 1; mes <= meses; mes++) {
-      const latasDoMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes);
+      const latasDoMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes, limiteLatas);
       const receitaMensal = latasDoMes * dados.valorLocacaoLata;
       const custosVariaveisMensal = (totalCustosVariaveis / dados.vendaLatasPrimeiroMes) * latasDoMes;
       const lucroMensal = receitaMensal - custosVariaveisMensal - totalCustosFixos;
@@ -42,7 +43,7 @@ export function ProfitabilityChart({ dados, periodo, totalCustosVariaveis, total
     }
     
     return data;
-  }, [dados, periodo, totalCustosVariaveis, totalCustosFixos]);
+  }, [dados, periodo, totalCustosVariaveis, totalCustosFixos, limiteLatas]);
 
   const lucroMedio = useMemo(() => {
     const totalLucro = chartData.reduce((acc, item) => acc + item.lucro, 0);
