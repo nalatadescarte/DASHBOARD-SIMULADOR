@@ -10,6 +10,7 @@ import { BreakEvenChart } from "./charts/BreakEvenChart";
 import { PaybackChart } from "./charts/PaybackChart";
 import { ProfitabilityChart } from "./charts/ProfitabilityChart";
 import { Calculator, TrendingUp, PieChart, BarChart3, DollarSign, Settings } from "lucide-react";
+import { calculateMonthlyCanProjection } from "@/lib/projection-utils";
 
 interface DashboardData {
   vendaLatasPrimeiroMes: number;
@@ -41,8 +42,23 @@ export function Dashboard() {
     setDados(prev => ({ ...prev, [field]: value }));
   };
 
-  // Multiplicador para expansão (segunda unidade)
-  const multiplicador = dados.etapaCrescimento === "expansao" ? 2 : 1;
+  // Calcular multiplicador baseado na projeção
+  let multiplicador = 1;
+  if (dados.etapaCrescimento === "expansao") {
+    // Encontrar o primeiro mês que ultrapassa 320 latas nos próximos 12 meses
+    let primeiroMesAcima320 = null;
+    for (let m = 1; m <= 12; m++) {
+      const latasDoMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, m, 640);
+      if (latasDoMes > 320) {
+        primeiroMesAcima320 = m;
+        break;
+      }
+    }
+    // Se há projeção acima de 320 latas, usar multiplicador para os custos
+    if (primeiroMesAcima320) {
+      multiplicador = 2;
+    }
+  }
   const limiteLatas = dados.etapaCrescimento === "expansao" ? 640 : 320;
 
   // Cálculos detalhados baseados nas fórmulas da planilha
