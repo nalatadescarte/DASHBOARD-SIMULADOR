@@ -30,14 +30,24 @@ export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas, e
     const vendasMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth, limiteLatas);
     const receitaBruta = vendasMes * dados.valorLocacaoLata;
     
-    // Aplicar multiplicador de custos apenas quando a projeção exceder 320 latas
-    let multiplicadorCustos = 1;
-    if (etapaCrescimento === "expansao") {
-      const latasPreviousMes = selectedMonth > 1 ? calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth - 1, limiteLatas) : 0;
-      if (vendasMes > 320 || latasPreviousMes > 320) {
-        multiplicadorCustos = 2;
+      // Aplicar multiplicador de custos apenas a partir do mês que exceder 320 latas
+      let multiplicadorCustos = 1;
+      if (etapaCrescimento === "expansao") {
+        // Encontrar o primeiro mês que ultrapassa 320 latas
+        let primeiroMesAcima320 = null;
+        for (let m = 1; m <= selectedMonth; m++) {
+          const latasDoMesCheck = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, m, 640);
+          if (latasDoMesCheck > 320) {
+            primeiroMesAcima320 = m;
+            break;
+          }
+        }
+        
+        // Aplicar multiplicador apenas se já passou do primeiro mês que ultrapassa 320
+        if (primeiroMesAcima320 && selectedMonth >= primeiroMesAcima320) {
+          multiplicadorCustos = 2;
+        }
       }
-    }
     
     const custosVariaveisAjustados = custosVariaveis * multiplicadorCustos;
     const custosFixosAjustados = custosFixos * multiplicadorCustos;
@@ -76,11 +86,21 @@ export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas, e
     const vendasMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth, limiteLatas);
     const receitaBruta = vendasMes * dados.valorLocacaoLata;
     
-    // Aplicar multiplicador de custos apenas quando a projeção exceder 320 latas
+    // Aplicar multiplicador de custos apenas a partir do mês que exceder 320 latas
     let multiplicadorCustos = 1;
     if (etapaCrescimento === "expansao") {
-      const latasPreviousMes = selectedMonth > 1 ? calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth - 1, limiteLatas) : 0;
-      if (vendasMes > 320 || latasPreviousMes > 320) {
+      // Encontrar o primeiro mês que ultrapassa 320 latas
+      let primeiroMesAcima320 = null;
+      for (let m = 1; m <= selectedMonth; m++) {
+        const latasDoMesCheck = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, m, 640);
+        if (latasDoMesCheck > 320) {
+          primeiroMesAcima320 = m;
+          break;
+        }
+      }
+      
+      // Aplicar multiplicador apenas se já passou do primeiro mês que ultrapassa 320
+      if (primeiroMesAcima320 && selectedMonth >= primeiroMesAcima320) {
         multiplicadorCustos = 2;
       }
     }

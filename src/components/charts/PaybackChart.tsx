@@ -32,11 +32,21 @@ export function PaybackChart({ dados, totalCustosVariaveis, totalCustosFixos, li
       const latasDoMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes, limiteLatas);
       const receitaMensal = latasDoMes * dados.valorLocacaoLata;
       
-      // Aplicar multiplicador de custos apenas quando a projeção exceder 320 latas
+      // Aplicar multiplicador de custos apenas a partir do mês que exceder 320 latas
       let multiplicadorCustos = 1;
       if (etapaCrescimento === "expansao") {
-        const latasPreviousMes = mes > 1 ? calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes - 1, limiteLatas) : 0;
-        if (latasDoMes > 320 || latasPreviousMes > 320) {
+        // Encontrar o primeiro mês que ultrapassa 320 latas
+        let primeiroMesAcima320 = null;
+        for (let m = 1; m <= mes; m++) {
+          const latasDoMesCheck = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, m, 640);
+          if (latasDoMesCheck > 320) {
+            primeiroMesAcima320 = m;
+            break;
+          }
+        }
+        
+        // Aplicar multiplicador apenas se já passou do primeiro mês que ultrapassa 320
+        if (primeiroMesAcima320 && mes >= primeiroMesAcima320) {
           multiplicadorCustos = 2;
         }
       }
