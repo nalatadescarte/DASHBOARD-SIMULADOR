@@ -329,7 +329,7 @@ export function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <CostsChart dados={dados} custosVariaveis={totalCustosVariaveis} custosFixos={totalCustosFixos} limiteLatas={limiteLatas} />
+                <CostsChart dados={dados} custosVariaveis={totalCustosVariaveis} custosFixos={totalCustosFixos} limiteLatas={limiteLatas} etapaCrescimento={dados.etapaCrescimento} />
               </CardContent>
             </Card>
 
@@ -342,7 +342,7 @@ export function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <BreakEvenChart dados={dados} totalCustosVariaveis={totalCustosVariaveis} totalCustosFixos={totalCustosFixos} limiteLatas={limiteLatas} />
+                <BreakEvenChart dados={dados} totalCustosVariaveis={totalCustosVariaveis} totalCustosFixos={totalCustosFixos} limiteLatas={limiteLatas} etapaCrescimento={dados.etapaCrescimento} />
               </CardContent>
             </Card>
           </div>
@@ -364,6 +364,7 @@ export function Dashboard() {
                   totalCustosVariaveis={totalCustosVariaveis}
                   totalCustosFixos={totalCustosFixos}
                   limiteLatas={limiteLatas}
+                  etapaCrescimento={dados.etapaCrescimento}
                 />
               </CardContent>
             </Card>
@@ -377,11 +378,12 @@ export function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <PaybackChart 
+                <PaybackChart
                   dados={dados}
                   totalCustosVariaveis={totalCustosVariaveis}
                   totalCustosFixos={totalCustosFixos}
                   limiteLatas={limiteLatas}
+                  etapaCrescimento={dados.etapaCrescimento}
                 />
               </CardContent>
             </Card>

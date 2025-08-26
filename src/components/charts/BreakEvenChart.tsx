@@ -17,15 +17,16 @@ interface BreakEvenChartProps {
   totalCustosVariaveis: number;
   totalCustosFixos: number;
   limiteLatas: number;
+  etapaCrescimento: "primeira" | "expansao";
 }
 
-export function BreakEvenChart({ dados, totalCustosVariaveis, totalCustosFixos, limiteLatas }: BreakEvenChartProps) {
+export function BreakEvenChart({ dados, totalCustosVariaveis, totalCustosFixos, limiteLatas, etapaCrescimento }: BreakEvenChartProps) {
   const chartData = useMemo(() => {
     const data = [];
     const custoVariavelPorLata = totalCustosVariaveis / dados.vendaLatasPrimeiroMes;
     const margemContribuicao = dados.valorLocacaoLata - custoVariavelPorLata;
     
-    // Ponto de break-even em quantidade de latas
+    // Para break-even, usar custos base (primeira unidade)
     const breakEvenLatas = totalCustosFixos / margemContribuicao;
     const breakEvenReceita = breakEvenLatas * dados.valorLocacaoLata;
     
@@ -33,7 +34,17 @@ export function BreakEvenChart({ dados, totalCustosVariaveis, totalCustosFixos, 
     for (let mes = 1; mes <= 12; mes++) {
       const latasProjetadas = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes, limiteLatas);
       const receitaProjetada = latasProjetadas * dados.valorLocacaoLata;
-      const custoTotal = totalCustosFixos + (latasProjetadas * custoVariavelPorLata);
+      
+      // Aplicar multiplicador de custos apenas quando a projeção exceder 320 latas
+      let multiplicadorCustos = 1;
+      if (etapaCrescimento === "expansao") {
+        const latasPreviousMes = mes > 1 ? calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes - 1, limiteLatas) : 0;
+        if (latasProjetadas > 320 || latasPreviousMes > 320) {
+          multiplicadorCustos = 2;
+        }
+      }
+      
+      const custoTotal = (totalCustosFixos * multiplicadorCustos) + (latasProjetadas * custoVariavelPorLata * multiplicadorCustos);
       const lucro = receitaProjetada - custoTotal;
       
       data.push({

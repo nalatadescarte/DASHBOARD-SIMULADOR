@@ -19,20 +19,33 @@ interface CostsChartProps {
   custosVariaveis: number;
   custosFixos: number;
   limiteLatas: number;
+  etapaCrescimento: "primeira" | "expansao";
 }
 
-export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas }: CostsChartProps) {
+export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas, etapaCrescimento }: CostsChartProps) {
   const [selectedMonth, setSelectedMonth] = useState<number>(1);
   const chartData = useMemo(() => {
     // Calcular vendas do mês selecionado com crescimento e limite dinâmico de latas
     const vendasMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth, limiteLatas);
     const receitaBruta = vendasMes * dados.valorLocacaoLata;
     
+    // Aplicar multiplicador de custos apenas quando a projeção exceder 320 latas
+    let multiplicadorCustos = 1;
+    if (etapaCrescimento === "expansao") {
+      const latasPreviousMes = selectedMonth > 1 ? calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth - 1, limiteLatas) : 0;
+      if (vendasMes > 320 || latasPreviousMes > 320) {
+        multiplicadorCustos = 2;
+      }
+    }
+    
+    const custosVariaveisAjustados = custosVariaveis * multiplicadorCustos;
+    const custosFixosAjustados = custosFixos * multiplicadorCustos;
+    
     // Cálculo dos impostos (aproximadamente 8% da receita bruta)
     const impostos = receitaBruta * 0.08;
     
     // Lucro Líquido
-    const lucroLiquido = receitaBruta - custosVariaveis - custosFixos - impostos;
+    const lucroLiquido = receitaBruta - custosVariaveisAjustados - custosFixosAjustados - impostos;
     
     return [
       {
@@ -42,12 +55,12 @@ export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas }:
       },
       {
         name: "Custos Fixos",
-        value: custosFixos,
+        value: custosFixosAjustados,
         color: "hsl(var(--chart-fixed))",
       },
       {
         name: "Custos Variáveis",
-        value: custosVariaveis,
+        value: custosVariaveisAjustados,
         color: "hsl(var(--chart-variable))",
       },
       {
@@ -56,12 +69,22 @@ export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas }:
         color: "hsl(0, 70%, 60%)", // Vermelho para impostos
       },
     ].filter(item => item.value > 0);
-  }, [dados, custosVariaveis, custosFixos, selectedMonth, limiteLatas]);
+  }, [dados, custosVariaveis, custosFixos, selectedMonth, limiteLatas, etapaCrescimento]);
 
   const lucroInfo = useMemo(() => {
     const vendasMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth, limiteLatas);
     const receitaBruta = vendasMes * dados.valorLocacaoLata;
-    const lucroOperacional = receitaBruta - custosVariaveis - custosFixos;
+    
+    // Aplicar multiplicador de custos apenas quando a projeção exceder 320 latas
+    let multiplicadorCustos = 1;
+    if (etapaCrescimento === "expansao") {
+      const latasPreviousMes = selectedMonth > 1 ? calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth - 1, limiteLatas) : 0;
+      if (vendasMes > 320 || latasPreviousMes > 320) {
+        multiplicadorCustos = 2;
+      }
+    }
+    
+    const lucroOperacional = receitaBruta - (custosVariaveis * multiplicadorCustos) - (custosFixos * multiplicadorCustos);
     const margemLucro = receitaBruta > 0 ? (lucroOperacional / receitaBruta) * 100 : 0;
     
     return {
@@ -69,7 +92,7 @@ export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas }:
       lucroOperacional,
       margemLucro,
     };
-  }, [dados, custosVariaveis, custosFixos, selectedMonth, limiteLatas]);
+  }, [dados, custosVariaveis, custosFixos, selectedMonth, limiteLatas, etapaCrescimento]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {

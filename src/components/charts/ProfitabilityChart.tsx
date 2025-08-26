@@ -19,9 +19,10 @@ interface ProfitabilityChartProps {
   totalCustosVariaveis: number;
   totalCustosFixos: number;
   limiteLatas: number;
+  etapaCrescimento: "primeira" | "expansao";
 }
 
-export function ProfitabilityChart({ dados, periodo, totalCustosVariaveis, totalCustosFixos, limiteLatas }: ProfitabilityChartProps) {
+export function ProfitabilityChart({ dados, periodo, totalCustosVariaveis, totalCustosFixos, limiteLatas, etapaCrescimento }: ProfitabilityChartProps) {
   const chartData = useMemo(() => {
     const meses = parseInt(periodo);
     const data = [];
@@ -29,8 +30,18 @@ export function ProfitabilityChart({ dados, periodo, totalCustosVariaveis, total
     for (let mes = 1; mes <= meses; mes++) {
       const latasDoMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes, limiteLatas);
       const receitaMensal = latasDoMes * dados.valorLocacaoLata;
-      const custosVariaveisMensal = (totalCustosVariaveis / dados.vendaLatasPrimeiroMes) * latasDoMes;
-      const lucroMensal = receitaMensal - custosVariaveisMensal - totalCustosFixos;
+      
+      // Aplicar multiplicador de custos apenas quando a projeção exceder 320 latas
+      let multiplicadorCustos = 1;
+      if (etapaCrescimento === "expansao") {
+        const latasPreviousMes = mes > 1 ? calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes - 1, limiteLatas) : 0;
+        if (latasDoMes > 320 || latasPreviousMes > 320) {
+          multiplicadorCustos = 2;
+        }
+      }
+      
+      const custosVariaveisMensal = (totalCustosVariaveis * multiplicadorCustos / dados.vendaLatasPrimeiroMes) * latasDoMes;
+      const lucroMensal = receitaMensal - custosVariaveisMensal - (totalCustosFixos * multiplicadorCustos);
       const margemLucro = receitaMensal > 0 ? (lucroMensal / receitaMensal) * 100 : 0;
       
       data.push({

@@ -18,9 +18,10 @@ interface PaybackChartProps {
   totalCustosVariaveis: number;
   totalCustosFixos: number;
   limiteLatas: number;
+  etapaCrescimento: "primeira" | "expansao";
 }
 
-export function PaybackChart({ dados, totalCustosVariaveis, totalCustosFixos, limiteLatas }: PaybackChartProps) {
+export function PaybackChart({ dados, totalCustosVariaveis, totalCustosFixos, limiteLatas, etapaCrescimento }: PaybackChartProps) {
   const chartData = useMemo(() => {
     const meses = [];
     let lucroAcumulado = -dados.investimentoInicial;
@@ -29,8 +30,18 @@ export function PaybackChart({ dados, totalCustosVariaveis, totalCustosFixos, li
     for (let mes = 1; mes <= 36; mes++) {
       const latasDoMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes, limiteLatas);
       const receitaMensal = latasDoMes * dados.valorLocacaoLata;
-      const custosVariaveisMensal = (totalCustosVariaveis / dados.vendaLatasPrimeiroMes) * latasDoMes;
-      const lucroMensal = receitaMensal - custosVariaveisMensal - totalCustosFixos;
+      
+      // Aplicar multiplicador de custos apenas quando a projeção exceder 320 latas
+      let multiplicadorCustos = 1;
+      if (etapaCrescimento === "expansao") {
+        const latasPreviousMes = mes > 1 ? calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, mes - 1, limiteLatas) : 0;
+        if (latasDoMes > 320 || latasPreviousMes > 320) {
+          multiplicadorCustos = 2;
+        }
+      }
+      
+      const custosVariaveisMensal = (totalCustosVariaveis * multiplicadorCustos / dados.vendaLatasPrimeiroMes) * latasDoMes;
+      const lucroMensal = receitaMensal - custosVariaveisMensal - (totalCustosFixos * multiplicadorCustos);
       
       lucroAcumulado += lucroMensal;
 
