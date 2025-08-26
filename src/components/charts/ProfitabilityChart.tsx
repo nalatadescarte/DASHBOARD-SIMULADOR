@@ -11,6 +11,7 @@ interface DashboardData {
   salariosEncargos: number;
   aluguelPonto: number;
   investimentoInicial: number;
+  etapaCrescimento: "primeira" | "expansao";
 }
 
 interface ProfitabilityChartProps {

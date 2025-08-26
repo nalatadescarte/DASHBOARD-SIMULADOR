@@ -12,6 +12,7 @@ interface DashboardData {
   taxaCrescimentoMensal: number;
   salariosEncargos: number;
   aluguelPonto: number;
+  etapaCrescimento: "primeira" | "expansao";
 }
 
 interface CostsChartProps {
