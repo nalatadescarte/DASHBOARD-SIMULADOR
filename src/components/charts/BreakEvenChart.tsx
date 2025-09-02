@@ -84,7 +84,7 @@ export function BreakEvenChart({ dados, totalCustosVariaveis, totalCustosFixos, 
       return (
         <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
           <p className="font-semibold text-card-foreground">Mês {label}</p>
-          <p className="text-nalata-orange">
+          <p style={{ color: "hsl(var(--chart-breakeven-revenue))" }}>
             Receita: {formatCurrency(data.receita)}
           </p>
           <p className="text-nalata-black">
