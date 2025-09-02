@@ -183,6 +183,7 @@ export function Dashboard() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="80">R$ 80,00</SelectItem>
+                        <SelectItem value="90">R$ 90,00</SelectItem>
                         <SelectItem value="100">R$ 100,00</SelectItem>
                         <SelectItem value="120">R$ 120,00</SelectItem>
                       </SelectContent>
