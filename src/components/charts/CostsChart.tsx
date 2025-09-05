@@ -21,9 +21,10 @@ interface CostsChartProps {
   custosFixos: number;
   limiteLatas: number;
   etapaCrescimento: "primeira" | "expansao";
+  getSalarioPorMes: (mes: number) => number;
 }
 
-export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas, etapaCrescimento }: CostsChartProps) {
+export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas, etapaCrescimento, getSalarioPorMes }: CostsChartProps) {
   const [selectedMonth, setSelectedMonth] = useState<number>(1);
   const chartData = useMemo(() => {
     // Calcular vendas do mês selecionado com crescimento e limite dinâmico de latas
@@ -50,7 +51,11 @@ export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas, e
       }
     
     const custosVariaveisAjustados = custosVariaveis * multiplicadorCustos;
-    const custosFixosAjustados = custosFixos * multiplicadorCustos;
+    
+    // Calcular custos fixos com salário específico do mês
+    const salarioDoMes = getSalarioPorMes(selectedMonth);
+    const custosFixosSemSalario = custosFixos - dados.salariosEncargos;
+    const custosFixosAjustados = (custosFixosSemSalario + salarioDoMes) * multiplicadorCustos;
     
     // Cálculo dos impostos (aproximadamente 8% da receita bruta)
     const impostos = receitaBruta * 0.08;
@@ -80,7 +85,7 @@ export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas, e
         color: "hsl(0, 70%, 60%)", // Vermelho para impostos
       },
     ].filter(item => item.value > 0);
-  }, [dados, custosVariaveis, custosFixos, selectedMonth, limiteLatas, etapaCrescimento]);
+  }, [dados, custosVariaveis, custosFixos, selectedMonth, limiteLatas, etapaCrescimento, getSalarioPorMes]);
 
   const lucroInfo = useMemo(() => {
     const vendasMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, selectedMonth, limiteLatas);
@@ -105,7 +110,12 @@ export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas, e
       }
     }
     
-    const lucroOperacional = receitaBruta - (custosVariaveis * multiplicadorCustos) - (custosFixos * multiplicadorCustos);
+    // Calcular custos fixos com salário específico do mês
+    const salarioDoMes = getSalarioPorMes(selectedMonth);
+    const custosFixosSemSalario = custosFixos - dados.salariosEncargos;
+    const custosFixosDoMes = (custosFixosSemSalario + salarioDoMes) * multiplicadorCustos;
+    
+    const lucroOperacional = receitaBruta - (custosVariaveis * multiplicadorCustos) - custosFixosDoMes;
     const margemLucro = receitaBruta > 0 ? (lucroOperacional / receitaBruta) * 100 : 0;
     
     return {
@@ -113,7 +123,7 @@ export function CostsChart({ dados, custosVariaveis, custosFixos, limiteLatas, e
       lucroOperacional,
       margemLucro,
     };
-  }, [dados, custosVariaveis, custosFixos, selectedMonth, limiteLatas, etapaCrescimento]);
+  }, [dados, custosVariaveis, custosFixos, selectedMonth, limiteLatas, etapaCrescimento, getSalarioPorMes]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {

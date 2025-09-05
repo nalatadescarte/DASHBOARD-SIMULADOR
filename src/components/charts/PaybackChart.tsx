@@ -20,9 +20,10 @@ interface PaybackChartProps {
   totalCustosFixos: number;
   limiteLatas: number;
   etapaCrescimento: "primeira" | "expansao";
+  getSalarioPorMes: (mes: number) => number;
 }
 
-export function PaybackChart({ dados, totalCustosVariaveis, totalCustosFixos, limiteLatas, etapaCrescimento }: PaybackChartProps) {
+export function PaybackChart({ dados, totalCustosVariaveis, totalCustosFixos, limiteLatas, etapaCrescimento, getSalarioPorMes }: PaybackChartProps) {
   const chartData = useMemo(() => {
     const meses = [];
     let lucroAcumulado = -dados.investimentoInicial;
@@ -52,7 +53,13 @@ export function PaybackChart({ dados, totalCustosVariaveis, totalCustosFixos, li
       }
       
       const custosVariaveisMensal = (totalCustosVariaveis * multiplicadorCustos / dados.vendaLatasPrimeiroMes) * latasDoMes;
-      const lucroMensal = receitaMensal - custosVariaveisMensal - (totalCustosFixos * multiplicadorCustos);
+      
+      // Calcular custos fixos com salário específico do mês
+      const salarioDoMes = getSalarioPorMes(mes);
+      const custosFixosSemSalario = totalCustosFixos - dados.salariosEncargos;
+      const custosFixosMensal = (custosFixosSemSalario + salarioDoMes) * multiplicadorCustos;
+      
+      const lucroMensal = receitaMensal - custosVariaveisMensal - custosFixosMensal;
       
       lucroAcumulado += lucroMensal;
 
@@ -69,7 +76,7 @@ export function PaybackChart({ dados, totalCustosVariaveis, totalCustosFixos, li
     }
 
     return { meses, mesPayback };
-  }, [dados, totalCustosVariaveis, totalCustosFixos, limiteLatas]);
+  }, [dados, totalCustosVariaveis, totalCustosFixos, limiteLatas, getSalarioPorMes]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {

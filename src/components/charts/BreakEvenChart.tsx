@@ -19,9 +19,10 @@ interface BreakEvenChartProps {
   totalCustosFixos: number;
   limiteLatas: number;
   etapaCrescimento: "primeira" | "expansao";
+  getSalarioPorMes: (mes: number) => number;
 }
 
-export function BreakEvenChart({ dados, totalCustosVariaveis, totalCustosFixos, limiteLatas, etapaCrescimento }: BreakEvenChartProps) {
+export function BreakEvenChart({ dados, totalCustosVariaveis, totalCustosFixos, limiteLatas, etapaCrescimento, getSalarioPorMes }: BreakEvenChartProps) {
   const chartData = useMemo(() => {
     const data = [];
     const custoVariavelPorLata = totalCustosVariaveis / dados.vendaLatasPrimeiroMes;
@@ -55,7 +56,12 @@ export function BreakEvenChart({ dados, totalCustosVariaveis, totalCustosFixos, 
         }
       }
       
-      const custoTotal = (totalCustosFixos * multiplicadorCustos) + (latasProjetadas * custoVariavelPorLata * multiplicadorCustos);
+      // Calcular custos fixos com salário específico do mês
+      const salarioDoMes = getSalarioPorMes(mes);
+      const custosFixosSemSalario = totalCustosFixos - dados.salariosEncargos;
+      const custosFixosMensal = (custosFixosSemSalario + salarioDoMes) * multiplicadorCustos;
+      
+      const custoTotal = custosFixosMensal + (latasProjetadas * custoVariavelPorLata * multiplicadorCustos);
       const lucro = receitaProjetada - custoTotal;
       
       data.push({
@@ -69,7 +75,7 @@ export function BreakEvenChart({ dados, totalCustosVariaveis, totalCustosFixos, 
     }
     
     return { data, breakEvenLatas: Math.round(breakEvenLatas), breakEvenReceita: Math.round(breakEvenReceita) };
-  }, [dados, totalCustosVariaveis, totalCustosFixos, limiteLatas]);
+  }, [dados, totalCustosVariaveis, totalCustosFixos, limiteLatas, getSalarioPorMes]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {

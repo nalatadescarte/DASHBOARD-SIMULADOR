@@ -21,9 +21,10 @@ interface ProfitabilityChartProps {
   totalCustosFixos: number;
   limiteLatas: number;
   etapaCrescimento: "primeira" | "expansao";
+  getSalarioPorMes: (mes: number) => number;
 }
 
-export function ProfitabilityChart({ dados, periodo, totalCustosVariaveis, totalCustosFixos, limiteLatas, etapaCrescimento }: ProfitabilityChartProps) {
+export function ProfitabilityChart({ dados, periodo, totalCustosVariaveis, totalCustosFixos, limiteLatas, etapaCrescimento, getSalarioPorMes }: ProfitabilityChartProps) {
   const chartData = useMemo(() => {
     const meses = parseInt(periodo);
     const data = [];
@@ -52,23 +53,30 @@ export function ProfitabilityChart({ dados, periodo, totalCustosVariaveis, total
       }
       
       const custosVariaveisMensal = (totalCustosVariaveis * multiplicadorCustos / dados.vendaLatasPrimeiroMes) * latasDoMes;
-      const lucroMensal = receitaMensal - custosVariaveisMensal - (totalCustosFixos * multiplicadorCustos);
+      
+      // Calcular custos fixos com salário específico do mês
+      const salarioDoMes = getSalarioPorMes(mes);
+      const custosFixosSemSalario = totalCustosFixos - dados.salariosEncargos;
+      const custosFixosMensal = (custosFixosSemSalario + salarioDoMes) * multiplicadorCustos;
+      
+      const lucroMensal = receitaMensal - custosVariaveisMensal - custosFixosMensal;
       const margemLucro = receitaMensal > 0 ? (lucroMensal / receitaMensal) * 100 : 0;
       
       data.push({
         mes: `${mes}`,
         mesNome: `Mês ${mes}`,
         receita: receitaMensal,
-        lucro: Math.max(0, lucroMensal),
+        lucro: Math.max(0, lucroMensal), // Para o gráfico (não pode ser negativo)
+        lucroReal: lucroMensal, // Para cálculos (pode ser negativo)
         margemLucro: margemLucro,
       });
     }
     
     return data;
-  }, [dados, periodo, totalCustosVariaveis, totalCustosFixos, limiteLatas]);
+  }, [dados, periodo, totalCustosVariaveis, totalCustosFixos, limiteLatas, getSalarioPorMes]);
 
   const lucroMedio = useMemo(() => {
-    const totalLucro = chartData.reduce((acc, item) => acc + item.lucro, 0);
+    const totalLucro = chartData.reduce((acc, item) => acc + (item as any).lucroReal, 0);
     const margemMedia = chartData.reduce((acc, item) => acc + item.margemLucro, 0) / chartData.length;
     return {
       lucroMedio: totalLucro / chartData.length,
@@ -109,7 +117,7 @@ export function ProfitabilityChart({ dados, periodo, totalCustosVariaveis, total
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="text-center p-3 bg-muted rounded-lg">
           <p className="text-sm text-muted-foreground">Lucro Médio Mensal</p>
-          <p className="text-lg font-bold" style={{ color: "hsl(var(--chart-profit))" }}>
+          <p className={`text-lg font-bold ${lucroMedio.lucroMedio < 0 ? 'text-red-500' : ''}`} style={{ color: lucroMedio.lucroMedio < 0 ? '#ef4444' : "hsl(var(--chart-profit))" }}>
             {formatCurrency(lucroMedio.lucroMedio)}
           </p>
         </div>

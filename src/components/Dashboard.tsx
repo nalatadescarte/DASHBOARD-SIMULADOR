@@ -69,9 +69,19 @@ export function Dashboard() {
     energiaAguaImpostos: 800, // Valor fixo mensal estimado
   };
 
+  // Função para calcular salário baseado no mês
+  const getSalarioPorMes = (mes: number): number => {
+    // Se selecionou 1 colaborador (3200), usar esse valor até o 4º mês
+    if (dados.salariosEncargos === 3200) {
+      return mes <= 4 ? 3200 : 6400;
+    }
+    // Se selecionou 2 colaboradores (6400), usar sempre esse valor
+    return dados.salariosEncargos;
+  };
+
   const custosFixos = {
     aluguelPonto: dados.aluguelPonto,
-    salariosEncargos: dados.salariosEncargos,
+    salariosEncargos: dados.salariosEncargos, // Valor base para cálculos gerais
     contabilidade: 500,
     seguroVeiculo: 250,
     marketingPublicidade: 300,
@@ -346,7 +356,7 @@ export function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <CostsChart dados={dados} custosVariaveis={totalCustosVariaveis} custosFixos={totalCustosFixos} limiteLatas={limiteLatas} etapaCrescimento={dados.etapaCrescimento} />
+                <CostsChart dados={dados} custosVariaveis={totalCustosVariaveis} custosFixos={totalCustosFixos} limiteLatas={limiteLatas} etapaCrescimento={dados.etapaCrescimento} getSalarioPorMes={getSalarioPorMes} />
               </CardContent>
             </Card>
 
@@ -359,7 +369,7 @@ export function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <BreakEvenChart dados={dados} totalCustosVariaveis={totalCustosVariaveis} totalCustosFixos={totalCustosFixos} limiteLatas={limiteLatas} etapaCrescimento={dados.etapaCrescimento} />
+                <BreakEvenChart dados={dados} totalCustosVariaveis={totalCustosVariaveis} totalCustosFixos={totalCustosFixos} limiteLatas={limiteLatas} etapaCrescimento={dados.etapaCrescimento} getSalarioPorMes={getSalarioPorMes} />
               </CardContent>
             </Card>
           </div>
@@ -382,6 +392,7 @@ export function Dashboard() {
                   totalCustosFixos={totalCustosFixos}
                   limiteLatas={limiteLatas}
                   etapaCrescimento={dados.etapaCrescimento}
+                  getSalarioPorMes={getSalarioPorMes}
                 />
               </CardContent>
             </Card>
@@ -401,6 +412,7 @@ export function Dashboard() {
                   totalCustosFixos={totalCustosFixos}
                   limiteLatas={limiteLatas}
                   etapaCrescimento={dados.etapaCrescimento}
+                  getSalarioPorMes={getSalarioPorMes}
                 />
               </CardContent>
             </Card>
