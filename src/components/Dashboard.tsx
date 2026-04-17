@@ -13,6 +13,7 @@ import { Calculator, TrendingUp, PieChart, BarChart3, DollarSign, Settings } fro
 import { calculateMonthlyCanProjection } from "@/lib/projection-utils";
 import { NalataModel } from "./NalataModel";
 import type { OperationMode, Scenario } from "@/lib/nalata-model";
+import { MaturationRampChart } from "./charts/MaturationRampChart";
 
 interface DashboardData {
   vendaLatasPrimeiroMes: number;
