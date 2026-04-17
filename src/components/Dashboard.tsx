@@ -11,6 +11,8 @@ import { PaybackChart } from "./charts/PaybackChart";
 import { ProfitabilityChart } from "./charts/ProfitabilityChart";
 import { Calculator, TrendingUp, PieChart, BarChart3, DollarSign, Settings } from "lucide-react";
 import { calculateMonthlyCanProjection } from "@/lib/projection-utils";
+import { NalataModel } from "./NalataModel";
+import type { OperationMode, Scenario } from "@/lib/nalata-model";
 
 interface DashboardData {
   vendaLatasPrimeiroMes: number;
@@ -26,6 +28,13 @@ interface DashboardData {
 
 export function Dashboard() {
   const [periodoProjecao, setPeriodoProjecao] = useState<"12" | "24" | "36">("12");
+  // Novo modelo Nalata REV6
+  const [nalataMode, setNalataMode] = useState<OperationMode>("um_colaborador");
+  const [nalataScenario, setNalataScenario] = useState<Scenario>("moderado");
+  const [nalataTicket, setNalataTicket] = useState(460);
+  const [nalataConversao, setNalataConversao] = useState(8);
+  const [nalataMarkup, setNalataMarkup] = useState(1.7);
+  const [nalataLatas, setNalataLatas] = useState(60);
   const [dados, setDados] = useState<DashboardData>({
     vendaLatasPrimeiroMes: 60,
     valorLocacaoLata: 80.00,
@@ -112,6 +121,22 @@ export function Dashboard() {
       </header>
 
       <div className="container mx-auto px-6 py-8">
+        {/* Novo modelo Nalata REV6 — no topo */}
+        <NalataModel
+          mode={nalataMode}
+          setMode={setNalataMode}
+          scenario={nalataScenario}
+          setScenario={setNalataScenario}
+          ticket={nalataTicket}
+          setTicket={setNalataTicket}
+          conversao={nalataConversao}
+          setConversao={setNalataConversao}
+          markup={nalataMarkup}
+          setMarkup={setNalataMarkup}
+          latas={nalataLatas}
+          setLatas={setNalataLatas}
+        />
+
         {/* Controles - Divididos em dois painéis */}
         <div className="grid gap-6 mb-8 lg:grid-cols-2">
           <TooltipProvider>
