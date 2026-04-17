@@ -28,6 +28,13 @@ interface DashboardData {
 
 export function Dashboard() {
   const [periodoProjecao, setPeriodoProjecao] = useState<"12" | "24" | "36">("12");
+  // Novo modelo Nalata REV6
+  const [nalataMode, setNalataMode] = useState<OperationMode>("um_colaborador");
+  const [nalataScenario, setNalataScenario] = useState<Scenario>("moderado");
+  const [nalataTicket, setNalataTicket] = useState(460);
+  const [nalataConversao, setNalataConversao] = useState(8);
+  const [nalataMarkup, setNalataMarkup] = useState(1.7);
+  const [nalataLatas, setNalataLatas] = useState(60);
   const [dados, setDados] = useState<DashboardData>({
     vendaLatasPrimeiroMes: 60,
     valorLocacaoLata: 80.00,
