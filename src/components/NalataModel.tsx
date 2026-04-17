@@ -17,7 +17,6 @@ import {
   mesBreakEven,
   TOTAL_FIXAS,
   SALARIO_ENTREGADOR,
-  SALARIO_AJUDANTE,
 } from "@/lib/nalata-model";
 
 interface Props {
