@@ -11,6 +11,8 @@ import { PaybackChart } from "./charts/PaybackChart";
 import { ProfitabilityChart } from "./charts/ProfitabilityChart";
 import { Calculator, TrendingUp, PieChart, BarChart3, DollarSign, Settings } from "lucide-react";
 import { calculateMonthlyCanProjection } from "@/lib/projection-utils";
+import { NalataModel } from "./NalataModel";
+import type { OperationMode, Scenario } from "@/lib/nalata-model";
 
 interface DashboardData {
   vendaLatasPrimeiroMes: number;
@@ -112,6 +114,22 @@ export function Dashboard() {
       </header>
 
       <div className="container mx-auto px-6 py-8">
+        {/* Novo modelo Nalata REV6 — no topo */}
+        <NalataModel
+          mode={nalataMode}
+          setMode={setNalataMode}
+          scenario={nalataScenario}
+          setScenario={setNalataScenario}
+          ticket={nalataTicket}
+          setTicket={setNalataTicket}
+          conversao={nalataConversao}
+          setConversao={setNalataConversao}
+          markup={nalataMarkup}
+          setMarkup={setNalataMarkup}
+          latas={nalataLatas}
+          setLatas={setNalataLatas}
+        />
+
         {/* Controles - Divididos em dois painéis */}
         <div className="grid gap-6 mb-8 lg:grid-cols-2">
           <TooltipProvider>
