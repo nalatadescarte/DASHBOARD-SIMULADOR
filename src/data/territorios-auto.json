@@ -1,0 +1,116 @@
+[
+  {
+    "id": "brasilia_df",
+    "label": "Brasília — DF",
+    "arquivo": "brasilia_df_nalata.md",
+    "latasAlvoM12": 500,
+    "precoMinimoSugerido": 100,
+    "precoMaximoSugerido": 140,
+    "data": {
+      "cidade": "Brasília — DF",
+      "qtdObras": "~5.800 obras/ano",
+      "qtdEdif": "~18.000 edifícios",
+      "qtdCond": "~3.400 condomínios",
+      "qtdConst": "~150 construtoras",
+      "qtdCltes": "~2.100 clientes",
+      "latasAlvo": "500",
+      "score": "8.6",
+      "taxaConversao": "15"
+    }
+  },
+  {
+    "id": "jundiai_sp",
+    "label": "Jundiaí — SP",
+    "arquivo": "jundiai_sp_nalata.md",
+    "latasAlvoM12": 180,
+    "precoMinimoSugerido": 100,
+    "precoMaximoSugerido": 130,
+    "data": {
+      "cidade": "Jundiaí — SP",
+      "qtdObras": "~2.800 obras/ano",
+      "qtdEdif": "~950 edifícios",
+      "qtdCond": "~520 condomínios",
+      "qtdConst": "~60 construtoras",
+      "qtdCltes": "~280 clientes",
+      "latasAlvo": "180",
+      "score": "8.4",
+      "taxaConversao": "5"
+    }
+  },
+  {
+    "id": "sao_jose_dos_campos",
+    "label": "São José dos Campos — SP",
+    "arquivo": "sao_jose_dos_campos_SP.md",
+    "latasAlvoM12": 280,
+    "precoMinimoSugerido": 80,
+    "precoMaximoSugerido": 115,
+    "data": {
+      "cidade": "São José dos Campos — SP",
+      "qtdObras": "~2.600 obras/ano",
+      "qtdEdif": "~50.000 unidades",
+      "qtdCond": "~780 condomínios",
+      "qtdConst": "~65 construtoras",
+      "qtdCltes": "~280 clientes",
+      "latasAlvo": "280",
+      "score": "8.5",
+      "taxaConversao": "12"
+    }
+  },
+  {
+    "id": "sp_zl",
+    "label": "Zona Leste - São Paulo",
+    "arquivo": "sao_paulo_zona_leste_SP.md",
+    "latasAlvoM12": 450,
+    "precoMinimoSugerido": 95,
+    "precoMaximoSugerido": 130,
+    "data": {
+      "cidade": "Zona Leste - São Paulo",
+      "qtdObras": "~9.200 obras/ano",
+      "qtdEdif": "~120.000 unidades",
+      "qtdCond": "~2.500 condomínios",
+      "qtdConst": "~220 construtoras",
+      "qtdCltes": "~900 clientes",
+      "latasAlvo": "450",
+      "score": "9.5",
+      "taxaConversao": "8"
+    }
+  },
+  {
+    "id": "sp_zn",
+    "label": "Zona Norte - São Paulo",
+    "arquivo": "sao_paulo_zona_norte_SP.md",
+    "latasAlvoM12": 400,
+    "precoMinimoSugerido": 90,
+    "precoMaximoSugerido": 120,
+    "data": {
+      "cidade": "Zona Norte - São Paulo",
+      "qtdObras": "~6.700 obras/ano",
+      "qtdEdif": "~28.000 unidades",
+      "qtdCond": "~5.200 condomínios",
+      "qtdConst": "~180 construtoras",
+      "qtdCltes": "~3200 clientes",
+      "latasAlvo": "400",
+      "score": "8.9",
+      "taxaConversao": "8"
+    }
+  },
+  {
+    "id": "zona_oeste_rj",
+    "label": "Zona Oeste — Rio de Janeiro (RJ)",
+    "arquivo": "zona_oeste_rj_nalata.md",
+    "latasAlvoM12": 450,
+    "precoMinimoSugerido": 100,
+    "precoMaximoSugerido": 145,
+    "data": {
+      "cidade": "Zona Oeste — Rio de Janeiro (RJ)",
+      "qtdObras": "~5.200 obras/ano",
+      "qtdEdif": "~22.000 edifícios",
+      "qtdCond": "~4.000 condomínios",
+      "qtdConst": "~140 construtoras",
+      "qtdCltes": "~2.300 clientes",
+      "latasAlvo": "450",
+      "score": "8.3",
+      "taxaConversao": "10"
+    }
+  }
+]

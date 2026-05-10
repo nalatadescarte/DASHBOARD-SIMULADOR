@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apresentação Nalata — Descarte Inteligente</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --laranja: #F26522;
+  --cinza-escuro: #333333;
+  --cinza-claro: #F5F5F5;
+  --branco: #FFFFFF;
+  --verde: #2E7D32;
+  --vermelho: #C62828;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #e0e0e0;
+  color: var(--cinza-escuro);
+  line-height: 1.5;
+}
+
+.slide {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 20px auto;
+  background: var(--branco);
+  padding: 50px 60px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  page-break-after: always;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slide:last-child { page-break-after: auto; }
+
+/* Elementos decorativos */
+.deco-bar {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 8px;
+  background: linear-gradient(90deg, var(--laranja) 60%, var(--cinza-escuro) 100%);
+}
+
+.deco-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.06;
+  background: var(--laranja);
+}
+
+.logo-top {
+  position: absolute;
+  top: 35px; right: 50px;
+  height: 45px;
+}
+
+.logo-bottom {
+  position: absolute;
+  bottom: 35px; left: 50px;
+  height: 35px;
+  opacity: 0.4;
+}
+
+/* Tipografia Copywriting */
+.headline {
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1.15;
+  color: var(--cinza-escuro);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+}
+
+.headline span { color: var(--laranja); }
+
+.subhead {
+  font-size: 20px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 40px;
+  max-width: 90%;
+}
+
+.body-copy {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 18px;
+  max-width: 95%;
+}
+
+.body-copy strong { color: var(--cinza-escuro); }
+
+.highlight-box {
+  background: linear-gradient(135deg, #fff5ef 0%, #ffffff 100%);
+  border-left: 5px solid var(--laranja);
+  padding: 25px 30px;
+  margin: 25px 0;
+  border-radius: 0 12px 12px 0;
+}
+
+.highlight-box p {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cinza-escuro);
+  font-style: italic;
+}
+
+/* Listas de benefícios */
+.benefit-list {
+  list-style: none;
+  margin: 20px 0;
+}
+
+.benefit-list li {
+  font-size: 17px;
+  padding: 12px 0 12px 40px;
+  position: relative;
+  border-bottom: 1px solid #eee;
+}
+
+.benefit-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--laranja);
+  font-weight: 900;
+  font-size: 22px;
+}
+
+/* CTA */
+.cta-box {
+  background: var(--cinza-escuro);
+  color: var(--branco);
+  padding: 35px 40px;
+  border-radius: 16px;
+  text-align: center;
+  margin-top: 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-box::before {
+  content: "";
+  position: absolute;
+  top: -50%; right: -20%;
+  width: 300px; height: 300px;
+  background: var(--laranja);
+  border-radius: 50%;
+  opacity: 0.15;
+}
+
+.cta-box h3 {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.cta-box p {
+  font-size: 16px;
+  opacity: 0.9;
+  position: relative;
+}
+
+/* Gráficos */
+.chart-container {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.chart-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Grid de métricas */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.metric-card {
+  background: var(--branco);
+  border: 2px solid #eee;
+  border-radius: 12px;
+  padding: 25px 15px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.metric-card:hover { border-color: var(--laranja); transform: translateY(-3px); }
+
+.metric-card .number {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--laranja);
+  display: block;
+}
+
+.metric-card .label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #777;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  background: var(--laranja);
+  color: var(--branco);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+/* Page number */
+.page-num {
+  position: absolute;
+  bottom: 35px;
+  right: 50px;
+  font-size: 12px;
+  color: #bbb;
+  font-weight: 700;
+}
+
+/* Slide específicos */
+.slide:not(.slide-cover) {
+  justify-content: flex-start;
+  padding-top: 85px;
+}
+
+.slide-cover {
+  justify-content: center;
+  align-items: flex-start;
+  background: linear-gradient(160deg, #ffffff 0%, #fafafa 100%);
+}
+
+.slide-cover .headline {
+  font-size: 48px;
+  margin-top: 60px;
+}
+
+.slide-cover .subhead {
+  font-size: 22px;
+  color: #777;
+}
+
+/* Print optimization */
+@media print {
+  body { background: white; }
+  .slide {
+    margin: 0;
+    box-shadow: none;
+    width: 100%;
+    min-height: 100vh;
+    page-break-after: always;
+  }
+}
+
+/* Tabela comparativa */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 15px;
+}
+
+.comparison-table th {
+  background: var(--cinza-escuro);
+  color: white;
+  padding: 14px;
+  text-align: left;
+  font-weight: 700;
+}
+
+.comparison-table td {
+  padding: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+.comparison-table tr:nth-child(even) { background: #fafafa; }
+
+.comparison-table td strong { color: var(--laranja); }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: CAPA -->
+<div class="slide slide-cover">
+  <div class="deco-bar"></div>
+  <div class="deco-circle" style="width:500px;height:500px;top:-100px;right:-100px;"></div>
+
+  <img src="logo_completo.png" alt="Nalata" class="logo-top">
+
+  <div class="badge">Oportunidade Exclusiva — Modelo REV7</div>
+
+  <h1 class="headline">
+    Sua operação de<br>descarte está deixando<br><span>dinheiro na mesa?</span>
+  </h1>
+
+  <p class="subhead">
+    Descubra como transformar custo em lucro previsível com o único modelo operacional de descarte inteligente validado para escalar de {{LATAS_INICIAL}} para {{LATAS_ALVO_M12}} latas em 12 meses.
+  </p>
+
+  <div class="highlight-box">
+    <p>"Não vendemos latas. Entregamos previsibilidade, margem e um negócio que cresce sozinho a partir do {{BREAK_EVEN_LOWER}}."</p>
+  </div>
+
+  <p class="body-copy" style="margin-top:30px;">
+    <strong>Documento confidencial.</strong> Simulação financeira baseada no modelo operacional Nalata REV7. Projeções realizadas em {{DATA}}.
+  </p>
+
+  <img src="logo_icone.png" alt="Nalata" class="logo-bottom">
+  <div class="page-num">01</div>
+</div>
+
+<!-- SLIDE 2: O PROBLEMA -->
+<div class="slide">
+  <div class="deco-bar"></div>
+  <img src="logo_completo.png" alt="Nalata" class="logo-top">
+
+  <div class="badge">O Problema</div>
+
+  <h1 class="headline">O caminho para o que importa.<br><span>NaLata:</span> inteligência que remove o entulho e acelera o resultado.</h1>
+
+  <p class="body-copy">
+    O mercado de descarte inteligente está em expansão acelerada, mas a maioria dos operadores comete o mesmo erro fatal: <strong>trata o descarte como custo, não como receita.</strong>
+  </p>
+
+  <ul class="benefit-list">
+    <li><strong>Ineficiência operacional:</strong> sem padronização, cada lata custa mais do que deveria.</li>
+    <li><strong>Perda de receita:</strong> preços fixos e sem mix de vendas diluem a margem até zerar.</li>
+    <li><strong>Escassez de capital:</strong> sem projeção clara, o empreendedor desiste antes do break-even.</li>
+    <li><strong>Falta de previsibilidade:</strong> não dá para escalar o que não se consegue medir.</li>
+  </ul>
+
+  <div class="highlight-box">
+    <p>"O descarte inteligente não é um problema de logística. É um problema de modelo de negócio. Quem resolve primeiro, domina o mercado."</p>
+  </div>
+
+  <img src="logo_icone.png" alt="Nalata" class="logo-bottom">
+  <div class="page-num">02</div>
+</div>
+
+<!-- SLIDE 3: A SOLUÇÃO -->
+<div class="slide">
+  <div class="deco-bar"></div>
+  <img src="logo_completo.png" alt="Nalata" class="logo-top">
+
+  <div class="badge">A Solução</div>
+
+  <h1 class="headline">Conheça a <span>Nalata</span>:<br>Descarte que gera<br>resultado.</h1>
+
+  <p class="body-copy">
+    A Nalata não é apenas uma operação de coleta. É um <strong>modelo de negócio completo</strong>, testado e otimizado para transformar cada lata em uma máquina de gerar lucro previsível.
+  </p>
+
+  <p class="body-copy">
+    Nossa metodologia de simulação foi construída a partir de dados reais de operação. Ela elimina a adivinhação e entrega um <strong>mapa exato</strong> do que você precisa fazer no M1, no M6 e no M12 para atingir a rentabilidade.
+  </p>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:30px 0;">
+    <div style="background:#fafafa; padding:25px; border-radius:12px; border-left:4px solid var(--laranja);">
+      <h4 style="font-size:18px; margin-bottom:10px; color:var(--cinza-escuro);">🎯 Foco em Margem</h4>
+      <p style="font-size:14px; color:#666;">Preço médio ponderado de {{PRECO_MEDIO}} por lata, com mix inteligente de {{MIX_AVULSA}}% vendas avulsas.</p>
+    </div>
+    <div style="background:#fafafa; padding:25px; border-radius:12px; border-left:4px solid var(--laranja);">
+      <h4 style="font-size:18px; margin-bottom:10px; color:var(--cinza-escuro);">⚡ Eficiência por Design</h4>
+      <p style="font-size:14px; color:#666;">{{MODULOS_M12}} módulo operacional, {{CICLOS_MES}} ciclos por lata/mês. Máximo de receita, mínimo de complexidade.</p>
+    </div>
+    <div style="background:#fafafa; padding:25px; border-radius:12px; border-left:4px solid var(--laranja);">
+      <h4 style="font-size:18px; margin-bottom:10px; color:var(--cinza-escuro);">📈 Crescimento Previsível</h4>
+      <p style="font-size:14px; color:#666;">De {{LATAS_INICIAL}} para {{LATAS_ALVO_M12}} latas ativas em 12 meses, com curva de crescimento matematicamente projetada.</p>
+    </div>
+    <div style="background:#fafafa; padding:25px; border-radius:12px; border-left:4px solid var(--laranja);">
+      <h4 style="font-size:18px; margin-bottom:10px; color:var(--cinza-escuro);">🛡️ Risco Calculado</h4>
+      <p style="font-size:14px; color:#666;">Break-even no {{BREAK_EVEN_LOWER}}. Você sabe exatamente quando o negócio começa a pagar por si só.</p>
+    </div>
+  </div>
+
+  <img src="logo_icone.png" alt="Nalata" class="logo-bottom">
+  <div class="page-num">03</div>
+</div>
+
+<!-- SLIDE 4: O MODELO -->
+<div class="slide">
+  <div class="deco-bar"></div>
+  <img src="logo_completo.png" alt="Nalata" class="logo-top">
+
+  <div class="badge">A Simulação Financeira</div>
+
+  <h1 class="headline">Como funciona o<br><span>motor de crescimento</span><br>da Nalata</h1>
+
+  <p class="body-copy">
+    Nosso simulador foi calibrado para um cenário <strong>moderado e realista</strong>. Não usamos otimismo de consultoria. Usamos números que você pode replicar na sua operação a partir do primeiro dia.
+  </p>
+
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Parâmetro</th>
+        <th>Dados</th>
+        <th>Impacto no seu bolso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Latas ativas alvo (Mês 12)</td>
+        <td><strong>{{LATAS_ALVO_M12}} latas</strong></td>
+        <td>Base sólida para faturamento de {{FATURAMENTO_M12_K}}/mês</td>
+      </tr>
+      <tr>
+        <td>Latas físicas necessárias</td>
+        <td><strong>{{LATAS_FISICAS_M12}} unidades</strong></td>
+        <td>Alta rotação: cada lata trabalha {{CICLOS_MES}}× por mês</td>
+      </tr>
+      <tr>
+        <td>Preço médio ponderado</td>
+        <td><strong>{{PRECO_MEDIO}} / lata</strong></td>
+        <td>Mix {{MIX_AVULSA}}% avulso + {{MIX_PACOTE}}% B2B otimiza margem</td>
+      </tr>
+      <tr>
+        <td>Ciclos por lata / mês</td>
+        <td><strong>{{CICLOS_MES}} ciclos</strong></td>
+        <td>Máxima utilização do ativo, mínimo investimento inicial</td>
+      </tr>
+      <tr>
+        <td>Equipe Operacional</td>
+        <td><strong>{{MODULOS_M12}} equipe(s)</strong></td>
+        <td>Simplicidade operacional = menos custo fixo</td>
+      </tr>
+      <tr>
+        <td>Capital de giro</td>
+        <td><strong>{{CAPITAL_GIRO}}</strong></td>
+        <td>Investimento inicial mapeado e controlado</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box" style="margin-top:25px;">
+    <p>"{{LATAS_FISICAS_M12}} latas físicas geram o mesmo resultado de {{LATAS_ALVO_M12}} latas ativas. A diferença está na velocidade de rotação. Isso é eficiência."</p>
+  </div>
+
+  <img src="logo_icone.png" alt="Nalata" class="logo-bottom">
+  <div class="page-num">04</div>
+</div>
+
+<!-- SLIDE 5: GRÁFICO LUCRO + BREAK-EVEN -->
+<div class="slide">
+  <div class="deco-bar"></div>
+  <img src="logo_completo.png" alt="Nalata" class="logo-top">
+
+  <div class="badge">Projeção Financeira</div>
+
+  <h1 class="headline">O momento exato em que<br>tudo vira <span>lucro:</span><br>{{BREAK_EVEN}}.</h1>
+
+  <p class="body-copy">
+    A maioria dos negócios falha porque o empreendedor desiste antes da curva. Com a Nalata, <strong>você sabe exatamente quando acontece a virada.</strong> No {{BREAK_EVEN_LOWER}}, o prejuízo vira lucro. E depois disso, a tendência é só de alta.
+  </p>
+
+  <div class="chart-container">
+    <img src="grafico_lucro.png" alt="Gráfico de Lucro Líquido e Break-even">
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:15px;">
+    <div style="text-align:center; padding:15px; background:#fff8f5; border-radius:10px;">
+      <span style="font-size:24px; font-weight:900; color:var(--vermelho);">M1 a M{{BREAK_EVEN_NUM_MENOS1}}</span>
+      <p style="font-size:13px; color:#666; margin-top:5px;">Fase de aceleração. Investimento controlado com perda decrescente.</p>
+    </div>
+    <div style="text-align:center; padding:15px; background:#f1f8e9; border-radius:10px;">
+      <span style="font-size:24px; font-weight:900; color:var(--verde);">{{BREAK_EVEN}} em diante</span>
+      <p style="font-size:13px; color:#666; margin-top:5px;">Lucro crescente. Do {{BREAK_EVEN}} ao M12, crescimento de {{CRESCIMENTO_LUCRO_PCT}} no resultado.</p>
+    </div>
+  </div>
+
+  <img src="logo_icone.png" alt="Nalata" class="logo-bottom">
+  <div class="page-num">05</div>
+</div>
+
+<!-- SLIDE 6: GRÁFICOS RECEITA + LATAS -->
+<div class="slide">
+  <div class="deco-bar"></div>
+  <img src="logo_completo.png" alt="Nalata" class="logo-top">
+
+  <div class="badge">Crescimento Comprovado</div>
+
+  <h1 class="headline">Receita em <span>escada</span>:<br>de {{FATURAMENTO_M1_K}} para<br>{{FATURAMENTO_M12_K}} em 12 meses.</h1>
+
+  <p class="body-copy">
+    O crescimento não é linear — é <strong>exponencial.</strong> À medida que a base de latas ativas aumenta, o faturamento se multiplica. Veja como a curva se comporta mês a mês:
+  </p>
+
+  <div style="display:flex; flex-direction:column; gap:18px; margin:15px 0;">
+    <div class="chart-container">
+      <img src="grafico_latas.png" alt="Gráfico de Latas Ativas" style="max-height:290px; width:100%;">
+      <p style="font-size:12px; color:#999; margin-top:6px; font-weight:600;">CURVA DE ADESÃO DE LATAS ATIVAS</p>
+    </div>
+    <div class="chart-container">
+      <img src="grafico_receita.png" alt="Gráfico de Receita" style="max-height:290px; width:100%;">
+      <p style="font-size:12px; color:#999; margin-top:6px; font-weight:600;">EVOLUÇÃO DO FATURAMENTO BRUTO</p>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p>"A receita do mês 12 é {{CRESCIMENTO_MULT}} maior que a do mês 1. Isso não é sorte. É o efeito da rotação multiplicada pela base crescente de latas."</p>
+  </div>
+
+  <img src="logo_icone.png" alt="Nalata" class="logo-bottom">
+  <div class="page-num">06</div>
+</div>
+
+<!-- SLIDE 7: INFOGRÁFICO M12 -->
+<div class="slide">
+  <div class="deco-bar"></div>
+  <img src="logo_completo.png" alt="Nalata" class="logo-top">
+
+  <div class="badge">Resultado Mês 12</div>
+
+  <h1 class="headline">Esses são os <span>números</span><br>que esperam por você<br>no final do primeiro ano.</h1>
+
+  <p class="body-copy">
+    Não acredite em promessas vazias. Acredite em matemática. Aqui está o panorama completo do seu negócio Nalata no mês 12, operando exatamente dentro dos parâmetros simulados:
+  </p>
+
+  <div class="metrics-grid" style="margin-top:25px;">
+    <div class="metric-card">
+      <span class="number" style="color:var(--laranja);">{{FATURAMENTO_M12_NUM}}</span>
+      <span class="label">Faturamento Bruto</span>
+    </div>
+    <div class="metric-card">
+      <span class="number" style="color:var(--verde);">{{LUCRO_M12_NUM}}</span>
+      <span class="label">Lucro Líquido Mensal</span>
+    </div>
+    <div class="metric-card">
+      <span class="number" style="color:var(--cinza-escuro);">{{MARGEM_M12}}</span>
+      <span class="label">Margem Líquida</span>
+    </div>
+    <div class="metric-card">
+      <span class="number" style="color:var(--verde);">{{BREAK_EVEN}}</span>
+      <span class="label">Break-even</span>
+    </div>
+    <div class="metric-card">
+      <span class="number" style="color:var(--laranja);">{{PAYBACK}}</span>
+      <span class="label">Payback</span>
+    </div>
+    <div class="metric-card">
+      <span class="number" style="color:var(--cinza-escuro);">{{ROI_ANUAL}}</span>
+      <span class="label">ROI Anual</span>
+    </div>
+  </div>
+
+  <img src="logo_icone.png" alt="Nalata" class="logo-bottom">
+  <div class="page-num">07</div>
+</div>
+
+<!-- SLIDE 8: POR QUE AGORA -->
+<div class="slide">
+  <div class="deco-bar"></div>
+  <img src="logo_completo.png" alt="Nalata" class="logo-top">
+
+  <div class="badge">Por que agora?</div>
+
+  <h1 class="headline">O mercado não espera.<br>E a <span>janela de entrada</span><br>está aberta.</h1>
+
+  <p class="body-copy">
+    O descarte inteligente está deixando de ser nicho para virar <strong>infraestrutura urbana essencial.</strong> Quem entra agora com um modelo validado constrói barreiras de entrada que os concorrentes tardios não conseguirão derrubar.
+  </p>
+
+  <ul class="benefit-list">
+    <li><strong>Primeiro-mover:</strong> territórios ainda não consolidados. Quem chega primeiro, escolhe os melhores pontos.</li>
+    <li><strong>Regulamentação a favor:</strong> cidades brasileiras estão obrigando a separação de resíduos. A demanda está crescendo por decreto.</li>
+    <li><strong>Modelo testado:</strong> você não paga para aprender. Nós já absorvemos os erros para você não cometê-los.</li>
+    <li><strong>Capital acessível:</strong> com menos de {{CAPITAL_GIRO_K}} em capital de giro, você monta uma operação que fatura {{FATURAMENTO_M12_K}}/mês em um ano.</li>
+  </ul>
+
+  <div class="highlight-box" style="border-left-color:var(--verde); background:linear-gradient(135deg, #f1f8e9 0%, #ffffff 100%);">
+    <p style="color:var(--verde);">"Em mercados em expansão, não é o maior que vence. É o mais eficiente. O modelo Nalata Descarte Inteligente foi construído para ser exatamente isso: a operação mais enxuta do mercado."</p>
+  </div>
+
+  <img src="logo_icone.png" alt="Nalata" class="logo-bottom">
+  <div class="page-num">08</div>
+</div>
+
+<!-- SLIDE 9: CTA -->
+<div class="slide">
+  <div class="deco-bar"></div>
+  <div class="deco-circle" style="width:600px;height:600px;bottom:-200px;right:-200px; opacity:0.08;"></div>
+  <img src="logo_completo.png" alt="Nalata" class="logo-top">
+
+  <div class="badge">Próximos Passos</div>
+
+  <h1 class="headline">A decisão é simples:<br><span>começar agora</span> ou<br>assistir outro entrar.</h1>
+
+  <p class="body-copy">
+    Esta simulação não é uma promessa. É um <strong>mapa.</strong> E mapas só funcionam para quem decide sair do lugar. Nosso modelo de negócio está pronto. Os números estão claros. A única variável que falta é você.
+  </p>
+
+  <div style="background:#fafafa; border-radius:16px; padding:30px; margin:25px 0; border:2px solid #eee;">
+    <h3 style="font-size:20px; margin-bottom:20px; color:var(--cinza-escuro);">O que acontece quando você diz SIM:</h3>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="background:var(--laranja); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:14px;">1</span>
+        <span style="font-size:14px; font-weight:600;">Diagnóstico da sua área de atuação</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="background:var(--laranja); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:14px;">2</span>
+        <span style="font-size:14px; font-weight:600;">Plano de implantação personalizado</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="background:var(--laranja); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:14px;">3</span>
+        <span style="font-size:14px; font-weight:600;">Entrega dos módulos operacionais</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="background:var(--laranja); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:14px;">4</span>
+        <span style="font-size:14px; font-weight:600;">Acompanhamento até o break-even</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-box">
+    <h3>Vamos conversar sobre o seu território?</h3>
+    <p>As vagas para novos operadores Nalata são limitadas por região.<br>Garanta a sua análise personalizada antes que a sua área seja fechada.</p>
+    <div style="margin-top:20px; font-size:18px; font-weight:800; color:var(--laranja);">
+      nalata.srv.br &nbsp;|&nbsp; expansao@nalata.srv.br
+    </div>
+  </div>
+
+  <p class="body-copy" style="margin-top:30px; font-size:12px; color:#999; text-align:center;">
+    Projeções baseadas no modelo operacional Nalata REV7. Não constituem garantia de rendimento.<br>
+    Simulação elaborada em {{DATA}}. Documento confidencial.
+  </p>
+
+  <img src="logo_icone.png" alt="Nalata" class="logo-bottom">
+  <div class="page-num">09</div>
+</div>
+
+</body>
+</html>

@@ -1,8 +1,6 @@
-import { useMemo } from "react";
 import {
   ComposedChart,
   Bar,
-  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -11,57 +9,42 @@ import {
   ReferenceLine,
   ResponsiveContainer,
 } from "recharts";
-import {
-  OperationMode,
-  Scenario,
-  calcularReceitaMaturacao,
-  gerarCurvaReceita,
-  calcularDespesaMensal,
-  mesBreakEven,
-} from "@/lib/nalata-model";
+import type { SimParams, SimResult } from "@/lib/nalata-model";
+import { MODELO_CENARIOS } from "@/lib/nalata-model";
 
 interface Props {
-  mode: OperationMode;
-  scenario: Scenario;
-  ticket: number;
-  conversao: number;
-  markup: number;
-  latas: number;
+  result: SimResult;
+  params: SimParams;
 }
 
 const fmtBRL = (v: number) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0 });
 
-export function MaturationRampChart({ mode, scenario, ticket, conversao, markup, latas }: Props) {
-  const { data, breakEven, maturacao } = useMemo(() => {
-    const receitaMat = calcularReceitaMaturacao({ latas, ticket, conversao, markup, scenario });
-    const curva = gerarCurvaReceita(receitaMat);
-    const breakEven = mesBreakEven(curva, mode);
-    const data = curva.map((rec, i) => {
-      const mes = i + 1;
-      const desp = calcularDespesaMensal(mes, mode);
-      const saldo = rec - desp;
-      return {
-        mes: `M${mes}`,
-        receita: Math.round(rec),
-        despesa: Math.round(desp),
-        saldo: Math.round(saldo),
-        deficit: saldo < 0 ? Math.round(desp) : 0, // área até a despesa quando saldo é negativo
-      };
-    });
-    return { data, breakEven, maturacao: curva[11] };
-  }, [mode, scenario, ticket, conversao, markup, latas]);
+export function MaturationRampChart({ result, params }: Props) {
+  const cfg = MODELO_CENARIOS[params.scenario];
+
+  const data = result.curva.map((rec, i) => ({
+    mes: `M${i + 1}`,
+    receita: rec,
+    despesa: result.despesas[i],
+    saldo: rec - result.despesas[i],
+    latasAtivas: result.latasAtivasPorMes[i],
+    latasFisicas: result.latasFisicasPorMes[i],
+  }));
 
   const CustomTooltip = ({ active, payload, label }: any) => {
-    if (!active || !payload || !payload.length) return null;
+    if (!active || !payload?.length) return null;
     const d = payload[0].payload;
     return (
-      <div className="bg-card border border-border rounded-lg p-3 shadow-lg text-xs">
+      <div className="bg-card border border-border rounded-lg p-3 shadow-lg text-xs space-y-1">
         <p className="font-semibold mb-1">{label}</p>
-        <p className="text-chart-profit">Receita: {fmtBRL(d.receita)}</p>
-        <p className="text-destructive">Despesa: {fmtBRL(d.despesa)}</p>
-        <p className={d.saldo >= 0 ? "text-chart-profit font-bold" : "text-destructive font-bold"}>
+        <p style={{ color: cfg.cor }}>Receita: {fmtBRL(d.receita)}</p>
+        <p className="text-muted-foreground">Despesa: {fmtBRL(d.despesa)}</p>
+        <p className={d.saldo >= 0 ? "text-green-600 font-bold" : "text-red-500 font-bold"}>
           Saldo: {fmtBRL(d.saldo)}
+        </p>
+        <p className="text-muted-foreground border-t border-border pt-1">
+          {d.latasFisicas} latas físicas · {d.latasAtivas} locações
         </p>
       </div>
     );
@@ -80,36 +63,28 @@ export function MaturationRampChart({ mode, scenario, ticket, conversao, markup,
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend />
-          {/* Zona de déficit */}
-          <Area
-            type="monotone"
-            dataKey="deficit"
-            fill="hsl(var(--nalata-amber))"
-            fillOpacity={0.18}
-            stroke="hsl(var(--nalata-amber))"
-            strokeOpacity={0.4}
-            name="Zona de déficit (capital de giro)"
-          />
           <Bar
             dataKey="receita"
-            fill="hsl(var(--chart-profit))"
-            name="Receita"
+            name={`Receita — ${cfg.label}`}
+            fill={cfg.cor}
             radius={[4, 4, 0, 0]}
+            fillOpacity={0.85}
           />
           <Bar
             dataKey="despesa"
-            fill="hsl(var(--destructive))"
             name="Despesa total"
+            fill="#374151"
             radius={[4, 4, 0, 0]}
+            fillOpacity={0.75}
           />
-          {breakEven && (
+          {result.breakEvenMes && (
             <ReferenceLine
-              x={`M${breakEven}`}
-              stroke="hsl(var(--nalata-amber))"
+              x={`M${result.breakEvenMes}`}
+              stroke={cfg.cor}
               strokeDasharray="4 4"
               label={{
-                value: `Break-even — Mês ${breakEven}`,
-                fill: "hsl(var(--nalata-amber-fg))",
+                value: `Break-even — Mês ${result.breakEvenMes}`,
+                fill: cfg.cor,
                 fontSize: 11,
                 position: "insideTopRight",
               }}
@@ -117,13 +92,18 @@ export function MaturationRampChart({ mode, scenario, ticket, conversao, markup,
           )}
         </ComposedChart>
       </ResponsiveContainer>
-      <div className="mt-3 flex flex-wrap gap-4 text-xs text-muted-foreground">
+      <div className="mt-3 flex flex-wrap gap-6 text-xs text-muted-foreground">
         <span>
-          <strong className="text-chart-profit">Maturação (M12):</strong> {fmtBRL(maturacao)}
+          <strong style={{ color: cfg.cor }}>Cenário {cfg.label}:</strong>{" "}
+          {(result.taxaCrescimentoMes * 100).toFixed(1)}%/mês · M1: {result.latasM1} latas
+        </span>
+        <span>
+          <strong>Maturação (M12):</strong> {fmtBRL(result.receitaMaturacao)} ·{" "}
+          {result.latasFisicasPorMes[11]} latas físicas
         </span>
         <span>
           <strong>Break-even:</strong>{" "}
-          {breakEven ? `Mês ${breakEven}` : "não atingido em 12 meses"}
+          {result.breakEvenMes ? `Mês ${result.breakEvenMes}` : "não atingido em 12 meses"}
         </span>
       </div>
     </div>

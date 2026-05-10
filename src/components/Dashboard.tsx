@@ -1,450 +1,162 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { RevenueChart } from "./charts/RevenueChart";
-import { CostsChart } from "./charts/CostsChart";
-import { BreakEvenChart } from "./charts/BreakEvenChart";
-import { PaybackChart } from "./charts/PaybackChart";
-import { ProfitabilityChart } from "./charts/ProfitabilityChart";
-import { Calculator, TrendingUp, PieChart, BarChart3, DollarSign, Settings } from "lucide-react";
-import { calculateMonthlyCanProjection } from "@/lib/projection-utils";
+import { BarChart3 } from "lucide-react";
 import { NalataModel } from "./NalataModel";
-import type { OperationMode, Scenario } from "@/lib/nalata-model";
 import { MaturationRampChart } from "./charts/MaturationRampChart";
+import { MarketContextPanel } from "./MarketContextPanel";
+import { TerritoryPanel, type TerritoryData } from "./TerritoryPanel";
+import { CompetitiveTable } from "./CompetitiveTable";
+import { BreakEvenPanel } from "./BreakEvenPanel";
+import { TERRITORIOS, TERRITORIO_VAZIO } from "@/data/territorios";
+import {
+  type SimParams,
+  calcularSimulacaoCompleta,
+  PONTO_OPERACIONAL_DEFAULT,
+  MKT_DIGITAL_ADS_DEFAULT,
+  CONTABILIDADE_DEFAULT,
+  PRECO_COMBUSTIVEL_DEFAULT,
+  KM_RODADO_DEFAULT,
+} from "@/lib/nalata-model";
 
-interface DashboardData {
-  vendaLatasPrimeiroMes: number;
-  valorLocacaoLata: number;
-  precoGasolina: number;
-  distanciaDescarte: number;
-  taxaCrescimentoMensal: number;
-  salariosEncargos: number;
-  aluguelPonto: number;
-  investimentoInicial: number;
-  etapaCrescimento: "primeira" | "expansao";
-}
+// Âncora SJC: 280 × R$98 × 1 = R$27.440
+// precoMedioEfetivo = 0.5 × 80 + 0.5 × 116 = R$98
+const DEFAULT_PARAMS: SimParams = {
+  mode: "um_funcionario",
+  scenario: "moderado",
+  latasAlvoM12: 280,
+  ciclosPorMes: 1,
+  precoMinimo: 80,
+  precoMaximo: 116,
+  mixAvulsa: 82,
+  pontoOperacional: PONTO_OPERACIONAL_DEFAULT,
+  mktDigitalAds: MKT_DIGITAL_ADS_DEFAULT,
+  contabilidade: CONTABILIDADE_DEFAULT,
+  precoCombustivel: PRECO_COMBUSTIVEL_DEFAULT,
+  kmRodado: KM_RODADO_DEFAULT,
+  leadsPorSemana: 20,
+  taxaConversao: 30,
+  latasPorCliente: 2,
+};
 
 export function Dashboard() {
-  const [periodoProjecao, setPeriodoProjecao] = useState<"12" | "24" | "36">("12");
-  // Novo modelo Nalata REV6
-  const [nalataMode, setNalataMode] = useState<OperationMode>("um_colaborador");
-  const [nalataScenario, setNalataScenario] = useState<Scenario>("moderado");
-  const [nalataTicket, setNalataTicket] = useState(460);
-  const [nalataConversao, setNalataConversao] = useState(8);
-  const [nalataMarkup, setNalataMarkup] = useState(1.7);
-  const [nalataLatas, setNalataLatas] = useState(60);
-  const [dados, setDados] = useState<DashboardData>({
-    vendaLatasPrimeiroMes: 60,
-    valorLocacaoLata: 80.00,
-    precoGasolina: 6.00,
-    distanciaDescarte: 20,
-    taxaCrescimentoMensal: 15,
-    salariosEncargos: 3200,
-    aluguelPonto: 1400,
-    investimentoInicial: 95000,
-    etapaCrescimento: "primeira",
-  });
+  const [territory, setTerritory] = useState<TerritoryData>(TERRITORIO_VAZIO);
+  const [territorioSelecionado, setTerritorioSelecionado] = useState<string>("");
+  const [simParams, setSimParams] = useState<SimParams>(DEFAULT_PARAMS);
 
-  const handleInputChange = (field: keyof DashboardData, value: number | string) => {
-    setDados(prev => ({ ...prev, [field]: value }));
+  const handleTerritoryChange = (data: TerritoryData) => {
+    setTerritory(data);
+    const latasNum = parseInt(data.latasAlvo) || 280;
+    setSimParams((prev) => ({ ...prev, latasAlvoM12: latasNum }));
   };
 
-  // Calcular multiplicador baseado na projeção
-  let multiplicador = 1;
-  if (dados.etapaCrescimento === "expansao") {
-    // Encontrar o primeiro mês que ultrapassa 320 latas nos próximos 12 meses
-    let primeiroMesAcima320 = null;
-    for (let m = 1; m <= 12; m++) {
-      const latasDoMes = calculateMonthlyCanProjection(dados.vendaLatasPrimeiroMes, dados.taxaCrescimentoMensal, m, 640);
-      if (latasDoMes > 320) {
-        primeiroMesAcima320 = m;
-        break;
-      }
-    }
-    // Se há projeção acima de 320 latas, usar multiplicador para os custos
-    if (primeiroMesAcima320) {
-      multiplicador = 2;
-    }
-  }
-  const limiteLatas = dados.etapaCrescimento === "expansao" ? 640 : 320;
-
-  // Cálculos detalhados baseados nas fórmulas da planilha
-  const custosVariaveis = {
-    combustivel: (dados.vendaLatasPrimeiroMes / 2) * dados.precoGasolina,
-    botaForaLicenciado: ((dados.precoGasolina * dados.distanciaDescarte * 2) / 10) + (dados.vendaLatasPrimeiroMes * 3.50),
-    manutencaoVeiculo: 0.20 * (((dados.vendaLatasPrimeiroMes * dados.valorLocacaoLata) / dados.valorLocacaoLata) / 4) * dados.distanciaDescarte * 2,
-    energiaAguaImpostos: 800, // Valor fixo mensal estimado
-  };
-
-  // Função para calcular salário baseado no mês
-  const getSalarioPorMes = (mes: number): number => {
-    // Se selecionou 1 colaborador (3200), usar esse valor até o 4º mês
-    if (dados.salariosEncargos === 3200) {
-      return mes <= 4 ? 3200 : 6400;
-    }
-    // Se selecionou 2 colaboradores (6400), usar sempre esse valor
-    return dados.salariosEncargos;
-  };
-
-  const custosFixos = {
-    aluguelPonto: dados.aluguelPonto,
-    salariosEncargos: dados.salariosEncargos, // Valor base para cálculos gerais
-    contabilidade: 500,
-    seguroVeiculo: 250,
-    marketingPublicidade: 300,
-    franquiaRoyalties: 1500,
-    planoCelular: 100,
-  };
-
-  const totalCustosVariaveis = Object.values(custosVariaveis).reduce((a, b) => a + b, 0) * multiplicador;
-  const totalCustosFixos = Object.values(custosFixos).reduce((a, b) => a + b, 0) * multiplicador;
+  const simResult = useMemo(() => calcularSimulacaoCompleta(simParams), [simParams]);
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
+      {/* [1] Header */}
       <header className="border-b bg-card shadow-sm">
         <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center gap-4">
-            <img 
-              src="/lovable-uploads/733fe496-d79b-4548-b7b5-85c79c31a8fd.png" 
-              alt="NaLata Logo" 
-              className="h-12"
-            />
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Dashboard NaLata</h1>
-              <p className="text-muted-foreground">PAINEL SIMULAÇÃO FINANCEIRA - FRANQUIA</p>
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-4">
+              <img
+                src="/lovable-uploads/733fe496-d79b-4548-b7b5-85c79c31a8fd.png"
+                alt="NaLata Logo"
+                className="h-12"
+              />
+              <div>
+                <h1 className="text-2xl font-bold text-foreground">Dashboard NaLata</h1>
+                <p className="text-muted-foreground text-sm">PAINEL SIMULAÇÃO FINANCEIRA — FRANQUIA REV7</p>
+              </div>
+            </div>
+            {/* Seletor de território */}
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-muted-foreground whitespace-nowrap hidden sm:block">
+                Território de referência:
+              </span>
+              <Select
+                value={territorioSelecionado}
+                onValueChange={(id) => {
+                  setTerritorioSelecionado(id);
+                  const preset = TERRITORIOS.find((t) => t.id === id);
+                  if (preset) {
+                    handleTerritoryChange(preset.data);
+                    setSimParams((prev) => ({
+                      ...prev,
+                      latasAlvoM12: preset.latasAlvoM12,
+                      precoMinimo: preset.precoMinimoSugerido,
+                      precoMaximo: preset.precoMaximoSugerido,
+                    }));
+                  } else {
+                    setTerritory(TERRITORIO_VAZIO);
+                    setSimParams((prev) => ({ ...prev, latasAlvoM12: 280 }));
+                  }
+                }}
+              >
+                <SelectTrigger className="w-56">
+                  <SelectValue placeholder="Selecionar cidade…" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="manual">— Preencher manualmente —</SelectItem>
+                  {TERRITORIOS.map((t) => (
+                    <SelectItem key={t.id} value={t.id}>
+                      {t.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-6 py-8">
-        {/* Novo modelo Nalata REV6 — no topo */}
+      <div className="container mx-auto px-6 py-8 space-y-0">
+
+        {/* [2] FASE 1 — Contexto de mercado nacional */}
+        <MarketContextPanel />
+
+        {/* [3] FASE 2 — Dados do território */}
+        <TerritoryPanel data={territory} onChange={handleTerritoryChange} />
+
+        {/* [4–13] Simulador Nalata REV7 */}
         <NalataModel
-          mode={nalataMode}
-          setMode={setNalataMode}
-          scenario={nalataScenario}
-          setScenario={setNalataScenario}
-          ticket={nalataTicket}
-          setTicket={setNalataTicket}
-          conversao={nalataConversao}
-          setConversao={setNalataConversao}
-          markup={nalataMarkup}
-          setMarkup={setNalataMarkup}
-          latas={nalataLatas}
-          setLatas={setNalataLatas}
+          params={simParams}
+          onChange={setSimParams}
+          result={simResult}
         />
 
-        {/* Controles - Divididos em dois painéis */}
-        <div className="grid gap-6 mb-8 lg:grid-cols-2">
-          <TooltipProvider>
-            {/* Primeiro Painel - Parâmetros Principais */}
-            <Card className="border-nalata-orange/20 shadow-elegant">
-              <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
-                <CardTitle className="flex items-center gap-2">
-                  <Settings className="h-5 w-5" />
-                  Parâmetros de Configuração
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div>
-                          <Label htmlFor="vendaLatas">Venda de Latas 1º Mês</Label>
-                          <Input
-                            id="vendaLatas"
-                            type="number"
-                            value={dados.vendaLatasPrimeiroMes}
-                            onChange={(e) => handleInputChange('vendaLatasPrimeiroMes', Number(e.target.value))}
-                            className="mt-2"
-                          />
-                        </div>
-                      </TooltipTrigger>
-                       <TooltipContent>
-                         <p>Inserir o número de latas<br />vendidas no 1º mês</p>
-                       </TooltipContent>
-                    </Tooltip>
-                  </div>
-                  <div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div>
-                          <Label htmlFor="taxaCrescimento">Taxa Crescimento Mensal (%)</Label>
-                          <Input
-                            id="taxaCrescimento"
-                            type="number"
-                            value={dados.taxaCrescimentoMensal}
-                            onChange={(e) => handleInputChange('taxaCrescimentoMensal', Number(e.target.value))}
-                            className="mt-2"
-                          />
-                        </div>
-                      </TooltipTrigger>
-                       <TooltipContent>
-                         <p>Indicado a escolha de uma taxa de<br />crescimento acima de 15% para o primeiro ano</p>
-                       </TooltipContent>
-                    </Tooltip>
-                  </div>
-                  <div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div>
-                          <Label htmlFor="investimento">Investimento Inicial (R$)</Label>
-                          <Input
-                            id="investimento"
-                            type="number"
-                            value={dados.investimentoInicial}
-                            onChange={(e) => handleInputChange('investimentoInicial', Number(e.target.value))}
-                            className="mt-2"
-                          />
-                        </div>
-                      </TooltipTrigger>
-                       <TooltipContent>
-                         <p>O valor de R$ 95.000,00 refere-se a<br />- R$ 25.000,00 de taxa de franquia,<br />- R$ 35.000,00 equipamentos, uniformes,<br />Trade Dress e abertura empresa,<br />-R$ 35.000,00 valor sugerido para aquisição do veículo</p>
-                       </TooltipContent>
-                    </Tooltip>
-                  </div>
-                  <div>
-                    <Label htmlFor="valorLocacao">Valor Locação Lata</Label>
-                    <Select 
-                      value={dados.valorLocacaoLata.toString()} 
-                      onValueChange={(value) => handleInputChange('valorLocacaoLata', Number(value))}
-                    >
-                      <SelectTrigger className="mt-2">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="80">R$ 80,00</SelectItem>
-                        <SelectItem value="90">R$ 90,00</SelectItem>
-                        <SelectItem value="100">R$ 100,00</SelectItem>
-                        <SelectItem value="120">R$ 120,00</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="distanciaDescarte">Distância Descarte (Km)</Label>
-                    <Input
-                      id="distanciaDescarte"
-                      type="number"
-                      value={dados.distanciaDescarte}
-                      onChange={(e) => handleInputChange('distanciaDescarte', Number(e.target.value))}
-                      className="mt-2"
-                    />
-                  </div>
-                  <div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div>
-                          <Label htmlFor="etapaCrescimento">Etapa de Crescimento</Label>
-                          <Select 
-                            value={dados.etapaCrescimento} 
-                            onValueChange={(value) => handleInputChange('etapaCrescimento', value)}
-                          >
-                            <SelectTrigger className="mt-2">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="primeira">1. Primeira unidade</SelectItem>
-                              <SelectItem value="expansao">2. Expansão (segunda unidade)</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Simule o ponto de partida do seu<br />negócio e projete sua expansão com<br />a abertura da segunda unidade</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+        {/* [Rampa] Gráfico Rampa de Crescimento M1–M12 */}
+        <Card className="border-nalata-orange/20 shadow-elegant mb-6">
+          <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
+            <CardTitle className="flex items-center gap-2">
+              <BarChart3 className="h-5 w-5" />
+              Rampa de Crescimento M1–M12 — 3 Cenários
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <MaturationRampChart result={simResult} params={simParams} />
+          </CardContent>
+        </Card>
 
-            {/* Segundo Painel - Custos Iniciais */}
-            <Card className="border-nalata-orange/20 shadow-elegant">
-              <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
-                <CardTitle className="flex items-center gap-2">
-                  <DollarSign className="h-5 w-5" />
-                  Custos Iniciais
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <Label htmlFor="precoGasolina">Preço Gasolina (R$)</Label>
-                    <Input
-                      id="precoGasolina"
-                      type="number"
-                      step="0.01"
-                      value={dados.precoGasolina}
-                      onChange={(e) => handleInputChange('precoGasolina', Number(e.target.value))}
-                      className="mt-2"
-                    />
-                  </div>
-                  <div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div>
-                          <Label htmlFor="salarios">Salários e Encargos</Label>
-                          <Select 
-                            value={dados.salariosEncargos.toString()} 
-                            onValueChange={(value) => handleInputChange('salariosEncargos', Number(value))}
-                          >
-                            <SelectTrigger className="mt-2">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="3200">01 colaborador - R$ 3.200,00</SelectItem>
-                              <SelectItem value="6400">02 colaboradores - R$ 6.400,00</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </TooltipTrigger>
-                       <TooltipContent>
-                         <p>Indicado nos 4 primeiros meses<br />a contratação de 01 colaborador</p>
-                       </TooltipContent>
-                    </Tooltip>
-                  </div>
-                  <div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div>
-                          <Label htmlFor="aluguel">Aluguel Ponto Comercial (R$)</Label>
-                          <Input
-                            id="aluguel"
-                            type="number"
-                            value={dados.aluguelPonto}
-                            onChange={(e) => handleInputChange('aluguelPonto', Number(e.target.value))}
-                            className="mt-2"
-                          />
-                        </div>
-                      </TooltipTrigger>
-                       <TooltipContent>
-                         <p>Considerar o valor de um espaço<br />mínimo de 50m²</p>
-                       </TooltipContent>
-                    </Tooltip>
-                  </div>
-                  <div>
-                    <Label>Total Custos Variáveis</Label>
-                    <div className="mt-2 p-3 bg-muted rounded-md text-sm font-semibold text-muted-foreground">
-                      R$ {totalCustosVariaveis.toFixed(2)}
-                    </div>
-                  </div>
-                  <div className="md:col-span-2">
-                    <Label>Total Custos Fixos</Label>
-                    <div className="mt-2 p-3 bg-muted rounded-md text-sm font-semibold text-muted-foreground">
-                      R$ {totalCustosFixos.toFixed(2)}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TooltipProvider>
-        </div>
+        {/* [Break-even] Painel Break-even Operacional */}
+        <BreakEvenPanel result={simResult} />
 
-        {/* Gráficos */}
-        <div className="grid gap-6">
-          {/* Gráfico de Receitas */}
-          <Card className="border-nalata-orange/20 shadow-elegant">
-            <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5" />
-                  Projeção de Faturamento Bruto
-                </CardTitle>
-                <Select value={periodoProjecao} onValueChange={(value: "12" | "24" | "36") => setPeriodoProjecao(value)}>
-                  <SelectTrigger className="w-32 bg-white text-foreground">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="12">12 Meses</SelectItem>
-                    <SelectItem value="24">24 Meses</SelectItem>
-                    <SelectItem value="36">36 Meses</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </CardHeader>
-            <CardContent className="p-6">
-              <RevenueChart dados={dados} periodo={periodoProjecao} limiteLatas={limiteLatas} />
-            </CardContent>
-          </Card>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Gráfico de Custos */}
-            <Card className="border-nalata-orange/20 shadow-elegant">
-              <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
-                <CardTitle className="flex items-center gap-2">
-                  <PieChart className="h-5 w-5" />
-                  Análise de Custos e Lucro
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                <CostsChart dados={dados} custosVariaveis={totalCustosVariaveis} custosFixos={totalCustosFixos} limiteLatas={limiteLatas} etapaCrescimento={dados.etapaCrescimento} getSalarioPorMes={getSalarioPorMes} />
-              </CardContent>
-            </Card>
-
-            {/* Gráfico Break-Even */}
-            <Card className="border-nalata-orange/20 shadow-elegant">
-              <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  Break-Even Financeiro
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                <BreakEvenChart dados={dados} totalCustosVariaveis={totalCustosVariaveis} totalCustosFixos={totalCustosFixos} limiteLatas={limiteLatas} etapaCrescimento={dados.etapaCrescimento} getSalarioPorMes={getSalarioPorMes} />
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Novos Gráficos */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Gráfico de Lucratividade Média */}
-            <Card className="border-nalata-orange/20 shadow-elegant">
-              <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  Lucratividade Média Mensal
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                <ProfitabilityChart 
-                  dados={dados} 
-                  periodo={periodoProjecao}
-                  totalCustosVariaveis={totalCustosVariaveis}
-                  totalCustosFixos={totalCustosFixos}
-                  limiteLatas={limiteLatas}
-                  etapaCrescimento={dados.etapaCrescimento}
-                  getSalarioPorMes={getSalarioPorMes}
-                />
-              </CardContent>
-            </Card>
-
-            {/* Gráfico de Payback */}
-            <Card className="border-nalata-orange/20 shadow-elegant">
-              <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
-                <CardTitle className="flex items-center gap-2">
-                  <Calculator className="h-5 w-5" />
-                  Análise de Payback
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                <PaybackChart
-                  dados={dados}
-                  totalCustosVariaveis={totalCustosVariaveis}
-                  totalCustosFixos={totalCustosFixos}
-                  limiteLatas={limiteLatas}
-                  etapaCrescimento={dados.etapaCrescimento}
-                  getSalarioPorMes={getSalarioPorMes}
-                />
-              </CardContent>
-            </Card>
-          </div>
+        {/* [Diferenciais] FASE 7 — Diferenciais competitivos */}
+        <div className="mb-6">
+          <CompetitiveTable />
         </div>
       </div>
+
+      {/* [14] Disclaimer legal */}
+      <footer className="border-t bg-muted/40 mt-4">
+        <div className="container mx-auto px-6 py-4 text-center">
+          <p className="text-xs text-muted-foreground italic max-w-3xl mx-auto">
+            Os valores apresentados são projeções com base no modelo operacional Nalata REV7 e não constituem
+            garantia de rendimento. O sucesso depende da gestão, execução e dedicação do franqueado.
+            Os resultados podem variar entre unidades e territórios.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
