@@ -38,6 +38,44 @@
     }
   },
   {
+    "id": "santos_sp",
+    "label": "Santos — SP",
+    "arquivo": "santos_SP.md",
+    "latasAlvoM12": 240,
+    "precoMinimoSugerido": 100,
+    "precoMaximoSugerido": 140,
+    "data": {
+      "cidade": "Santos — SP",
+      "qtdObras": "~4.200 obras/ano",
+      "qtdEdif": "~11.500 edifícios",
+      "qtdCond": "~3.200 condomínios",
+      "qtdConst": "~95 construtoras",
+      "qtdCltes": "~1.250 clientes",
+      "latasAlvo": "240",
+      "score": "9.1",
+      "taxaConversao": "6"
+    }
+  },
+  {
+    "id": "sao_caetano_sao_bernardo_sp",
+    "label": "São Caetano do Sul + São Bernardo do Campo — SP",
+    "arquivo": "sao_caetano_sao_bernardo_SP.md",
+    "latasAlvoM12": 520,
+    "precoMinimoSugerido": 110,
+    "precoMaximoSugerido": 155,
+    "data": {
+      "cidade": "São Caetano do Sul + São Bernardo do Campo — SP",
+      "qtdObras": "~7.700 obras/ano",
+      "qtdEdif": "~3.200 unidades",
+      "qtdCond": "~2.650 condomínios",
+      "qtdConst": "~160 construtoras",
+      "qtdCltes": "~1.500 clientes",
+      "latasAlvo": "520",
+      "score": "9.1",
+      "taxaConversao": "5"
+    }
+  },
+  {
     "id": "sao_jose_dos_campos",
     "label": "São José dos Campos — SP",
     "arquivo": "sao_jose_dos_campos_SP.md",
@@ -92,6 +130,25 @@
       "latasAlvo": "400",
       "score": "8.9",
       "taxaConversao": "8"
+    }
+  },
+  {
+    "id": "taubate_cacapava_jacarei_sp",
+    "label": "Taubaté + Caçapava + Jacareí — SP",
+    "arquivo": "taubate_cacapava_jacarei_SP.md",
+    "latasAlvoM12": 210,
+    "precoMinimoSugerido": 90,
+    "precoMaximoSugerido": 125,
+    "data": {
+      "cidade": "Taubaté + Caçapava + Jacareí — SP",
+      "qtdObras": "~4.600 obras/ano",
+      "qtdEdif": "~3.800 edifícios",
+      "qtdCond": "~1.450 condomínios",
+      "qtdConst": "~85 construtoras",
+      "qtdCltes": "~620 clientes",
+      "latasAlvo": "210",
+      "score": "8.2",
+      "taxaConversao": "5"
     }
   },
   {

@@ -1081,7 +1081,215 @@ async function exportarPlanilha({ params, result }: { params: SimParams; result:
   a.click();
   URL.revokeObjectURL(url);
 }
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
 
+function fmtCurrencyShort(value: number) {
+  const abs = Math.abs(value);
+
+  if (abs >= 1000) {
+    return `R$${(value / 1000).toFixed(1)}k`.replace(".", ",");
+  }
+
+  return `R$${Math.round(value)}`;
+}
+
+function gerarGraficoLinhaLatasSvg(result: SimResult) {
+  const width = 1400;
+  const height = 620;
+  const padLeft = 85;
+  const padRight = 70;
+  const padTop = 70;
+  const padBottom = 80;
+
+  const data = result.latasAtivasPorMes;
+const maxY = Math.max(...data, 10);
+const plotW = width - padLeft - padRight;
+  const plotH = height - padTop - padBottom;
+
+  const x = (i: number) => padLeft + (i / 11) * plotW;
+  const y = (v: number) => padTop + plotH - (v / maxY) * plotH;
+
+  const points = data.map((v, i) => `${x(i)},${y(v)}`).join(" ");
+  const areaPoints = `${padLeft},${height - padBottom} ${points} ${width - padRight},${height - padBottom}`;
+
+  const gridY = [0, 0.25, 0.5, 0.75, 1].map((p) => {
+    const gy = padTop + plotH - p * plotH;
+    const label = Math.round(maxY * p);
+    return `
+      <line x1="${padLeft}" y1="${gy}" x2="${width - padRight}" y2="${gy}" stroke="#e5e7eb" stroke-dasharray="6 6"/>
+      <text x="${padLeft - 18}" y="${gy + 6}" text-anchor="end" font-size="22" fill="#252C33">${label}</text>
+    `;
+  }).join("");
+
+  const monthLabels = data.map((_, i) => `
+    <text x="${x(i)}" y="${height - 35}" text-anchor="middle" font-size="22" fill="#252C33">${i + 1}</text>
+  `).join("");
+
+  const circles = data.map((v, i) => `
+    <circle cx="${x(i)}" cy="${y(v)}" r="9" fill="#ffffff" stroke="#F26E2C" stroke-width="6"/>
+  `).join("");
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="100%" height="100%">
+      <rect width="100%" height="100%" fill="#ffffff"/>
+      <text x="${width / 2}" y="38" text-anchor="middle" font-size="34" font-weight="800" fill="#252C33" letter-spacing="1">
+        CRESCIMENTO PREVISÍVEL DE LATAS ATIVAS
+      </text>
+
+      ${gridY}
+      ${monthLabels}
+
+      <line x1="${padLeft}" y1="${padTop}" x2="${padLeft}" y2="${height - padBottom}" stroke="#252C33" stroke-width="2"/>
+      <line x1="${padLeft}" y1="${height - padBottom}" x2="${width - padRight}" y2="${height - padBottom}" stroke="#252C33" stroke-width="2"/>
+
+      <polygon points="${areaPoints}" fill="#F26E2C" opacity="0.14"/>
+      <polyline points="${points}" fill="none" stroke="#F26E2C" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      ${circles}
+
+      <text x="${width / 2}" y="${height - 5}" text-anchor="middle" font-size="28" font-weight="700" fill="#252C33">Mês</text>
+      <text x="28" y="${height / 2}" transform="rotate(-90 28 ${height / 2})" text-anchor="middle" font-size="28" font-weight="700" fill="#252C33">Latas Ativas</text>
+
+      <text x="${width - 245}" y="48" font-size="30" font-weight="800" fill="#F26E2C">
+        ${data[11]} latas
+      </text>
+      <text x="${width - 245}" y="82" font-size="26" font-weight="800" fill="#F26E2C">
+        Meta M12
+      </text>
+    </svg>
+  `;
+}
+
+function gerarGraficoLucroSvg(result: SimResult) {
+  const width = 1400;
+  const height = 620;
+  const padLeft = 95;
+  const padRight = 70;
+  const padTop = 200;
+  const padBottom = 80;
+
+  const data = result.lucros;
+  const maxPositive = Math.max(...data, 0);
+  const minNegative = Math.min(...data, 0);
+  const maxAbs = Math.max(Math.abs(maxPositive), Math.abs(minNegative), 1000);
+
+  const plotW = width - padLeft - padRight;
+  const plotH = height - padTop - padBottom;
+  const zeroY = padTop + plotH / 2;
+
+  const x = (i: number) => padLeft + (i / data.length) * plotW + plotW / data.length / 2;
+  const y = (v: number) => zeroY - (v / maxAbs) * (plotH / 2);
+  const barW = plotW / data.length * 0.62;
+
+  const bars = data.map((v, i) => {
+    const top = v >= 0 ? y(v) : zeroY;
+    const h = Math.abs(zeroY - y(v));
+    const color = v >= 0 ? "#2E7D32" : "#CF3A3A";
+
+    return `
+      <rect x="${x(i) - barW / 2}" y="${top}" width="${barW}" height="${h}" fill="${color}" opacity="0.92"/>
+      <text x="${x(i)}" y="${height - 35}" text-anchor="middle" font-size="22" fill="#252C33">${i + 1}</text>
+    `;
+  }).join("");
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="100%" height="100%">
+      <rect width="100%" height="100%" fill="#ffffff"/>
+      <text x="${width / 2}" y="42" text-anchor="middle" font-size="34" font-weight="800" fill="#252C33" letter-spacing="1">
+        LUCRO LÍQUIDO MENSAL &amp; PONTO DE EQUILÍBRIO
+      </text>
+
+      <line x1="${padLeft}" y1="${zeroY}" x2="${width - padRight}" y2="${zeroY}" stroke="#252C33" stroke-width="3"/>
+      <line x1="${padLeft}" y1="${padTop}" x2="${padLeft}" y2="${height - padBottom}" stroke="#d1d5db" stroke-width="2"/>
+      <line x1="${padLeft}" y1="${height - padBottom}" x2="${width - padRight}" y2="${height - padBottom}" stroke="#d1d5db" stroke-width="2"/>
+
+      ${bars}
+
+      <text x="${width / 2}" y="${height - 5}" text-anchor="middle" font-size="28" font-weight="700" fill="#252C33">Mês</text>
+      <text x="30" y="${height / 2}" transform="rotate(-90 30 ${height / 2})" text-anchor="middle" font-size="28" font-weight="700" fill="#252C33">Lucro Líquido (R$)</text>
+
+      <text x="${width - 270}" y="90" font-size="30" font-weight="800" fill="#2E7D32">
+        ${escapeHtml(fmtBRL(result.lucroMaturacao))}
+      </text>
+      <text x="${width - 270}" y="125" font-size="22" font-weight="700" fill="#2E7D32">
+        Lucro M12
+      </text>
+
+      ${
+        result.breakEvenMes
+          ? `<text x="${padLeft + 390}" y="${padTop + 150}" font-size="26" font-weight="800" fill="#2E7D32">BREAK-EVEN Mês ${result.breakEvenMes}</text>`
+          : `<text x="${padLeft + 390}" y="${padTop + 150}" font-size="26" font-weight="800" fill="#CF3A3A">BREAK-EVEN não atingido</text>`
+      }
+    </svg>
+  `;
+}
+
+function gerarGraficoReceitaSvg(result: SimResult) {
+  const width = 1400;
+  const height = 620;
+  const padLeft = 95;
+  const padRight = 70;
+  const padTop = 75;
+  const padBottom = 80;
+
+  const data = result.curva;
+  const maxY = Math.max(...data, 1000);
+  const plotW = width - padLeft - padRight;
+  const plotH = height - padTop - padBottom;
+
+  const x = (i: number) => padLeft + (i / data.length) * plotW + plotW / data.length / 2;
+  const y = (v: number) => padTop + plotH - (v / maxY) * plotH;
+  const barW = plotW / data.length * 0.62;
+
+  const bars = data.map((v, i) => {
+    const isM12 = i === 11;
+    const color = isM12 ? "#252C33" : "#F26E2C";
+    const top = y(v);
+    const h = height - padBottom - top;
+
+    return `
+      <rect x="${x(i) - barW / 2}" y="${top}" width="${barW}" height="${h}" fill="${color}" opacity="${isM12 ? "0.96" : "0.92"}"/>
+      <text x="${x(i)}" y="${height - 35}" text-anchor="middle" font-size="22" fill="#252C33">${i + 1}</text>
+    `;
+  }).join("");
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="100%" height="100%">
+      <rect width="100%" height="100%" fill="#ffffff"/>
+      <text x="${width / 2}" y="42" text-anchor="middle" font-size="34" font-weight="800" fill="#252C33" letter-spacing="1">
+        FATURAMENTO BRUTO MENSAL
+      </text>
+
+      <line x1="${padLeft}" y1="${padTop}" x2="${padLeft}" y2="${height - padBottom}" stroke="#d1d5db" stroke-width="2"/>
+      <line x1="${padLeft}" y1="${height - padBottom}" x2="${width - padRight}" y2="${height - padBottom}" stroke="#d1d5db" stroke-width="2"/>
+
+      ${bars}
+
+      <text x="${width / 2}" y="${height - 5}" text-anchor="middle" font-size="28" font-weight="700" fill="#252C33">Mês</text>
+      <text x="30" y="${height / 2}" transform="rotate(-90 30 ${height / 2})" text-anchor="middle" font-size="28" font-weight="700" fill="#252C33">Receita (R$)</text>
+
+      <text x="${width - 300}" y="45" font-size="30" font-weight="800" fill="#252C33">
+        ${escapeHtml(fmtBRL(result.receitaMaturacao))}
+      </text>
+      <text x="${width - 300}" y="80" font-size="22" font-weight="700" fill="#252C33">
+        Receita M12
+      </text>
+    </svg>
+  `;
+}
+
+function gerarGraficosApresentacao(result: SimResult) {
+  return {
+    GRAFICO_LATAS: gerarGraficoLinhaLatasSvg(result),
+    GRAFICO_LUCRO: gerarGraficoLucroSvg(result),
+    GRAFICO_RECEITA: gerarGraficoReceitaSvg(result),
+  };
+}
 async function exportarApresentacaoPDF({ params, result }: { params: SimParams; result: SimResult }) {
   const fmtBRL = (v: number) =>
     v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0 });
@@ -1090,12 +1298,14 @@ async function exportarApresentacaoPDF({ params, result }: { params: SimParams; 
 
   const breakEvenNum = result.breakEvenMes ?? 0;
   const lucroBreakEven = breakEvenNum > 0 ? (result.meses[breakEvenNum - 1]?.lucroMensal ?? 0) : 0;
-  const crescimentoLucroPct =
-    lucroBreakEven > 0 && result.lucroMaturacao > 0
-      ? `${Math.round(((result.lucroMaturacao - lucroBreakEven) / lucroBreakEven) * 100)}%`
-      : "—";
+const crescimentoLucroPct =
+  lucroBreakEven > 0 && result.lucroMaturacao > 0
+    ? `${Math.round(((result.lucroMaturacao - lucroBreakEven) / lucroBreakEven) * 100)}%`
+    : "—";
 
-  const tokens: Record<string, string> = {
+const graficos = gerarGraficosApresentacao(result);
+
+const tokens: Record<string, string> = {
     DATA: new Date().toLocaleDateString("pt-BR", { month: "long", year: "numeric" }),
     LATAS_ALVO_M12: String(params.latasAlvoM12),
     LATAS_INICIAL: "60",
@@ -1123,38 +1333,72 @@ async function exportarApresentacaoPDF({ params, result }: { params: SimParams; 
         ? `${(result.receitaMaturacao / result.curva[0]).toFixed(1)}×`
         : "—",
     CRESCIMENTO_LUCRO_PCT: crescimentoLucroPct,
+    GRAFICO_LATAS: graficos.GRAFICO_LATAS,
+    GRAFICO_LUCRO: graficos.GRAFICO_LUCRO,
+    GRAFICO_RECEITA: graficos.GRAFICO_RECEITA,
   };
 
-  try {
-    const res = await fetch("/apresentacao/apresentacao_nalata.html");
-    if (!res.ok) throw new Error("template não encontrado");
-    let html = await res.text();
+  const win = window.open("", "_blank");
 
-    // Replace all {{TOKEN}} occurrences
-    for (const [key, value] of Object.entries(tokens)) {
-      html = html.split(`{{${key}}}`).join(value);
-    }
+if (!win) {
+  alert("O navegador bloqueou a abertura do PDF. Libere pop-ups para este site e tente novamente.");
+  return;
+}
 
-    // Fix relative image paths to absolute so blob URL renders them
-    const origin = window.location.origin;
-    html = html.replace(/src="(logo_completo\.png|logo_icone\.png|grafico_\w+\.png|infografico_m12\.png)"/g,
-      `src="${origin}/apresentacao/$1"`);
+try {
+  win.document.write(`
+    <html>
+      <head>
+        <title>Gerando apresentação...</title>
+      </head>
+      <body style="font-family: Arial, sans-serif; padding: 32px;">
+        Gerando apresentação Nalata...
+      </body>
+    </html>
+  `);
+  win.document.close();
 
-    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const win = window.open(url, "_blank");
-    if (win) {
-      win.addEventListener("load", () => {
-        setTimeout(() => {
-          win.print();
-          URL.revokeObjectURL(url);
-        }, 800);
-      });
-    }
-  } catch (e) {
-    console.error("[Nalata] Erro ao gerar PDF:", e);
-    alert("Não foi possível carregar o template da apresentação. Verifique se o servidor está rodando.");
+  const res = await fetch("/apresentacao/apresentacao_nalata.html");
+  if (!res.ok) throw new Error("template não encontrado");
+
+  let html = await res.text();
+
+  for (const [key, value] of Object.entries(tokens)) {
+    html = html.split(`{{${key}}}`).join(value);
   }
+
+  const origin = window.location.origin;
+  html = html.replace(
+    /src="(logo_completo\.png|logo_icone\.png|infografico_m12\.png)"/g,
+    `src="${origin}/apresentacao/$1"`
+  );
+
+  win.document.open();
+  win.document.write(html);
+  win.document.close();
+
+  win.addEventListener("load", () => {
+    setTimeout(() => {
+      win.focus();
+      win.print();
+    }, 800);
+  });
+} catch (e) {
+  console.error("[Nalata] Erro ao gerar PDF:", e);
+
+  win.document.open();
+  win.document.write(`
+    <html>
+      <body style="font-family: Arial, sans-serif; padding: 32px; color: #b91c1c;">
+        Não foi possível carregar o template da apresentação.
+        Verifique se o arquivo <strong>/public/apresentacao/apresentacao_nalata.html</strong> existe.
+      </body>
+    </html>
+  `);
+  win.document.close();
+
+  alert("Não foi possível carregar o template da apresentação. Verifique se o servidor está rodando.");
+}
 }
 
 function exportarMarkdown({ params, result }: { params: SimParams; result: SimResult }) {

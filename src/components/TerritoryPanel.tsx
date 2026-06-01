@@ -76,7 +76,7 @@ export function TerritoryPanel({ data, onChange }: Props) {
 
             {/* 4 métricas rápidas */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <MetricCard icon={Building2} label="Unidades em prédios verticais" value={data.qtdEdif || "—"} />
+              <MetricCard icon={Building2} label="Prédios verticais" value={data.qtdEdif || "—"} />
               <MetricCard icon={Home} label="Condomínios verticais" value={data.qtdCond || "—"} />
               <MetricCard icon={HardHat} label="Construtoras ativas" value={data.qtdConst || "—"} />
               <MetricCard icon={Users} label="Potencial de clientes" value={data.qtdCltes || "—"} />
