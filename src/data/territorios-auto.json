@@ -2,7 +2,7 @@
   {
     "id": "brasilia_df",
     "label": "Brasília — DF",
-    "arquivo": "brasilia_df_nalata.md",
+    "arquivo": "brasilia_DF.md",
     "latasAlvoM12": 500,
     "precoMinimoSugerido": 100,
     "precoMaximoSugerido": 140,
@@ -19,9 +19,28 @@
     }
   },
   {
+    "id": "campinas_sp",
+    "label": "Campinas — SP",
+    "arquivo": "campinas_SP.md",
+    "latasAlvoM12": 520,
+    "precoMinimoSugerido": 110,
+    "precoMaximoSugerido": 150,
+    "data": {
+      "cidade": "Campinas — SP",
+      "qtdObras": "~6.800 obras/ano",
+      "qtdEdif": "~2.800 torres",
+      "qtdCond": "~2.100 condomínios",
+      "qtdConst": "~160 construtoras",
+      "qtdCltes": "~1.150 clientes",
+      "latasAlvo": "520",
+      "score": "9.2",
+      "taxaConversao": "8"
+    }
+  },
+  {
     "id": "jundiai_sp",
     "label": "Jundiaí — SP",
-    "arquivo": "jundiai_sp_nalata.md",
+    "arquivo": "jundiai_SP.md",
     "latasAlvoM12": 180,
     "precoMinimoSugerido": 100,
     "precoMaximoSugerido": 130,
@@ -35,6 +54,25 @@
       "latasAlvo": "180",
       "score": "8.4",
       "taxaConversao": "5"
+    }
+  },
+  {
+    "id": "salvador_ba",
+    "label": "Salvador — BA",
+    "arquivo": "salvador_BA.md",
+    "latasAlvoM12": 600,
+    "precoMinimoSugerido": 110,
+    "precoMaximoSugerido": 160,
+    "data": {
+      "cidade": "Salvador — BA",
+      "qtdObras": "~14.800 obras/ano",
+      "qtdEdif": "~4.900 unidades",
+      "qtdCond": "~3.700 condomínios",
+      "qtdConst": "~180 construtoras",
+      "qtdCltes": "~1.850 clientes",
+      "latasAlvo": "600",
+      "score": "8.8",
+      "taxaConversao": "7"
     }
   },
   {
@@ -154,7 +192,7 @@
   {
     "id": "zona_oeste_rj",
     "label": "Zona Oeste — Rio de Janeiro (RJ)",
-    "arquivo": "zona_oeste_rj_nalata.md",
+    "arquivo": "zona_oeste_RJ.md",
     "latasAlvoM12": 450,
     "precoMinimoSugerido": 100,
     "precoMaximoSugerido": 145,
