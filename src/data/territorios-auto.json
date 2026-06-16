@@ -1,5 +1,24 @@
 [
   {
+    "id": "belo_horizonte_mg",
+    "label": "Belo Horizonte — MG",
+    "arquivo": "belo_horizonte_MG.md",
+    "latasAlvoM12": 520,
+    "precoMinimoSugerido": 120,
+    "precoMaximoSugerido": 160,
+    "data": {
+      "cidade": "Belo Horizonte — MG",
+      "qtdObras": "~15.700 obras/ano",
+      "qtdEdif": "~6.000 unidades verticais",
+      "qtdCond": "~4.450 condomínios",
+      "qtdConst": "~220 construtoras",
+      "qtdCltes": "~2.200 clientes",
+      "latasAlvo": "520",
+      "score": "9.1",
+      "taxaConversao": "6"
+    }
+  },
+  {
     "id": "brasilia_df",
     "label": "Brasília — DF",
     "arquivo": "brasilia_DF.md",
