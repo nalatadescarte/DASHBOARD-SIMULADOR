@@ -506,8 +506,8 @@ const scenariosComparacao = useMemo(() => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <KpiCard label="Lucro líquido M12" value={fmtBRL(Math.max(0, lucroMaturacao))} />
           <KpiCard label="Capital de giro" value={fmtBRL(capitalDeGiro)} />
-          <KpiCard label="ROI 12 meses" value={roi12 ? `${roi12.toFixed(0)}%` : "—"} />
-          <KpiCard label="ROI 24 meses" value={roi24 ? `${roi24.toFixed(0)}%` : "—"} />
+          <KpiCard label="ROI real M1–M12" value={roi12 != null ? `${roi12.toFixed(0)}%` : "—"} />
+          <KpiCard label="ROI real M1–M24" value={roi24 != null ? `${roi24.toFixed(0)}%` : "—"} />
         </div>
 
         {/* DRE Simplificado */}

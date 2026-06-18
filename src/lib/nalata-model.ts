@@ -516,16 +516,44 @@ export function calcularSimulacaoCompleta(params: SimParams): SimResult {
 
   const investimentoTotal = 98370 + investimentoCidade;
 
-  const payback = lucroMaturacao > 0 ? Math.ceil(investimentoTotal / lucroMaturacao) : null;
+  // ── Payback REAL: simula acumulado mês a mês ─────────────────────────────────
+  // Começa em -investimentoTotal e soma cada lucro mensal real (M1–M12),
+  // depois projeta com lucroMaturacao constante até o acumulado cruzar zero.
+  // Isso reflete o tempo real para recuperar o capital investido.
+  let payback: number | null = null;
+  if (lucroMaturacao > 0) {
+    let acumulado = -investimentoTotal;
+    // Fase 1: meses reais M1–M12
+    for (let i = 0; i < 12; i++) {
+      acumulado += lucros[i];
+      if (acumulado >= 0) { payback = i + 1; break; }
+    }
+    // Fase 2: projeta além do M12 com lucro de maturidade constante
+    if (payback === null) {
+      let mes = 13;
+      while (mes <= 120) { // teto de 10 anos
+        acumulado += lucroMaturacao;
+        if (acumulado >= 0) { payback = mes; break; }
+        mes++;
+      }
+    }
+  }
+
+  // ── ROI ──────────────────────────────────────────────────────────────────────
+  // roiAnual: retorno anualizado na maturidade (indicador forward-looking).
+  //   Responde: "rendendo como no M12, quanto gero em 12 meses sobre o investimento?"
+  // roi12: retorno real acumulado nos primeiros 12 meses (inclui a rampa de crescimento).
+  // roi24: retorno real nos 12 meses seguintes (todos ao nível de maturidade) + roi12.
+  const totalLucro12 = lucros.reduce((s, l) => s + l, 0);
   const rentabilidadeMes = lucroMaturacao > 0 ? (lucroMaturacao / investimentoTotal) * 100 : 0;
   const roiAnual = lucroMaturacao > 0 ? ((lucroMaturacao * 12) / investimentoTotal) * 100 : 0;
   const roi12 =
-    lucroMaturacao > 0
-      ? ((lucroMaturacao * 12 - investimentoTotal) / investimentoTotal) * 100
+    investimentoTotal > 0
+      ? (totalLucro12 / investimentoTotal) * 100
       : null;
   const roi24 =
     lucroMaturacao > 0
-      ? ((lucroMaturacao * 24 - investimentoTotal) / investimentoTotal) * 100
+      ? ((totalLucro12 + lucroMaturacao * 12) / investimentoTotal) * 100
       : null;
 
   const breakEvenMes = meses.find((m) => m.lucroMensal > 0)?.mes ?? null;
