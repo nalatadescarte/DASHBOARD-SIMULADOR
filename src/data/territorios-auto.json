@@ -76,6 +76,25 @@
     }
   },
   {
+    "id": "mogi_das_cruzes_sp",
+    "label": "Mogi das Cruzes — SP",
+    "arquivo": "mogi_das_cruzes_SP.md",
+    "latasAlvoM12": 300,
+    "precoMinimoSugerido": 110,
+    "precoMaximoSugerido": 150,
+    "data": {
+      "cidade": "Mogi das Cruzes — SP",
+      "qtdObras": "~1.950 obras/ano",
+      "qtdEdif": "~1.040 torres",
+      "qtdCond": "~850 condomínios",
+      "qtdConst": "~75 construtoras",
+      "qtdCltes": "~500 clientes",
+      "latasAlvo": "300",
+      "score": "8.2",
+      "taxaConversao": "5"
+    }
+  },
+  {
     "id": "salvador_ba",
     "label": "Salvador — BA",
     "arquivo": "salvador_BA.md",
