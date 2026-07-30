@@ -171,6 +171,44 @@
     }
   },
   {
+    "id": "sorocaba_sp",
+    "label": "Sorocaba — SP",
+    "arquivo": "sorocaba_SP.md",
+    "latasAlvoM12": 280,
+    "precoMinimoSugerido": 105,
+    "precoMaximoSugerido": 130,
+    "data": {
+      "cidade": "Sorocaba — SP",
+      "qtdObras": "~2.750 obras/reformas por ano",
+      "qtdEdif": "~1.500 torres residenciais",
+      "qtdCond": "~1.150 condomínios verticais estimados",
+      "qtdConst": "~120 construtoras, incorporadoras e empreiteiras relevantes",
+      "qtdCltes": "~620 clientes recorrentes potenciais",
+      "latasAlvo": "280",
+      "score": "7.5",
+      "taxaConversao": "6"
+    }
+  },
+  {
+    "id": "taubate_cacapava_jacarei_sp",
+    "label": "Taubaté + Caçapava + Jacareí — SP",
+    "arquivo": "taubate_cacapava_jacarei_SP.md",
+    "latasAlvoM12": 210,
+    "precoMinimoSugerido": 90,
+    "precoMaximoSugerido": 125,
+    "data": {
+      "cidade": "Taubaté + Caçapava + Jacareí — SP",
+      "qtdObras": "~4.600 obras/ano",
+      "qtdEdif": "~3.800 edifícios",
+      "qtdCond": "~1.450 condomínios",
+      "qtdConst": "~85 construtoras",
+      "qtdCltes": "~620 clientes",
+      "latasAlvo": "210",
+      "score": "8.2",
+      "taxaConversao": "5"
+    }
+  },
+  {
     "id": "sp_zl",
     "label": "Zona Leste - São Paulo",
     "arquivo": "sao_paulo_zona_leste_SP.md",
@@ -206,25 +244,6 @@
       "latasAlvo": "400",
       "score": "8.9",
       "taxaConversao": "8"
-    }
-  },
-  {
-    "id": "taubate_cacapava_jacarei_sp",
-    "label": "Taubaté + Caçapava + Jacareí — SP",
-    "arquivo": "taubate_cacapava_jacarei_SP.md",
-    "latasAlvoM12": 210,
-    "precoMinimoSugerido": 90,
-    "precoMaximoSugerido": 125,
-    "data": {
-      "cidade": "Taubaté + Caçapava + Jacareí — SP",
-      "qtdObras": "~4.600 obras/ano",
-      "qtdEdif": "~3.800 edifícios",
-      "qtdCond": "~1.450 condomínios",
-      "qtdConst": "~85 construtoras",
-      "qtdCltes": "~620 clientes",
-      "latasAlvo": "210",
-      "score": "8.2",
-      "taxaConversao": "5"
     }
   },
   {
