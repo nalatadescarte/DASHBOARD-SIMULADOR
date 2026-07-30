@@ -4,180 +4,342 @@ nalata_label: Sorocaba — SP
 nalata_latasAlvoM12: 280
 nalata_precoMinimo: 105
 nalata_precoMaximo: 130
-nalata_qtdObras: ~2.750 obras/reformas por ano
+nalata_qtdObras: ~2.750 obras/ano
 nalata_qtdEdif: ~1.500 torres residenciais
-nalata_qtdCond: ~1.150 condomínios verticais estimados
-nalata_qtdConst: ~120 construtoras, incorporadoras e empreiteiras relevantes
+nalata_qtdCond: ~1.150 condomínios verticais
+nalata_qtdConst: ~120 construtoras, incorporadoras e empreiteiras
 nalata_qtdCltes: ~620 clientes recorrentes potenciais
 nalata_score: 7.5
 nalata_taxaConversao: 6
 ---
 
-# Simulação Financeira — Sorocaba/SP
+# NALATA DESCARTE INTELIGENTE
+## Simulação Territorial — Sorocaba — SP
 
-## Síntese executiva
+## 1. Contexto do Território
 
-**Sorocaba é um território viável para uma unidade NaLata operada inicialmente com um colaborador e participação direta do franqueado.** A cidade reúne população elevada, crescimento imobiliário, verticalização relevante e uma gestão de RCC estruturada. O cenário recomendado é moderado: crescimento comercial progressivo, conversão de 6% e controle rigoroso de custos até a maturação.
+Sorocaba reúne escala urbana, expansão imobiliária e verticalização suficientes para uma operação NaLata própria, desde que a implantação seja feita de forma concentrada e comercialmente disciplinada.
 
-O ponto central é comercial: a operação deve priorizar condomínios verticalizados, reformas em apartamentos, administradoras, arquitetos, engenheiros e empreiteiros — e não disputar o descarte de grande volume típico de caçamba.
+A oportunidade está em reformas de apartamentos, manutenção predial, retrofit e pequenas obras comerciais. São situações em que a caçamba tradicional pode gerar restrição de acesso, ocupação de garagem ou rua, sujeira nas áreas comuns e atrito com condomínio, moradores e administração.
 
-| Indicador do cenário recomendado | Valor |
-|---|---:|
-| Receita estimada no mês 12 | **R$ 18.932,93** |
-| Despesa mensal (1 colaborador) | R$ 12.416,18 |
-| Resultado operacional no mês 12 | **R$ 6.516,75** |
-| Ponto de equilíbrio mensal | **mês 10** |
-| Capital de giro calculado | R$ 53.122,26 |
-| Investimento total estimado | **R$ 151.492,26** |
-| Payback em regime de maturidade* | **~23,2 meses** |
-
-\*Indicador calculado pela fórmula REV6: investimento total ÷ lucro líquido mensal do mês 12. Não equivale ao caixa acumulado no primeiro ano.
-
-## Contexto do território
-
-Sorocaba tinha **723.682 habitantes** no Censo 2022, densidade de **1.608,64 hab./km²** e **224.980 domicílios particulares**. É uma cidade de porte suficiente para sustentar uma operação própria, desde que a implantação comercial comece pelos bairros e eixos mais verticalizados e com maior recorrência de reformas.
-
-O mercado imobiliário é um reforço importante da tese. O Secovi-SP destaca o alto índice de verticalização de Sorocaba e o crescimento do setor; em divulgação sobre 2025, a entidade informou cerca de 95 mil vínculos ativos na construção civil e aproximadamente 3,3 mil novas vagas no ano.
-
-## Dados oficiais e leitura de mercado
-
-| Indicador | Dado | Uso na análise |
-|---|---:|---|
-| População (Censo 2022) | 723.682 habitantes | Base de escala urbana |
-| Densidade demográfica | 1.608,64 hab./km² | Favorece rotas concentradas em eixos urbanos |
-| Domicílios particulares | 224.980 unidades | Base habitacional municipal |
-| Apartamentos estimados | ~49.900 unidades | Estoque-alvo para reformas em prédios |
-| Crescimento de apartamentos, 2010–2022 | +29.677 unidades | Evidência de adensamento vertical |
-| Obras/reformas anuais estimadas | ~2.750 | Potencial moderado de demanda recorrente |
-
-O número de apartamentos foi adotado em aproximadamente 49,9 mil unidades: a estimativa é consistente com a informação de que Sorocaba incorporou 29.677 apartamentos entre 2010 e 2022, crescimento de 146,83%. Onde não há cadastro municipal aberto consolidado por tipologia, o documento mantém uma premissa conservadora.
-
-## Equação urbana aplicada
-
-```text
-apartamentos_estimados = ~49.900
-media_unidades_por_torre = 33
-edificios_estimados = 49.900 ÷ 33 = ~1.512 torres
-
-condominios_estimados = ~1.150
-media_torres_por_condominio = 1.512 ÷ 1.150 = ~1,31 torres/condomínio
-
-taxa_anual_reforma = 5,5%
-obras_reformas = 49.900 × 5,5% = ~2.745 obras/ano
-```
-
-A média de 33 unidades por torre é apropriada a uma cidade média fortemente verticalizada, sem assumir o padrão de torres de capital. A relação de 1,31 torre por condomínio é coerente com edifícios isolados e pequenos conjuntos.
-
-## Mercado imobiliário e segmentos prioritários
-
-**Prioridade comercial:** condomínios residenciais, reformas de apartamentos, administradoras, arquitetos, engenheiros, empreiteiros de retrofit e construtoras de porte médio.
-
-**Bairros/eixos para validação comercial inicial:** Centro, Campolim, Santa Rosália, Jardim Faculdade, Mangal, Alto da Boa Vista, Parque Campolim e demais corredores com concentração comprovada de edifícios. A definição final do roteiro deve ser ajustada após mapeamento de administradoras, obras ativas e tempos reais de rota.
-
-O objetivo do primeiro ciclo comercial não é atender toda a cidade; é concentrar a base em microterritórios para reduzir deslocamento e aumentar recorrência.
-
-## Infraestrutura de RCC e aderência regulatória
-
-Sorocaba possui Plano de Gestão de Resíduos da Construção Civil e Aterro Municipal de Resíduos Inertes. O plano municipal prevê mecanismos de rastreabilidade pelo SIGOR-RCC e informa que obras com área igual ou superior a 1.000 m² devem comprovar a destinação adequada dos resíduos para obtenção de habite-se ou certidão de conclusão.
-
-Isso não elimina a concorrência de caçambas e transportadores, mas aumenta a relevância de uma operação organizada, com destinação regular e registro operacional. Para a NaLata, a vantagem é atender o resíduo fracionado de reforma em edifício, evitando sacos, sujeira nas áreas comuns e conflito de circulação em elevadores.
-
-## Premissas financeiras — Modelo REV6
-
-| Parâmetro | Premissa | Justificativa |
-|---|---:|---|
-| Latas iniciais | 60 | Kit padrão do modelo REV6 |
-| Ticket médio mensal | R$ 460,00 | Ponto âncora validado no modelo |
-| Conversão | 6% | Faixa moderada alta; exige execução comercial ativa |
-| Markup | 1,70× | Premissa base REV6 |
-| Score territorial | 7,5/10 | Boa aderência, sem classificar Sorocaba como território premium |
-| Cenário | Moderado | Multiplicador 1,00 |
-| Modo operacional | 1 colaborador | Franqueado acompanha comercial e gestão no início |
-
-### Fórmula de maturação
-
-```text
-fator territorial = (6% ÷ 8%) × (7,5 ÷ 8,2) = 0,68598
-
-receita M12 = R$ 27.600,00 × 0,68598 = R$ 18.932,93
-```
-
-## DRE projetada — meses 1 a 12
-
-| Mês | Receita projetada | Despesa fixa | Resultado operacional |
-|---:|---:|---:|---:|
-| 1 | R$ 4.115,85 | R$ 12.416,18 | **- R$ 8.300,33** |
-| 2 | R$ 5.144,82 | R$ 12.416,18 | **- R$ 7.271,36** |
-| 3 | R$ 6.173,78 | R$ 12.416,18 | **- R$ 6.242,40** |
-| 4 | R$ 7.545,73 | R$ 12.416,18 | **- R$ 4.870,45** |
-| 5 | R$ 8.917,68 | R$ 12.416,18 | **- R$ 3.498,50** |
-| 6 | R$ 10.289,63 | R$ 12.416,18 | **- R$ 2.126,55** |
-| 7 | R$ 11.661,59 | R$ 12.416,18 | **- R$ 754,59** |
-| 8 | R$ 12.347,56 | R$ 12.416,18 | **- R$ 68,62** |
-| 9 | R$ 12.347,56 | R$ 12.416,18 | **- R$ 68,62** |
-| 10 | R$ 15.091,46 | R$ 12.416,18 | **R$ 2.675,28** |
-| 11 | R$ 17.149,39 | R$ 12.416,18 | **R$ 4.733,21** |
-| 12 | R$ 18.932,93 | R$ 12.416,18 | **R$ 6.516,75** |
-
-> A DRE utiliza a curva de maturação REV6 e despesas fixas de **um colaborador**. Não inclui retirada do sócio. A expansão para equipe completa deve ocorrer somente após confirmação de volume e recorrência que sustentem o novo custo fixo.
-
-## Investimento e indicadores
-
-| Componente | Valor |
-|---|---:|
-| Desembolso fixo inicial REV6 | R$ 98.370,00 |
-| Déficits operacionais projetados M1–M9 | R$ 33.201,41 |
-| Capital de giro (1,6 × déficits) | R$ 53.122,26 |
-| **Investimento total estimado** | **R$ 151.492,26** |
-| Margem líquida no mês 12 | 34,4% |
-| ROI anualizado pelo resultado do mês 12 | 51,6% |
-| Payback em regime de maturidade | ~23,2 meses |
-
-No acumulado dos primeiros 12 meses, o cenário projeta resultado operacional negativo de **R$ 19.276,17**, pois a maturação comercial consome caixa antes do equilíbrio mensal. Esse ponto é precisamente a razão para o capital de giro calculado; não deve ser omitido em uma decisão de investimento.
-
-## Classificação de viabilidade
-
-**Classificação: boa, com implantação comercial disciplinada.**
-
-Sorocaba tem escala, verticalização e ambiente regulatório que favorecem a proposta de descarte inteligente. O score de 7,5 reflete, porém, que o território não deve ser vendido como captura automática de demanda: a concentração em condomínios e a rotina de prospecção local serão determinantes para alcançar a curva projetada.
-
-## Estratégia recomendada de implantação
-
-1. Iniciar por dois ou três microterritórios verticalizados, com rota curta e administradoras mapeadas.
-2. Usar o franqueado na frente comercial nos primeiros meses; terceirizar integralmente a venda logo no início reduz a probabilidade de atingir o M10.
-3. Construir carteira recorrente antes de aumentar equipe e frota.
-4. Oferecer proposta centrada em organização dentro do prédio, circulação por elevador, limpeza de áreas comuns e destinação regular — não em preço por volume.
-5. Validar antes da inauguração as áreas licenciadas de destinação, custos de descarte, percurso, janelas de coleta e exigências de CTR/SIGOR aplicáveis ao perfil de cada obra.
-
-## Justificativa técnica dos números
-
-Os números foram estimados em cenário moderado, sem projeção agressiva.
-
-A lógica de verticalização seguiu a equação:
-
-`apartamentos estimados ÷ média de unidades por torre = edifícios/torres estimados`
-
-A quantidade de condomínios foi validada pela relação:
-
-`edifícios estimados ÷ condomínios estimados = média de torres por condomínio`
-
-O potencial de obras/reformas foi calculado aplicando uma taxa anual moderada de reforma sobre o estoque estimado de apartamentos. Quando não houve dado oficial aberto consolidado, foi usada estimativa conservadora baseada no Censo 2022, no perfil imobiliário local e na coerência urbana.
-
-## Nota metodológica
-
-Os indicadores territoriais não representam garantia de resultado financeiro. A receita depende da execução comercial, concentração de rota, qualidade do atendimento, preço efetivamente praticado, custos locais de destinação e gestão do franqueado.
-
-O modelo financeiro REV6 é ancorado em uma receita base de R$ 27.600,00 no mês 12. Nesta simulação, a receita é ajustada pela conversão de 6% e pelo score territorial de 7,5. O investimento, o capital de giro e o payback devem ser atualizados caso as cotações reais de veículo, aluguel, descarte, seguro ou pessoal em Sorocaba se desviem das premissas de referência.
-
-## Fontes utilizadas
-
-- [IBGE — Panorama de Sorocaba](https://cidades.ibge.gov.br/brasil/sp/sorocaba/panorama): população e densidade do Censo 2022.
-- [IBGE — Pesquisa “População e domicílio”](https://cidades.ibge.gov.br/brasil/sp/sorocaba/pesquisa/10105/329757): domicílios particulares.
-- [IBGE — Censo 2022, tipo de domicílio](https://sidra.ibge.gov.br/tabela/6326): referência metodológica para apartamentos e domicílios ocupados.
-- [SECOVI-SP — mercado imobiliário de Sorocaba](https://secovi.com.br/diretor-do-secovi-sp-discute-mercado-imobiliario-de-sorocaba-em-evento-da-mrv/): evidência de verticalização.
-- [SECOVI-SP — construção civil em Sorocaba](https://secovi.com.br/sorocaba-impulsiona-o-mercado-imobiliario-e-registra-forte-geracao-de-empregos/): dados de vínculos e geração de vagas divulgados para 2025.
-- [Prefeitura de Sorocaba — Plano de Gestão de RCC](https://meioambiente.sorocaba.sp.gov.br/wp-content/uploads/2024/04/plano-de-gestao-de-residuos-da-construcao-civil-do-municipio-de-sorocaba-pgrccms-2022-1.pdf): aterro de inertes, SIGOR-RCC, CTR e regras municipais.
+O território não deve ser tratado como uma rota única. A recomendação é começar por microterritórios com maior concentração vertical, consolidar recorrência e produtividade por rota antes de ampliar a cobertura.
 
 ---
 
-*Documento técnico interno — NaLata Descarte Inteligente · Modelo REV6 · julho de 2026.*
+## 2. Dados Oficiais e Indicadores Estruturais
+
+| Indicador | Valor utilizado | Natureza do dado |
+|---|---:|---|
+| População — Censo 2022 | 723.682 habitantes | Oficial — IBGE |
+| Densidade demográfica | 1.608,64 hab./km² | Oficial — IBGE |
+| Domicílios particulares | 224.980 unidades | Oficial — IBGE |
+| Apartamentos estimados | ~49.900 unidades | Estimativa técnica derivada |
+| Torres residenciais estimadas | ~1.500 torres | Estimativa técnica |
+| Condomínios verticais estimados | ~1.150 condomínios | Estimativa técnica |
+
+Sorocaba é um dos mercados imobiliários mais relevantes do interior paulista. O Secovi-SP aponta a cidade entre os destaques nacionais em atratividade e verticalização, o que sustenta a presença de obras de acabamento, renovação de unidades e manutenção em edifícios existentes.
+
+---
+
+## 3. Leitura Estratégica
+
+### Pontos favoráveis
+
+- população superior a 720 mil habitantes;
+- estoque vertical relevante para uma cidade do interior;
+- expansão da verticalização e atividade imobiliária regional;
+- recorrência potencial de reformas em apartamentos e manutenção predial;
+- presença de bairros com concentração de condomínios e padrão de ticket compatível;
+- Plano Municipal de Gestão de RCC e estrutura formal para a destinação de resíduos de construção;
+- boa aderência da proposta sem caçamba em áreas urbanas consolidadas.
+
+### Pontos de atenção
+
+- a densidade municipal não é homogênea; a produtividade depende da concentração por zona;
+- parte relevante do território tem perfil horizontal, menos aderente ao modelo;
+- preço, custo de destinação e tempo de rota precisam ser validados em campo antes da expansão;
+- a carteira inicial deve ser formada por prospecção ativa junto a condomínios, administradoras, arquitetos, engenheiros e empresas de reforma;
+- a expansão de equipe e frota deve acompanhar ocupação, ciclos por lata e recorrência comprovada.
+
+---
+
+## 4. Mercado Imobiliário e Construção Civil
+
+O crescimento da verticalização em Sorocaba amplia os momentos em que a NaLata tem aderência: entrega e personalização de unidades, reformas em prédios consolidados, substituição de revestimentos, obras de manutenção e retrofit.
+
+Dados divulgados pelo Secovi-SP reforçam a relevância regional de Sorocaba tanto em atratividade imobiliária quanto em expansão vertical. Isso não equivale a demanda garantida para a unidade: é o fundamento de mercado para uma estratégia comercial focada, com concentração de rotas e desenvolvimento de canais recorrentes.
+
+Para esta simulação, foram consideradas aproximadamente 120 construtoras, incorporadoras, empreiteiras e empresas de reforma/manutenção com potencial de aderência comercial. O número representa universo comercial direcionável, não a totalidade das empresas registradas no município.
+
+---
+
+## 5. Dados do Território Mapeado
+
+| Campo | Estimativa moderada |
+|---|---:|
+| Apartamentos existentes | ~49.900 unidades |
+| Edifícios/torres residenciais | ~1.500 torres |
+| Condomínios verticais | ~1.150 condomínios |
+| Obras e reformas aderentes | ~2.750 por ano |
+| Construtoras e empresas correlatas | ~120 empresas |
+| Clientes recorrentes potenciais | ~620 clientes |
+| Meta territorial de latas no M12 | 280 latas |
+| Faixa inicial de preço por ciclo | R$ 105 a R$ 130 |
+| Conversão territorial adotada | 6% |
+| Score NaLata™ | 7,5/10 |
+
+A meta de 280 latas representa a capacidade territorial estimada em maturidade. Não é recomendação de compra integral no início da operação. O kit inicial e as expansões devem seguir ocupação real, giro das latas, recorrência, produtividade por rota e caixa disponível.
+
+---
+
+## 6. Justificativa Técnica dos Números
+
+Os números foram estimados em cenário moderado, sem projeção agressiva.
+
+### 6.1. Estimativa do estoque de apartamentos
+
+O ponto de partida é o total de 224.980 domicílios particulares recenseados. Considerando a evidência de forte expansão vertical no período 2010–2022 e sem assumir que todo o município possui perfil vertical, foi adotado estoque técnico conservador de aproximadamente 49.900 apartamentos.
+
+```text
+apartamentos_estimados = ~49.900 unidades
+```
+
+### 6.2. Estimativa de edifícios/torres
+
+Para Sorocaba, foi adotada média moderada de 33 apartamentos por torre, compatível com cidade média verticalizada e sem presumir o padrão de grandes torres de capital.
+
+```text
+edificios_estimados = apartamentos_estimados ÷ media_unidades_por_torre
+edificios_estimados = 49.900 ÷ 33
+edificios_estimados = ~1.512 torres
+```
+
+Valor arredondado utilizado:
+
+```text
+nalata_qtdEdif = ~1.500 torres
+```
+
+### 6.3. Estimativa de condomínios
+
+Foi adotado universo aproximado de 1.150 condomínios verticais.
+
+```text
+media_torres_por_condominio = 1.500 ÷ 1.150
+media_torres_por_condominio = ~1,30 torre por condomínio
+```
+
+A relação é coerente com uma malha formada por muitos edifícios isolados e pequenos conjuntos residenciais.
+
+### 6.4. Estimativa de obras e reformas
+
+Foi aplicada taxa anual moderada de reforma de 5,5% sobre o estoque estimado de apartamentos.
+
+```text
+obras_reformas = apartamentos_estimados × taxa_anual_reforma
+obras_reformas = 49.900 × 5,5%
+obras_reformas = ~2.745 obras/ano
+```
+
+Valor arredondado utilizado:
+
+```text
+nalata_qtdObras = ~2.750 obras/ano
+```
+
+Essa taxa representa o universo anual potencialmente aderente ao modelo, e não pressupõe contratação integral da NaLata.
+
+### 6.5. Estimativa de clientes potenciais
+
+A estimativa de aproximadamente 620 clientes recorrentes potenciais considera:
+
+- condomínios verticais com perfil de reforma e manutenção;
+- construtoras, empreiteiras e empresas de reforma relevantes;
+- administradoras de condomínio;
+- arquitetos e engenheiros com atuação recorrente;
+- equipes especializadas em reformas de apartamentos.
+
+Não foi considerado que a totalidade dos condomínios seja comercialmente acessível ou aderente.
+
+---
+
+## 7. Perfil Operacional Recomendado
+
+### Fase 1 — Núcleo vertical prioritário
+
+Priorizar bairros e eixos com maior concentração de edifícios, administradoras e reformas, como Campolim, Parque Campolim, Santa Rosália, Jardim Faculdade, Mangal, Centro e Alto da Boa Vista. A lista é uma diretriz inicial e deve ser refinada pelo levantamento de campo, obras ativas, contatos de administradoras e tempo real de deslocamento.
+
+### Fase 2 — Expansão controlada
+
+Expandir somente depois de validar:
+
+- ocupação das latas;
+- ciclos por lata;
+- custo por coleta;
+- tempo médio por rota;
+- conversão por bairro;
+- recorrência de clientes;
+- produtividade da equipe;
+- disponibilidade e custo da destinação licenciada.
+
+### Estrutura inicial sugerida
+
+- kit inicial padrão de 60 latas;
+- 1 veículo operacional;
+- proprietário ativo na frente comercial e de gestão, ou 1 colaborador operacional;
+- segundo colaborador condicionado ao volume;
+- atendimento e pré-venda centralizados;
+- rotas por zona e janela de horário;
+- parcerias comerciais com administradoras e profissionais de reforma.
+
+---
+
+## 8. Infraestrutura RCC e Ambiente Regulatório
+
+Sorocaba possui Plano de Gestão de Resíduos da Construção Civil, disciplinado em conformidade com a Resolução CONAMA nº 307, e prevê mecanismos de gestão, triagem e destinação dos RCC. O plano municipal também referencia a utilização do SIGOR-RCC na rastreabilidade aplicável aos geradores e às operações de destinação.
+
+Esse ambiente não elimina a concorrência de caçambas e transportadores. Ele reforça a necessidade de uma operação organizada, com documentação e destinação regular. Para a NaLata, a oportunidade é o resíduo fracionado de reformas em edifícios, com foco em limpeza de áreas comuns, circulação por elevador, coleta programada e menor transtorno para condomínio e moradores.
+
+Antes da implantação, a unidade deve validar:
+
+- transportadores e destinos licenciados;
+- exigências municipais e estaduais aplicáveis;
+- documentação de recebimento e destinação;
+- regras de PGRCC, SIGOR-RCC e comprovantes aplicáveis;
+- custos por tipo e volume de resíduo;
+- horários, percurso e condições de recebimento;
+- possibilidade de emissão de CTR ou documento equivalente.
+
+---
+
+## 9. Classificação de Viabilidade
+
+### Score NaLata™: 7,5/10
+
+| Critério | Avaliação |
+|---|---:|
+| População | 8,2 |
+| Densidade urbana | 7,0 |
+| Verticalização | 8,1 |
+| Condomínios | 7,7 |
+| Mercado imobiliário | 8,3 |
+| Infraestrutura RCC | 8,0 |
+| Ambiente regulatório | 8,0 |
+| Logística urbana | 7,4 |
+| Renda e capacidade de ticket | 7,8 |
+
+### Classificação
+
+**Território com boa viabilidade, recomendado para implantação por microterritórios.**
+
+Sorocaba tem base urbana e verticalização suficientes para sustentar a proposta NaLata. O principal fator de sucesso é a execução: concentração de rota, prospecção recorrente e controle da operação antes de ampliar cobertura, equipe ou frota.
+
+---
+
+## 10. Estratégia Recomendada
+
+### Posicionamento
+
+Posicionar a NaLata como solução de gestão de entulho para reformas em prédios, com ênfase em:
+
+- organização da obra;
+- proteção das áreas comuns;
+- circulação pelo elevador;
+- ausência de caçamba ocupando rua ou garagem;
+- coleta programada;
+- redução de transtornos para síndico e moradores;
+- destinação adequada e rastreável.
+
+### Canais prioritários
+
+1. administradoras de condomínios;
+2. síndicos profissionais;
+3. arquitetos e designers de interiores;
+4. engenheiros e empresas de reforma;
+5. construtoras e incorporadoras;
+6. lojas de acabamentos, planejados e materiais premium;
+7. networking empresarial e associações locais;
+8. Google Ads geolocalizado nos bairros prioritários.
+
+### Oferta inicial
+
+- serviço avulso para reformas menores;
+- planos recorrentes para obras com vários ciclos;
+- contratos para condomínios e empresas de manutenção;
+- atendimento com SLA e janela programada;
+- relatório ou comprovante de destinação quando disponível.
+
+---
+
+## 11. Premissas para o Simulador Financeiro
+
+| Parâmetro | Valor recomendado |
+|---|---:|
+| Cenário | Moderado |
+| Latas iniciais | 60 |
+| Ticket médio mensal por contrato | R$ 460,00 |
+| Taxa de conversão territorial | 6% |
+| Markup | 1,70× |
+| Score territorial | 7,5 |
+| Preço mínimo por ciclo | R$ 105,00 |
+| Preço máximo por ciclo | R$ 130,00 |
+| Modo operacional inicial | Proprietário ativo ou 1 colaborador |
+| Expansão de equipe | Condicionada ao volume e à produtividade |
+
+O ticket de R$ 460,00 é o parâmetro-base mensal do modelo REV6 e não deve ser confundido com o preço unitário de uma coleta.
+
+---
+
+## 12. Validação de Coerência Urbana
+
+```text
+apartamentos_estimados ≈ edificios_estimados × media_unidades_por_torre
+49.900 ≈ 1.500 × 33
+49.900 ≈ 49.500
+```
+
+Diferença decorrente do arredondamento: aproximadamente 0,8%.
+
+```text
+edificios_estimados ≈ condominios_estimados × media_torres_por_condominio
+1.500 ≈ 1.150 × 1,30
+1.500 ≈ 1.495
+```
+
+A estrutura apresenta coerência matemática e urbana suficiente para uso no simulador.
+
+---
+
+## 13. Nota Metodológica
+
+Os dados oficiais de população, densidade e domicílios foram obtidos em fontes públicas do IBGE. Os campos de apartamentos, obras/reformas, edifícios residenciais, condomínios verticais, construtoras ativas e clientes recorrentes potenciais são estimativas técnicas moderadas.
+
+Essas estimativas consideram estoque habitacional, verticalização, média de unidades por torre, média de torres por condomínio, taxa anual de reformas, mercado imobiliário, infraestrutura RCC e ambiente regulatório local.
+
+As projeções não representam garantia de resultado financeiro. O desempenho dependerá de execução comercial, gestão operacional, qualidade do atendimento, aderência ao plano da franquia e condições reais do território.
+
+---
+
+## 14. Fontes Utilizadas
+
+1. **IBGE — Cidades e Estados: Sorocaba — SP**  
+   https://www.ibge.gov.br/cidades-e-estados/sp/sorocaba.html
+
+2. **IBGE — Pesquisa População e Domicílios: Sorocaba — SP**  
+   https://cidades.ibge.gov.br/brasil/sp/sorocaba/pesquisa/10105/329757
+
+3. **Secovi-SP — Sorocaba em destaque no cenário brasileiro**  
+   https://secovi.com.br/diretor-do-secovi-sp-destaca-fatores-que-colocam-cidade-em-destaque-no-cenario-brasileiro/
+
+4. **Secovi-SP — Mercado imobiliário de Sorocaba**  
+   https://secovi.com.br/diretor-do-secovi-sp-discute-mercado-imobiliario-de-sorocaba-em-evento-da-mrv/
+
+5. **Prefeitura de Sorocaba — Plano de Gestão de Resíduos da Construção Civil**  
+   https://servicospublicos.sorocaba.sp.gov.br/wp-content/uploads/2022/02/plano-de-gesto-de-residuos-da-construco-civil-do-municipio-de-sorocaba-pgrccms-2022.pdf
+
+---
+
+*Documento desenvolvido para uso interno pela equipe NaLata Descarte Inteligente.*  
+*Versão: 2.0 — Sorocaba — SP*  
+*Data de elaboração: 30/07/2026*  
+*Modelo territorial compatível com o template NaLata REV6.*
