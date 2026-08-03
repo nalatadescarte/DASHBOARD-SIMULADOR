@@ -26,7 +26,7 @@ export function calcNumFuncionarios(mode: OperationMode, latasAtivas: number): n
 export const LATAS_POR_MODULO = 300;   // ciclos/mês por módulo operacional
 export const OPEX_MODULO = 8300;       // R$/mês por módulo (2 colabs + encargos)
 export const CAPEX_MODULO = 35000;     // R$ CAPEX por módulo / 2º veículo
-export const PRECO_LATA = 230;         // R$ por lata física nova
+export const PRECO_LATA = 130;         // R$ por lata física nova
 export const ESTOQUE_INICIAL_LATAS = 60;
 export const LATAS_ALVO_SJC = 280;     // âncora SJC — latas ativas M12 moderado
 export const TAXA_CRESCIMENTO_MODERADO = 0.15; // mantida como referência histórica
