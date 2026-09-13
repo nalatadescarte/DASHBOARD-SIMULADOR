@@ -30,6 +30,7 @@ export const PRECO_LATA = 130;         // R$ por lata física nova
 export const ESTOQUE_INICIAL_LATAS = 60;
 export const LATAS_ALVO_SJC = 280;     // âncora SJC — latas ativas M12 moderado
 export const TAXA_CRESCIMENTO_MODERADO = 0.15; // mantida como referência histórica
+export const INVESTIMENTO_BASE = 98370; // implantação-base antes do capital de giro e degraus de escala
 
 // ─── Rampa M1 — learning phase dos ads ───────────────────────────────────────
 const MULT_SEMANAS = [0.50, 0.60, 0.80, 1.00] as const;
@@ -497,13 +498,21 @@ export function calcularSimulacaoCompleta(params: SimParams): SimResult {
   const lucroMaturacao = lucros[11];
   const margemLiquida = receitaMaturacao > 0 ? (lucroMaturacao / receitaMaturacao) * 100 : 0;
 
-  // Capital de giro = 1.5 × déficits até break-even
-  const beIdx = meses.findIndex((m) => m.lucroMensal > 0);
-  const sliceEnd = beIdx === -1 ? 12 : beIdx;
+  // Break-even sustentável = primeiro mês positivo que permanece positivo até M12.
+  // Um mês positivo seguido por uma queda posterior (ex.: contratação/novo degrau de escala)
+  // não é tratado como ponto de equilíbrio.
+  const breakEvenIndex = meses.findIndex(
+    (m, i) => m.lucroMensal > 0 && meses.slice(i).every((mes) => mes.lucroMensal > 0)
+  );
+  const breakEvenMes = breakEvenIndex >= 0 ? meses[breakEvenIndex].mes : null;
+
+  // Capital de giro = 1,5 × soma dos déficits até o break-even sustentável.
+  // Assim, uma queda posterior ao primeiro mês positivo continua sendo coberta pela reserva.
+  const sliceEnd = breakEvenIndex === -1 ? 12 : breakEvenIndex;
   const deficitAteBreakEven = meses.slice(0, sliceEnd).reduce((acc, m) => acc + m.deficit, 0);
   const capitalDeGiro = Math.max(15000, 1.5 * deficitAteBreakEven);
 
-  // Investimento total: franquia base + módulos adicionais + 2° veículo + giro
+  // Investimento total: implantação base + módulos adicionais + 2° veículo + giro
   const numModulosM12 = numModulosPorMes[11];
   const modulosAdicionais = Math.max(0, numModulosM12 - 1);
   const precisaVeiculoExtra = meses.some((m) => m.latasAtivas > VEICULO_EXTRA_THRESHOLD);
@@ -514,7 +523,7 @@ export function calcularSimulacaoCompleta(params: SimParams): SimResult {
     modulosAdicionais * CAPEX_MODULO +
     capexVeiculoExtra;
 
-  const investimentoTotal = 98370 + investimentoCidade;
+  const investimentoTotal = INVESTIMENTO_BASE + investimentoCidade;
 
   // ── Payback REAL: simula acumulado mês a mês ─────────────────────────────────
   // Começa em -investimentoTotal e soma cada lucro mensal real (M1–M12),
@@ -556,7 +565,6 @@ export function calcularSimulacaoCompleta(params: SimParams): SimResult {
       ? ((totalLucro12 + lucroMaturacao * 12) / investimentoTotal) * 100
       : null;
 
-  const breakEvenMes = meses.find((m) => m.lucroMensal > 0)?.mes ?? null;
   const mesPrimeiroDegrau =
     meses.find((m, i) => i > 0 && m.numModulos > meses[i - 1].numModulos)?.mes ?? null;
 
