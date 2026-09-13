@@ -104,7 +104,7 @@ footer{margin-top:5mm;font-size:9px;line-height:1.5;color:var(--carvao-500)}.pg{
           Capital de giro <span>{{CAPITAL_GIRO}}</span><br>
           CAPEX adicional de escala <span id="capex-escala">R$ 0</span>
         </div>
-        <div class="desc">O capital de giro é calculado sobre os déficits até o <b>break-even sustentável</b>. Se houver um mês positivo seguido por nova queda, a reserva continua cobrindo a rampa até a operação permanecer positiva.</div>
+        <div class="desc">O capital de giro considera o <b>maior déficit acumulado da rampa</b> até o break-even sustentável, multiplicado pelo fator conservador do REV8. Se houver um mês positivo seguido por nova queda, esse movimento é absorvido no saldo acumulado antes de definir a reserva.</div>
       </div>
       <div class="box res">
         <div class="big" id="investimento-total">—</div>
@@ -241,7 +241,7 @@ Tokens usados pelo exportador atual:
 
 Regras executivas desta peça:
   - Break-even: primeiro mês positivo que permanece positivo até M12.
-  - Capital de giro: 1,5 × soma dos déficits até o break-even sustentável, com piso do motor REV8.
+  - Capital de giro: 1,5 × maior déficit acumulado da rampa até o break-even sustentável, com piso de R$15 mil no motor REV8.
   - Faixa de faturamento: M12 ±8%, arredondado ao milhar.
   - Payback: cálculo do motor REV8 com investimento total e curva real M1–M12.
   - Investimento total exibido: R$98.370 + capital de giro + degraus de escala do motor.
