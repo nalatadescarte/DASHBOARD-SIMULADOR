@@ -506,11 +506,18 @@ export function calcularSimulacaoCompleta(params: SimParams): SimResult {
   );
   const breakEvenMes = breakEvenIndex >= 0 ? meses[breakEvenIndex].mes : null;
 
-  // Capital de giro = 1,5 × soma dos déficits até o break-even sustentável.
-  // Assim, uma queda posterior ao primeiro mês positivo continua sendo coberta pela reserva.
-  const sliceEnd = breakEvenIndex === -1 ? 12 : breakEvenIndex;
-  const deficitAteBreakEven = meses.slice(0, sliceEnd).reduce((acc, m) => acc + m.deficit, 0);
-  const capitalDeGiro = Math.max(15000, 1.5 * deficitAteBreakEven);
+  // Capital de giro = 1,5 × maior déficit acumulado até o break-even sustentável.
+  // Meses positivos anteriores a uma queda posterior compensam parcialmente o caixa,
+  // então a reserva acompanha o pior saldo acumulado real da rampa, e não a soma isolada
+  // de todos os meses negativos.
+  const limiteReserva = breakEvenIndex === -1 ? 12 : breakEvenIndex;
+  let saldoAcumuladoRampa = 0;
+  let maiorDeficitAcumulado = 0;
+  for (let i = 0; i < limiteReserva; i++) {
+    saldoAcumuladoRampa += meses[i].lucroMensal;
+    maiorDeficitAcumulado = Math.max(maiorDeficitAcumulado, -saldoAcumuladoRampa);
+  }
+  const capitalDeGiro = Math.max(15000, 1.5 * maiorDeficitAcumulado);
 
   // Investimento total: implantação base + módulos adicionais + 2° veículo + giro
   const numModulosM12 = numModulosPorMes[11];
