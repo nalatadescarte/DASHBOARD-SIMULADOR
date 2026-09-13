@@ -130,7 +130,7 @@ const scenariosComparacao = useMemo(() => {
       <CardHeader className="bg-gradient-to-r from-primary to-nalata-orange-light text-primary-foreground rounded-t-lg">
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="h-5 w-5" />
-          Simulador de Franquia — Nalata REV7
+          Simulador de Franquia — Nalata REV8
         </CardTitle>
       </CardHeader>
       <CardContent className="p-6 space-y-6">
@@ -142,7 +142,7 @@ const scenariosComparacao = useMemo(() => {
             <TabsList className="grid w-full grid-cols-3">
               {scenariosComparacao.map((s) => (
                 <TabsTrigger key={s.scenario} value={s.scenario}>
-                  {s.scenario === "conservador" ? "Conservador" : s.scenario === "moderado" ? "Moderado" : "Otimista"}
+                  {s.scenario === "conservador" ? "Conservador" : s.scenario === "moderado" ? "Moderado — referência" : "Otimista"}
                   {" "}(+{s.deltaMedioLatas}/mês)
                 </TabsTrigger>
               ))}
@@ -872,7 +872,7 @@ async function exportarPlanilha({ params, result }: { params: SimParams; result:
   workbook.creator = "ChatGPT";
   workbook.created = new Date();
 
-  const ws = workbook.addWorksheet("DRE Nalata REV7", {
+  const ws = workbook.addWorksheet("DRE Nalata REV8", {
     views: [{ state: "frozen", ySplit: 1, xSplit: 1 }],
     properties: { defaultRowHeight: 20 },
   });
@@ -1405,7 +1405,7 @@ function exportarMarkdown({ params, result }: { params: SimParams; result: SimRe
   const fmtBRL = (v: number) =>
     v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2 });
 
-  const md = `# Simulação Financeira Nalata — REV7
+  const md = `# Simulação Financeira Nalata — REV8
 
 ## Parâmetros
 - **Cenário:** ${params.scenario}
@@ -1430,13 +1430,13 @@ function exportarMarkdown({ params, result }: { params: SimParams; result: SimRe
 ${result.meses.map((m) => `- M${m.mes}: ${m.latasAtivas} latas · ${fmtBRL(m.receitaTotal)} receita · ${fmtBRL(m.lucroMensal)} lucro`).join("\n")}
 
 ---
-*Projeções baseadas no modelo operacional Nalata REV7. Não constituem garantia de rendimento.*
+*Projeções baseadas no modelo operacional Nalata REV8. Não constituem garantia de rendimento.*
 `;
   const blob = new Blob([md], { type: "text/markdown" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `simulacao-nalata-rev7-${Date.now()}.md`;
+  a.download = `simulacao-nalata-rev8-${Date.now()}.md`;
   a.click();
   URL.revokeObjectURL(url);
 }
