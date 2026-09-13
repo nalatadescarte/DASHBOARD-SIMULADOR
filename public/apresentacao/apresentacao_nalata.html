@@ -2,16 +2,17 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<title>Simulação Executiva de Território — NaLata REV8</title>
+<title>Simulação Executiva de Território — NaLata</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --orange:#F05000; --orange-100:#FFE4D2; --orange-50:#FFF3EA;
   --carvao:#303030; --carvao-900:#1A1A1A; --carvao-700:#4A4A4A; --carvao-500:#6E6E6E;
-  --carvao-300:#B5B5B5; --carvao-200:#D6D6D6; --carvao-100:#E8E8E8; --carvao-50:#F4F4F4;
+  --carvao-300:#B5B5B5; --carvao-200:#D6D6D6; --carvao-100:#E8E8E8; --carvao-50:#F7F7F7;
   --display:'Barlow Condensed',sans-serif; --body:'Inter',sans-serif; --mono:'JetBrains Mono',monospace;
+  --shadow-soft:0 8px 18px rgba(26,26,26,.06), 0 2px 4px rgba(26,26,26,.04);
 }
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body{font-family:var(--body);color:var(--carvao);background:var(--carvao-100)}
 .page{width:210mm;min-height:297mm;background:#fff;margin:0 auto 8mm;padding:15mm 15mm 12mm;display:flex;flex-direction:column}
 .top{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:5mm;border-bottom:2px solid var(--carvao-900)}
@@ -23,31 +24,34 @@ h1 em{font-style:normal;color:var(--orange)}
 .lede{font-size:13px;line-height:1.6;color:var(--carvao-700);max-width:64ch;margin-top:5mm}
 section{margin-top:8mm}
 h2{font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:.02em;text-transform:uppercase;color:var(--carvao-900);padding-bottom:2mm;border-bottom:1px solid var(--carvao-200)}
-.mech{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:4mm;margin-top:5mm;background:var(--carvao-50);padding:6mm 5mm}
+.mech{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:4mm;margin-top:5mm;background:var(--carvao-50);padding:6mm 5mm;border-radius:4mm}
 .mech .cell{text-align:center}.mech .n{font-family:var(--display);font-weight:900;font-size:34px;line-height:1;color:var(--carvao-900)}
 .mech .n.hi{color:var(--orange)}.mech .l{font-size:10px;line-height:1.35;color:var(--carvao-500);margin-top:1.5mm}
 .mech .op{font-family:var(--display);font-weight:700;font-size:24px;color:var(--carvao-300)}
 .mech-note{font-size:11.5px;line-height:1.55;color:var(--carvao-700);margin-top:3.5mm;max-width:72ch}
 table{width:100%;border-collapse:collapse;margin-top:4mm;font-size:12px}td{padding:2.5mm 0;border-bottom:1px solid var(--carvao-100)}
 td:last-child{text-align:right;font-family:var(--mono);font-weight:700;color:var(--carvao-900)}tr:last-child td{border-bottom:none}
-.note{margin-top:3mm;font-size:10.5px;color:var(--carvao-500);line-height:1.5}
+.note{margin-top:3mm;font-size:10.8px;color:var(--carvao-500);line-height:1.55}
 .inv{display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin-top:5mm}.inv .box{border-top:3px solid var(--carvao-900);padding-top:3mm}
 .inv .box.res{border-top-color:var(--orange)}.inv .big{font-family:var(--display);font-weight:900;font-size:37px;line-height:1;color:var(--carvao-900)}
 .inv .res .big{color:var(--orange)}.inv .cap{font-size:10.5px;color:var(--carvao-500);margin-top:1.5mm}
 .inv .break{margin-top:3.5mm;font-size:11px;line-height:1.9;border-top:1px solid var(--carvao-100);padding-top:2.5mm}
 .inv .break span{float:right;font-family:var(--mono);font-weight:700}.inv .desc{font-size:10.8px;line-height:1.5;color:var(--carvao-700);margin-top:3mm}
-.totalbox{margin-top:4mm;background:var(--carvao-900);color:#fff;padding:4mm 5mm;display:flex;align-items:center;justify-content:space-between;gap:5mm}
+.totalbox{margin-top:4mm;background:var(--carvao-900);color:#fff;padding:4mm 5mm;display:flex;align-items:center;justify-content:space-between;gap:5mm;border-radius:4mm}
 .totalbox .t{font-size:11px;line-height:1.4;color:var(--carvao-200)}.totalbox .v{font-family:var(--display);font-weight:900;font-size:27px;white-space:nowrap}
 .nums{margin-top:5mm;border-top:1px solid var(--carvao-200)}.num{display:grid;grid-template-columns:1fr 67mm;gap:6mm;align-items:baseline;padding:4.5mm 0;border-bottom:1px solid var(--carvao-200)}
 .num .v{font-family:var(--display);font-weight:900;font-size:31px;line-height:1;color:var(--carvao-900)}.num .v u{text-decoration:none;font-size:16px;color:var(--carvao-500)}
 .num .d{font-size:10.8px;line-height:1.5;color:var(--carvao-700)}
-.ramp{display:grid;grid-template-columns:repeat(3,1fr);margin-top:5mm;border-left:1px solid var(--carvao-200)}.ramp div{border-right:1px solid var(--carvao-200);padding:4mm}
-.ramp .m{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--orange)}.ramp .n{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.1;margin-top:2mm;color:var(--carvao-900)}
-.ramp .l{font-size:10.2px;line-height:1.4;color:var(--carvao-500);margin-top:1.5mm}
+.ramp{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm;margin-top:5mm}
+.ramp-card{background:linear-gradient(180deg,#ffffff 0%, #fafafa 100%);border:1px solid var(--carvao-100);border-radius:4.5mm;padding:5mm 5mm 5.5mm;box-shadow:var(--shadow-soft);position:relative;overflow:hidden}
+.ramp-card::before{content:"";position:absolute;inset:0 0 auto 0;height:1.8mm;background:linear-gradient(90deg,rgba(240,80,0,.12),rgba(240,80,0,0))}
+.ramp-card .m{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.02em}
+.ramp-card .n{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.1;margin-top:3.2mm;color:var(--carvao-900)}
+.ramp-card .l{font-size:10.4px;line-height:1.45;color:var(--carvao-500);margin-top:6mm;max-width:24ch}
 .hold{margin-top:5mm;background:var(--orange-50);border-left:4px solid var(--orange);padding:5mm}.hold p{font-size:11.5px;line-height:1.5}.hold ul{margin-top:2.5mm;list-style:none}
 .hold li{font-size:11px;line-height:1.4;padding:2mm 0 2mm 6mm;position:relative;border-bottom:1px solid var(--orange-100)}.hold li:last-child{border-bottom:none}
 .hold li::before{content:"";position:absolute;left:0;top:3.8mm;width:3mm;height:1px;background:var(--orange)}
-.terr{margin-top:auto;background:var(--carvao-900);color:#fff;padding:6mm}.terr .h{font-family:var(--display);font-weight:900;font-size:24px;text-transform:uppercase;line-height:1.05}
+.terr{margin-top:auto;background:var(--carvao-900);color:#fff;padding:6mm;border-radius:4mm}.terr .h{font-family:var(--display);font-weight:900;font-size:24px;text-transform:uppercase;line-height:1.05}
 .terr .h em{font-style:normal;color:var(--orange)}.terr p{font-size:11.5px;line-height:1.6;color:var(--carvao-200);margin-top:3mm;max-width:68ch}
 .terr .ask{margin-top:4mm;padding-top:3mm;border-top:1px solid var(--carvao-700);font-size:11.5px}.terr .ask b{color:var(--orange)}
 footer{margin-top:5mm;font-size:9px;line-height:1.5;color:var(--carvao-500)}.pg{margin-top:4mm;display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--carvao-300)}
@@ -61,7 +65,6 @@ footer{margin-top:5mm;font-size:9px;line-height:1.5;color:var(--carvao-500)}.pg{
     <div class="meta">
       Simulação financeira executiva<br>
       <b data-territorio>Território selecionado</b><br>
-      Modelo operacional <b>REV8</b><br>
       {{DATA}} · Documento confidencial
     </div>
   </div>
@@ -74,102 +77,119 @@ footer{margin-top:5mm;font-size:9px;line-height:1.5;color:var(--carvao-500)}.pg{
     <div class="mech">
       <div class="cell"><div class="n">{{LATAS_FISICAS_M12}}</div><div class="l">tambores físicos na frota</div></div>
       <div class="op">×</div>
-      <div class="cell"><div class="n">{{CICLOS_MES}}</div><div class="l">ciclos por lata / mês</div></div>
+      <div class="cell"><div class="n">{{CICLOS_MES}}</div><div class="l">giros médios de cada tambor por mês</div></div>
       <div class="op">=</div>
-      <div class="cell"><div class="n hi" id="locacoes-m12">—</div><div class="l">locações faturáveis / mês</div></div>
+      <div class="cell"><div class="n hi" id="locacoes-m12">—</div><div class="l">locações faturáveis por mês</div></div>
     </div>
-    <p class="mech-note">O ativo gira. A mesma lata física pode atender mais de um ciclo no mês, aumentando a capacidade comercial sem exigir que o estoque físico cresça na mesma proporção da receita.</p>
+    <p class="mech-note">Em outras palavras: o tambor não gera receita apenas uma vez. Quando ele gira mais de uma vez no mês, a capacidade comercial cresce sem exigir que a frota física aumente na mesma proporção.</p>
   </section>
 
   <section>
-    <h2>Premissas da simulação</h2>
+    <h2>Premissas principais da projeção</h2>
     <table>
-      <tr><td>Meta de latas ativas M12 — referência do território</td><td>{{LATAS_ALVO_M12}}</td></tr>
-      <tr><td>Frota física necessária em M12</td><td>{{LATAS_FISICAS_M12}}</td></tr>
-      <tr><td>Ciclos por lata / mês</td><td>{{CICLOS_MES}}×</td></tr>
-      <tr><td>Preço médio ponderado por ciclo</td><td>{{PRECO_MEDIO}}</td></tr>
-      <tr><td>Mix comercial</td><td>{{MIX_AVULSA}}% avulsa · {{MIX_PACOTE}}% pacote/B2B</td></tr>
-      <tr><td>Módulos operacionais em M12</td><td>{{MODULOS_M12}}</td></tr>
+      <tr><td>Volume projetado no final do 1º ano</td><td>{{LATAS_ALVO_M12}}</td></tr>
+      <tr><td>Frota física necessária no final do 1º ano</td><td>{{LATAS_FISICAS_M12}}</td></tr>
+      <tr><td>Giro médio de cada tambor por mês</td><td>{{CICLOS_MES}}×</td></tr>
+      <tr><td>Ticket médio por locação/ciclo</td><td>{{PRECO_MEDIO}}</td></tr>
+      <tr><td>Distribuição das vendas</td><td>{{MIX_AVULSA}}% avulsa · {{MIX_PACOTE}}% pacote</td></tr>
+      <tr><td>Estruturas de veículo e equipe previstas para sustentar o volume</td><td>{{MODULOS_M12}}</td></tr>
     </table>
-    <p class="note">A peça resume o cenário atualmente selecionado no simulador. Custos de operação, logística, equipe, destinação, aquisição de tambores e degraus de escala permanecem calculados pelo motor REV8.</p>
+    <p class="note">Os números acima resumem os pilares centrais desta projeção. Na reunião, abrimos os detalhes para mostrar como operação, custos e ritmo comercial impactam o retorno do investimento.</p>
   </section>
 
   <section>
-    <h2>O capital necessário</h2>
+    <h2>Capital recomendado para iniciar com segurança</h2>
     <div class="inv">
       <div class="box">
-        <div class="big">R$ 98.370</div>
-        <div class="cap">Implantação-base considerada pelo REV8</div>
+        <div class="big" id="necessidade-caixa">—</div>
+        <div class="cap">Necessidade estimada de caixa para atravessar a fase inicial</div>
         <div class="break">
-          Capital de giro <span>{{CAPITAL_GIRO}}</span><br>
-          CAPEX adicional de escala <span id="capex-escala">R$ 0</span>
+          Índice de segurança aplicado <span>1,5×</span><br>
+          Capital de giro recomendado <span>{{CAPITAL_GIRO}}</span>
         </div>
-        <div class="desc">O capital de giro considera o <b>maior déficit acumulado da rampa</b> até o break-even sustentável, multiplicado pelo fator conservador do REV8. Se houver um mês positivo seguido por nova queda, esse movimento é absorvido no saldo acumulado antes de definir a reserva.</div>
+        <div class="desc">A leitura é simples: primeiro estimamos o maior consumo de caixa da fase inicial. Depois aplicamos um fator de segurança de 1,5× para que a operação tenha folga financeira até se sustentar com o próprio resultado.</div>
       </div>
       <div class="box res">
         <div class="big" id="investimento-total">—</div>
-        <div class="cap">Investimento total estimado considerado no payback</div>
-        <div class="desc">Inclui implantação-base, capital de giro e os degraus adicionais de capacidade previstos pelo simulador para o cenário selecionado.</div>
+        <div class="cap">Investimento total estimado para iniciar a operação</div>
+        <div class="desc">Esse total reúne a implantação inicial, o capital de giro recomendado e eventuais reforços de capacidade que o cenário pode exigir para sustentar o crescimento projetado.</div>
       </div>
     </div>
+    <div class="totalbox">
+      <div class="t">Implantação inicial considerada: <b>R$ 98.370</b><br>Reserva operacional saudável: <b>{{CAPITAL_GIRO}}</b></div>
+      <div class="v" id="capex-escala-wrap">Capacidade extra: <span id="capex-escala">R$ 0</span></div>
+    </div>
+    <p class="note">* Se 1,5× da necessidade calculada resultar em menos de R$ 15 mil, a projeção mantém R$ 15 mil como reserva mínima de segurança.</p>
   </section>
 
-  <div class="pg"><span>NALATA · REV8 · <span data-territorio>Território selecionado</span></span><span>01 / 02</span></div>
+  <div class="pg"><span>NALATA · <span data-territorio>Território selecionado</span></span><span>01 / 02</span></div>
 </div>
 
 <div class="page">
   <div class="top">
     <img src="logo_completo.png" alt="NaLata Descarte Inteligente" class="logo">
-    <div class="meta">Simulação financeira executiva<br><b data-territorio>Território selecionado</b><br>Modelo REV8 · {{DATA}}</div>
+    <div class="meta">Simulação financeira executiva<br><b data-territorio>Território selecionado</b><br>{{DATA}}</div>
   </div>
 
   <section style="margin-top:8mm">
-    <h2>O que a operação projeta devolver</h2>
+    <h2>O que a operação pode devolver</h2>
     <div class="nums">
       <div class="num">
         <div class="v"><span id="fat-min">—</span> – <span id="fat-max">—</span><u> / mês</u></div>
-        <div class="d">Faixa executiva de faturamento na maturidade, derivada de ±8% sobre o faturamento M12 do cenário selecionado e arredondada ao milhar.</div>
+        <div class="d">Em vez de tratar a projeção como um número exato, mostramos uma faixa ao redor do faturamento central. Ela considera uma variação de 8% para cima ou para baixo, refletindo oscilações normais de execução e mercado.</div>
       </div>
       <div class="num">
-        <div class="v">{{BREAK_EVEN}}<u> · break-even sustentável</u></div>
-        <div class="d">Primeiro mês em que o resultado operacional fica positivo e permanece positivo até M12, já absorvendo contratações e degraus de escala posteriores.</div>
+        <div class="v">{{BREAK_EVEN}}<u> · ponto de equilíbrio</u></div>
+        <div class="d">É o momento em que a operação passa a se pagar no mês e continua positiva até o final do primeiro ano, mesmo absorvendo os ajustes naturais de crescimento.</div>
       </div>
       <div class="num">
         <div class="v">{{PAYBACK}}<u> · payback estimado</u></div>
-        <div class="d">Tempo estimado para recuperar o investimento total. O cálculo usa o resultado real da rampa M1–M12 e, depois, mantém o lucro de maturidade para projetar a recuperação do capital.</div>
+        <div class="d">É o tempo estimado para recuperar o valor investido, considerando a rampa real de crescimento da operação e o desempenho esperado após a maturidade.</div>
       </div>
     </div>
 
     <div class="ramp">
-      <div><div class="m">MÊS 1</div><div class="n">{{FATURAMENTO_M1_K}}</div><div class="l">início da rampa comercial e operacional</div></div>
-      <div><div class="m">{{BREAK_EVEN}}</div><div class="n">Ponto de virada</div><div class="l">resultado positivo que se mantém até M12</div></div>
-      <div><div class="m">MÊS 12</div><div class="n">{{FATURAMENTO_M12_K}}</div><div class="l">faturamento de maturidade do cenário selecionado</div></div>
+      <div class="ramp-card">
+        <div class="m">Mês 1</div>
+        <div class="n">{{FATURAMENTO_M1_K}}</div>
+        <div class="l">Início da operação, quando a estrutura começa a gerar volume e tração comercial.</div>
+      </div>
+      <div class="ramp-card">
+        <div class="m">{{BREAK_EVEN}}</div>
+        <div class="n">Ponto de virada</div>
+        <div class="l">Momento em que a operação deixa de depender da reserva e passa a se sustentar com o próprio resultado.</div>
+      </div>
+      <div class="ramp-card">
+        <div class="m">Mês 12</div>
+        <div class="n">{{FATURAMENTO_M12_K}}</div>
+        <div class="l">Patamar de maturidade esperado para o cenário selecionado ao final do primeiro ano.</div>
+      </div>
     </div>
   </section>
 
   <section>
-    <h2>O que esta página não abre</h2>
+    <h2>O que esta apresentação não detalha</h2>
     <div class="hold">
-      <p>O resumo entrega a conclusão econômica. A reunião abre a engenharia por trás dela:</p>
+      <p>Este material entrega a leitura executiva. Na reunião, abrimos a engenharia por trás dos números:</p>
       <ul>
-        <li>A curva M1–M12 e os gatilhos que levam a frota até a maturidade.</li>
-        <li>O DRE linha a linha: custos fixos, variáveis, equipe, logística e destinação.</li>
-        <li>A composição do payback e quais premissas encurtam ou alongam seu prazo.</li>
-        <li>ROI, margem, lucro mensal e sensibilidade entre os três cenários.</li>
-        <li>Os dados territoriais que sustentam o volume comercial projetado.</li>
+        <li>A curva completa de crescimento do mês 1 ao mês 12.</li>
+        <li>Os custos linha a linha: operação, equipe, logística, destinação e expansão.</li>
+        <li>A composição do payback e o que pode encurtar ou alongar esse prazo.</li>
+        <li>As diferenças entre os cenários e os limites de sensibilidade da projeção.</li>
+        <li>As premissas territoriais que sustentam o volume comercial estimado.</li>
       </ul>
-      <p style="margin-top:4mm"><b>A planilha permanece aberta no simulador.</b> Na reunião, os números podem ser alterados em tempo real para testar premissas e limites do território.</p>
+      <p style="margin-top:4mm"><b>A planilha continua aberta no simulador.</b> Na reunião, os números podem ser ajustados em tempo real para testar premissas, capacidade operacional e ritmo de crescimento.</p>
     </div>
   </section>
 
   <div class="terr">
     <div class="h">A simulação responde <em>se vale avançar.</em></div>
-    <p>O próximo passo é validar de onde vêm esses números: premissas territoriais, custos, rampa comercial, estrutura operacional e sensibilidade. A apresentação executiva não depende de Kommo ou CRM; ela é gerada exclusivamente pelos dados disponíveis no simulador.</p>
-    <div class="ask"><b>Para a reunião:</b> escolha qual indicador quer abrir primeiro — investimento, faturamento, break-even ou payback.</div>
+    <p>O próximo passo é validar de onde vêm esses números: território, ritmo comercial, estrutura operacional, custos e sensibilidade do cenário. A apresentação foi desenhada para deixar clara a oportunidade — e a reunião serve para validar a consistência dela.</p>
+    <div class="ask"><b>Para a reunião:</b> escolha qual indicador quer abrir primeiro — investimento, faturamento, ponto de equilíbrio ou payback.</div>
   </div>
 
   <footer>
-    Simulação elaborada sobre o modelo operacional NaLata REV8 e os parâmetros atualmente selecionados no simulador. Valores projetados, não realizados. Não constitui garantia de rendimento. Resultados variam conforme território, execução comercial, estrutura operacional, sazonalidade e perfil do operador. Documento confidencial.
+    Simulação elaborada sobre o modelo operacional NaLata e os parâmetros atualmente selecionados no simulador. Valores projetados, não realizados. Não constitui garantia de rendimento. Resultados variam conforme território, execução comercial, estrutura operacional, sazonalidade e perfil do operador. Documento confidencial.
   </footer>
 
   <div class="pg"><span>expansao@nalata.srv.br · (12) 92004-6751</span><span>02 / 02</span></div>
@@ -190,7 +210,7 @@ footer{margin-top:5mm;font-size:9px;line-height:1.5;color:var(--carvao-500)}.pg{
   try { territorio = (window.opener && window.opener.__NALATA_TERRITORIO__) || ''; } catch(e) {}
   territorio = territorio && String(territorio).trim() ? territorio : 'Território selecionado';
   document.querySelectorAll('[data-territorio]').forEach(function(el){ el.textContent = territorio; });
-  document.title = 'Simulação Executiva — NaLata REV8 — ' + territorio;
+  document.title = 'Simulação Executiva — NaLata — ' + territorio;
 
   var frota = Number('{{LATAS_FISICAS_M12}}') || 0;
   var ciclos = Number('{{CICLOS_MES}}') || 0;
@@ -207,6 +227,17 @@ footer{margin-top:5mm;font-size:9px;line-height:1.5;color:var(--carvao-500)}.pg{
   if(maxEl) maxEl.textContent = fmtBRL(fatMax);
 
   var giro = brlToNumber('{{CAPITAL_GIRO}}');
+  var necessidade = giro / 1.5;
+  var necessidadeEl = document.getElementById('necessidade-caixa');
+  if(necessidadeEl) {
+    if(giro <= 15000){
+      necessidadeEl.textContent = 'até ' + fmtBRL(necessidade);
+      necessidadeEl.title = 'Quando o cálculo de 1,5× fica abaixo do piso operacional, a reserva recomendada permanece em R$ 15 mil.';
+    } else {
+      necessidadeEl.textContent = fmtBRL(necessidade);
+    }
+  }
+
   var modulos = Number('{{MODULOS_M12}}') || 1;
   var modulosAdicionais = Math.max(0, modulos - 1);
   var capexEscala = (modulosAdicionais * 35000) + (modulos > 1 ? 35000 : 0);
@@ -217,36 +248,5 @@ footer{margin-top:5mm;font-size:9px;line-height:1.5;color:var(--carvao-500)}.pg{
   if(invEl) invEl.textContent = fmtBRL(investimentoTotal);
 })();
 </script>
-
-<!--
-CONTRATO DE SAÍDA — APRESENTAÇÃO EXECUTIVA REV8
-
-Origem exclusiva: simulador NaLata. Não há dependência de Kommo/CRM.
-
-Tokens usados pelo exportador atual:
-  DATA
-  LATAS_ALVO_M12
-  LATAS_FISICAS_M12
-  PRECO_MEDIO
-  MIX_AVULSA
-  MIX_PACOTE
-  CICLOS_MES
-  MODULOS_M12
-  CAPITAL_GIRO
-  FATURAMENTO_M12_NUM
-  FATURAMENTO_M12_K
-  FATURAMENTO_M1_K
-  BREAK_EVEN
-  PAYBACK
-
-Regras executivas desta peça:
-  - Break-even: primeiro mês positivo que permanece positivo até M12.
-  - Capital de giro: 1,5 × maior déficit acumulado da rampa até o break-even sustentável, com piso de R$15 mil no motor REV8.
-  - Faixa de faturamento: M12 ±8%, arredondado ao milhar.
-  - Payback: cálculo do motor REV8 com investimento total e curva real M1–M12.
-  - Investimento total exibido: R$98.370 + capital de giro + degraus de escala do motor.
-  - Não imprimir: DRE, lucro mensal, margem líquida, ROI e tabela completa M1–M12.
-  - Logo: arquivos oficiais já existentes em /public/apresentacao/.
--->
 </body>
 </html>
