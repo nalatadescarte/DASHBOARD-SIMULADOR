@@ -52,6 +52,12 @@ export function Dashboard() {
 
   const simResult = useMemo(() => calcularSimulacaoCompleta(simParams), [simParams]);
 
+  // A apresentação executiva é aberta em uma nova janela de mesma origem.
+  // Expomos somente o rótulo do território; não há dependência de Kommo/CRM.
+  if (typeof window !== "undefined") {
+    (window as Window & { __NALATA_TERRITORIO__?: string }).__NALATA_TERRITORIO__ = territory.cidade;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* [1] Header */}
@@ -66,7 +72,7 @@ export function Dashboard() {
               />
               <div>
                 <h1 className="text-2xl font-bold text-foreground">Dashboard NaLata</h1>
-                <p className="text-muted-foreground text-sm">PAINEL SIMULAÇÃO FINANCEIRA — FRANQUIA REV7</p>
+                <p className="text-muted-foreground text-sm">PAINEL SIMULAÇÃO FINANCEIRA — FRANQUIA REV8</p>
               </div>
             </div>
             {/* Seletor de território */}
@@ -118,7 +124,7 @@ export function Dashboard() {
         {/* [3] FASE 2 — Dados do território */}
         <TerritoryPanel data={territory} onChange={handleTerritoryChange} />
 
-        {/* [4–13] Simulador Nalata REV7 */}
+        {/* [4–13] Simulador Nalata REV8 */}
         <NalataModel
           params={simParams}
           onChange={setSimParams}
@@ -151,7 +157,7 @@ export function Dashboard() {
       <footer className="border-t bg-muted/40 mt-4">
         <div className="container mx-auto px-6 py-4 text-center">
           <p className="text-xs text-muted-foreground italic max-w-3xl mx-auto">
-            Os valores apresentados são projeções com base no modelo operacional Nalata REV7 e não constituem
+            Os valores apresentados são projeções com base no modelo operacional Nalata REV8 e não constituem
             garantia de rendimento. O sucesso depende da gestão, execução e dedicação do franqueado.
             Os resultados podem variar entre unidades e territórios.
           </p>
