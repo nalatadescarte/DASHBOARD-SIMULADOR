@@ -11,20 +11,27 @@ export const MODE_LABELS: Record<OperationMode, string> = {
   dois_funcionarios: "02 Funcionários",
 };
 
-// Capacidade de locações por pessoa (franqueado ou funcionário)
+// Referência histórica de capacidade por pessoa. Não é mais gatilho automático de contratação.
 export const LOCACOES_POR_PESSOA = 100;
 export const SALARIO_FUNCIONARIO = 4700; // R$/mês por funcionário
 export const VEICULO_EXTRA_THRESHOLD = 300; // acima de 300 locações ativas → 2° veículo + parcela extra
 
-export function calcNumFuncionarios(mode: OperationMode, latasAtivas: number): number {
-  if (latasAtivas > VEICULO_EXTRA_THRESHOLD) return mode === "solo" ? 2 : 3;
-  if (latasAtivas >= LOCACOES_POR_PESSOA) return mode === "solo" ? 1 : 2;
+/**
+ * Equipe fixa conforme o modo operacional escolhido.
+ * - Mão na Massa: 0 funcionários durante toda a simulação.
+ * - 01 Funcionário: 1 funcionário desde o M1 e durante toda a simulação.
+ * - 02 Funcionários: 2 funcionários desde o M1 e durante toda a simulação.
+ *
+ * A quantidade de locações não altera automaticamente o quadro de funcionários.
+ * O parâmetro latasAtivas é mantido apenas por compatibilidade com chamadas existentes.
+ */
+export function calcNumFuncionarios(mode: OperationMode, _latasAtivas: number): number {
   return { solo: 0, um_funcionario: 1, dois_funcionarios: 2 }[mode];
 }
 
 // ─── Constantes físicas ───────────────────────────────────────────────────────
 export const LATAS_POR_MODULO = 300;   // ciclos/mês por módulo operacional
-export const OPEX_MODULO = 8300;       // R$/mês por módulo (2 colabs + encargos)
+export const OPEX_MODULO = 8300;       // referência histórica; equipe não escala automaticamente por módulo
 export const CAPEX_MODULO = 35000;     // R$ CAPEX por módulo / 2º veículo
 export const PRECO_LATA = 130;         // R$ por lata física nova
 export const ESTOQUE_INICIAL_LATAS = 60;
@@ -432,7 +439,7 @@ export function calcularSimulacaoCompleta(params: SimParams): SimResult {
     // Módulos: 1 módulo suporta 300 ciclos/mês
     const numModulos = Math.ceil((latasFisicas * ciclosPorMes) / LATAS_POR_MODULO);
 
-    // Funcionários: escala por faixas de latasAtivas conforme modo operacional
+    // Funcionários: quantidade fixa conforme o modo escolhido, desde o M1.
     const numFuncionarios = calcNumFuncionarios(mode, latasAtivas);
     const custoFuncionarios = numFuncionarios * SALARIO_FUNCIONARIO;
 
@@ -499,7 +506,7 @@ export function calcularSimulacaoCompleta(params: SimParams): SimResult {
   const margemLiquida = receitaMaturacao > 0 ? (lucroMaturacao / receitaMaturacao) * 100 : 0;
 
   // Break-even sustentável = primeiro mês positivo que permanece positivo até M12.
-  // Um mês positivo seguido por uma queda posterior (ex.: contratação/novo degrau de escala)
+  // Um mês positivo seguido por uma queda posterior de custos/escala
   // não é tratado como ponto de equilíbrio.
   const breakEvenIndex = meses.findIndex(
     (m, i) => m.lucroMensal > 0 && meses.slice(i).every((mes) => mes.lucroMensal > 0)
@@ -577,7 +584,7 @@ export function calcularSimulacaoCompleta(params: SimParams): SimResult {
 
   const warnings: string[] = [];
   if (mesPrimeiroDegrau) {
-    warnings.push(`ALERTA: 2° módulo (veículo + equipe) necessário no Mês ${mesPrimeiroDegrau}`);
+    warnings.push(`ALERTA: 2° módulo / veículo necessário no Mês ${mesPrimeiroDegrau}`);
   }
   if (warnings.length > 0) console.warn("[Nalata REV8]", warnings);
 
