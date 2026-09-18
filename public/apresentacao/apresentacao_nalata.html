@@ -58,10 +58,9 @@ td:last-child{text-align:right;font-family:var(--mono);font-weight:700;color:var
 footer{margin-top:5mm;font-size:9px;line-height:1.5;color:var(--carvao-500)}.pg{margin-top:4mm;display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--carvao-300)}
 
 @media print{
-  @page{size:210mm 297mm;margin:0}
+  @page{size:A4 portrait;margin:0}
   html,body{
     width:210mm !important;
-    min-width:210mm !important;
     margin:0 !important;
     padding:0 !important;
     background:#fff !important;
@@ -69,25 +68,32 @@ footer{margin-top:5mm;font-size:9px;line-height:1.5;color:var(--carvao-500)}.pg{
     -webkit-print-color-adjust:exact !important;
     print-color-adjust:exact !important;
   }
-  body{zoom:1 !important}
+  body{
+    min-width:0 !important;
+    zoom:1 !important;
+  }
   .page{
     width:210mm !important;
-    height:297mm !important;
     min-height:297mm !important;
-    max-height:297mm !important;
+    height:auto !important;
+    max-height:none !important;
     margin:0 !important;
     padding:15mm 15mm 12mm !important;
-    overflow:hidden !important;
+    overflow:visible !important;
     break-after:page !important;
     page-break-after:always !important;
-    break-inside:avoid !important;
-    page-break-inside:avoid !important;
+    break-inside:auto !important;
+    page-break-inside:auto !important;
   }
   .page:last-child{
     break-after:auto !important;
     page-break-after:auto !important;
   }
-  .top,section,.mech,.inv,.totalbox,.nums,.num,.ramp,.ramp-card,.hold,.terr,footer,.pg{
+  section{
+    break-inside:auto !important;
+    page-break-inside:auto !important;
+  }
+  .top,.mech,.inv,.totalbox,.nums,.num,.ramp,.ramp-card,.hold,.terr,footer,.pg{
     break-inside:avoid !important;
     page-break-inside:avoid !important;
   }
