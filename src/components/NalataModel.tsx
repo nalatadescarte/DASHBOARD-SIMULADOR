@@ -1377,12 +1377,42 @@ try {
   win.document.write(html);
   win.document.close();
 
-  win.addEventListener("load", () => {
-    setTimeout(() => {
-      win.focus();
-      win.print();
-    }, 800);
-  });
+  const imprimirQuandoPronto = async () => {
+    try {
+      if (win.document.fonts?.ready) {
+        await win.document.fonts.ready;
+      }
+
+      await Promise.all(
+        Array.from(win.document.images).map(
+          (img) =>
+            img.complete
+              ? Promise.resolve()
+              : new Promise<void>((resolve) => {
+                  img.addEventListener("load", () => resolve(), { once: true });
+                  img.addEventListener("error", () => resolve(), { once: true });
+                })
+        )
+      );
+    } catch (erro) {
+      console.warn("[Nalata] Impressão seguirá com fallback de carregamento:", erro);
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          win.focus();
+          win.print();
+        }, 150);
+      });
+    });
+  };
+
+  if (win.document.readyState === "complete") {
+    void imprimirQuandoPronto();
+  } else {
+    win.addEventListener("load", () => void imprimirQuandoPronto(), { once: true });
+  }
 } catch (e) {
   console.error("[Nalata] Erro ao gerar PDF:", e);
 
