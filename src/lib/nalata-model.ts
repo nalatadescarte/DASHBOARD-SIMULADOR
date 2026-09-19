@@ -540,22 +540,25 @@ export function calcularSimulacaoCompleta(params: SimParams): SimResult {
   const investimentoTotal = INVESTIMENTO_BASE + investimentoCidade;
 
   // ── Payback REAL: simula acumulado mês a mês ─────────────────────────────────
-  // Começa em -investimentoTotal e soma cada lucro mensal real (M1–M12),
-  // depois projeta com lucroMaturacao constante até o acumulado cruzar zero.
-  // Isso reflete o tempo real para recuperar o capital investido.
+  // Fase 1 (M1–M12): usa o caixa real de cada mês, inclusive compras de latas novas.
+  // Fase 2 (M13+): a operação já está estabilizada no alvo de M12; portanto, não
+  // repete o CAPEX de expansão de latas ocorrido no M12. Mantém apenas custos
+  // recorrentes e projeta o lucro operacional estabilizado até recuperar o capital.
+  const lucroRecorrenteMaturacao = lucroMaturacao + custoLatasPorMes[11];
+
   let payback: number | null = null;
-  if (lucroMaturacao > 0) {
+  if (lucroRecorrenteMaturacao > 0) {
     let acumulado = -investimentoTotal;
     // Fase 1: meses reais M1–M12
     for (let i = 0; i < 12; i++) {
       acumulado += lucros[i];
       if (acumulado >= 0) { payback = i + 1; break; }
     }
-    // Fase 2: projeta além do M12 com lucro de maturidade constante
+    // Fase 2: projeta além do M12 com lucro recorrente estabilizado.
     if (payback === null) {
       let mes = 13;
       while (mes <= 120) { // teto de 10 anos
-        acumulado += lucroMaturacao;
+        acumulado += lucroRecorrenteMaturacao;
         if (acumulado >= 0) { payback = mes; break; }
         mes++;
       }
