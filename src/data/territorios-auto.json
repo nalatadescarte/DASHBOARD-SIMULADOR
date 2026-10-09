@@ -264,5 +264,24 @@
       "score": "8.3",
       "taxaConversao": "10"
     }
+  },
+  {
+    "id": "zona_sudoeste_rj",
+    "label": "Zona Sudoeste — Rio de Janeiro (RJ)",
+    "arquivo": "zona_sudoeste_RJ.md",
+    "latasAlvoM12": 245,
+    "precoMinimoSugerido": 110,
+    "precoMaximoSugerido": 150,
+    "data": {
+      "cidade": "Zona Sudoeste — Rio de Janeiro (RJ)",
+      "qtdObras": "Em validação",
+      "qtdEdif": "Em validação",
+      "qtdCond": "Em validação",
+      "qtdConst": "Em validação",
+      "qtdCltes": "Em validação",
+      "latasAlvo": "245",
+      "score": "9.0",
+      "taxaConversao": "7.5"
+    }
   }
 ]
