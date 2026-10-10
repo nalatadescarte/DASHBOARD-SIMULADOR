@@ -1,6 +1,6 @@
 ---
 nalata_id: sp_zl
-nalata_label: Zona Leste - São Paulo
+nalata_label: São Paulo - Zona Leste
 nalata_latasAlvoM12: 450
 nalata_precoMinimo: 95
 nalata_precoMaximo: 130
