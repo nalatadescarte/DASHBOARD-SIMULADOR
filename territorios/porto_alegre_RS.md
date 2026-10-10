@@ -69,7 +69,7 @@ Operação concentrada nos bairros com maior densidade de prédios e boa renda, 
 - Conversão relativa do modelo: **6,5%**.
 - Markup REV6: **1,70×**.
 - Score territorial: **9,0**.
-- Receita M12: 27.600 × (6,5/8) × (9,0/8,2) = **R$24.613,90/mês** (aprox.).
+- Receita M12: 27.600 × (6,5/8) × (9,0/8,2) = **R$24.612,80/mês** (aprox.).
 - Preço ilustrativo por ciclo: **R$116** → **~212 ciclos/mês** no M12.
 - Despesas fixas REV6 (1 colaborador): **R$12.416,18/mês**.
 - Excedente da receita M12 sobre despesas fixas: **~R$12.198/mês**, *antes de tributos, custos variáveis de destinação, diferenças salariais/operacionais locais e reposições*; não chamar de lucro líquido.
