@@ -1,6 +1,6 @@
 ---
-nalata_id: zona_oeste_rj
-nalata_label: Zona Oeste — Rio de Janeiro (RJ)
+nalata_id: rj_zona_oeste
+nalata_label: Rio de Janeiro - Zona Oeste (RJ)
 nalata_latasAlvoM12: 450
 nalata_precoMinimo: 100
 nalata_precoMaximo: 145
