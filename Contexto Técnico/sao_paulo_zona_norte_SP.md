@@ -1,6 +1,6 @@
 ---
 nalata_id: sp_zn
-nalata_label: Zona Norte - São Paulo
+nalata_label: São Paulo - Zona Norte
 nalata_latasAlvoM12: 400
 nalata_precoMinimo: 90
 nalata_precoMaximo: 120
