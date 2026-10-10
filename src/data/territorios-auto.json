@@ -95,6 +95,25 @@
     }
   },
   {
+    "id": "porto_alegre_rs",
+    "label": "Porto Alegre — RS",
+    "arquivo": "porto_alegre_RS.md",
+    "latasAlvoM12": 212,
+    "precoMinimoSugerido": 110,
+    "precoMaximoSugerido": 150,
+    "data": {
+      "cidade": "Porto Alegre — RS",
+      "qtdObras": "~11.700 obras/ano (estimativa)",
+      "qtdEdif": "~4.700 torres (estimativa)",
+      "qtdCond": "~3.600 condomínios (estimativa)",
+      "qtdConst": "~180 construtoras (estimativa)",
+      "qtdCltes": "~1.700 clientes (estimativa)",
+      "latasAlvo": "212",
+      "score": "9.0",
+      "taxaConversao": "6.5"
+    }
+  },
+  {
     "id": "salvador_ba",
     "label": "Salvador — BA",
     "arquivo": "salvador_BA.md",
