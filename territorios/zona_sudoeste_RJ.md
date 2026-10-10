@@ -1,6 +1,6 @@
 ---
 nalata_id: zona_sudoeste_rj
-nalata_label: Zona Sudoeste — Rio de Janeiro (RJ)
+nalata_label: Rio de Janeiro - Zona Sudoeste (RJ)
 nalata_latasAlvoM12: 245
 nalata_precoMinimo: 110
 nalata_precoMaximo: 150
