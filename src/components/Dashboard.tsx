@@ -106,7 +106,10 @@ export function Dashboard() {
                   <SelectItem value="manual">— Preencher manualmente —</SelectItem>
                   {TERRITORIOS.map((t) => (
                     <SelectItem key={t.id} value={t.id}>
-                      {t.label}
+                      <span className="flex items-center gap-2">
+                        <img src="/apresentacao/logo_icone.png" alt="" aria-hidden="true" className="h-5 w-5 shrink-0 object-contain" />
+                        <span>{t.label}</span>
+                      </span>
                     </SelectItem>
                   ))}
                 </SelectContent>
