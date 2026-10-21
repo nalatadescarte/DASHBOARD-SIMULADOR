@@ -57,6 +57,25 @@
     }
   },
   {
+    "id": "grande_florianopolis_sc",
+    "label": "Grande Florianópolis — SC",
+    "arquivo": "grande_florianopolis_SC.md",
+    "latasAlvoM12": 300,
+    "precoMinimoSugerido": 110,
+    "precoMaximoSugerido": 150,
+    "data": {
+      "cidade": "Grande Florianópolis — SC (Florianópolis, São José, Palhoça e Biguaçu)",
+      "qtdObras": "~8.750 obras/ano (estimativa)",
+      "qtdEdif": "~3.900 torres (estimativa)",
+      "qtdCond": "~3.100 condomínios (estimativa)",
+      "qtdConst": "~150 construtoras/empreiteiras (estimativa)",
+      "qtdCltes": "~1.300 clientes abordáveis (estimativa)",
+      "latasAlvo": "300",
+      "score": "8.6",
+      "taxaConversao": "5"
+    }
+  },
+  {
     "id": "jundiai_sp",
     "label": "Jundiaí — SP",
     "arquivo": "jundiai_SP.md",
@@ -111,6 +130,25 @@
       "latasAlvo": "212",
       "score": "9.0",
       "taxaConversao": "6.5"
+    }
+  },
+  {
+    "id": "zona_sudoeste_rj",
+    "label": "Rio de Janeiro - Zona Sudoeste (RJ)",
+    "arquivo": "zona_sudoeste_RJ.md",
+    "latasAlvoM12": 245,
+    "precoMinimoSugerido": 110,
+    "precoMaximoSugerido": 150,
+    "data": {
+      "cidade": "Rio de Janeiro - Zona Sudoeste (RJ)",
+      "qtdObras": "a validar",
+      "qtdEdif": "a validar",
+      "qtdCond": "a validar",
+      "qtdConst": "a validar",
+      "qtdCltes": "a validar",
+      "latasAlvo": "245",
+      "score": "9.0",
+      "taxaConversao": "7.5"
     }
   },
   {
@@ -282,25 +320,6 @@
       "latasAlvo": "450",
       "score": "8.3",
       "taxaConversao": "10"
-    }
-  },
-  {
-    "id": "zona_sudoeste_rj",
-    "label": "Rio de Janeiro - Zona Sudoeste (RJ)",
-    "arquivo": "zona_sudoeste_RJ.md",
-    "latasAlvoM12": 245,
-    "precoMinimoSugerido": 110,
-    "precoMaximoSugerido": 150,
-    "data": {
-      "cidade": "Rio de Janeiro - Zona Sudoeste (RJ)",
-      "qtdObras": "a validar",
-      "qtdEdif": "a validar",
-      "qtdCond": "a validar",
-      "qtdConst": "a validar",
-      "qtdCltes": "a validar",
-      "latasAlvo": "245",
-      "score": "9.0",
-      "taxaConversao": "7.5"
     }
   }
 ]
