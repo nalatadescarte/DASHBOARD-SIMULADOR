@@ -59,7 +59,7 @@ Começar por São José e bairros prioritários de Florianópolis; abrir rotas d
 - Taxa de conversão do modelo territorial: 5%.
 - Score: 8,6.
 - Cenário REV6: moderado; âncora 60 latas, ticket mensal por contrato R$ 460, markup 1,70, conversão base 8%, score base 8,2 e receita base de R$ 27.600 no M12.
-- Receita REV6 com 60 latas, ticket R$460, conversão 5%, markup 1,70, score 8,6: R$ 27.600 × (5/8) × (8,6/8,2) ≈ R$ 18.088/mês. É cálculo paramétrico do REV6, NÃO receita gerada automaticamente pelas 300 coletas.
+- Receita REV6 com 60 latas, ticket R$460, conversão 5%, markup 1,70, score 8,6: R$ 27.600 × (5/8) × (8,6/8,2) ≈ R$ 18.091/mês. É cálculo paramétrico do REV6, NÃO receita gerada automaticamente pelas 300 coletas.
 - Para atender 300 ciclos/mês é necessário expansão de ativos. Uma conta alternativa por serviço seria 300 × preço unitário, ou R$ 33.000–45.000 brutos por mês, condicionados a coletas efetivamente vendidas e executadas, com custos adicionais não contemplados nesta conta.
 - Investimento inicial REV6: R$ 98.370 antes de capital de giro e expansão. Não extrapolar payback e lucro sem orçamento real de frota, licenças, salários, descarte e tempos.
 
