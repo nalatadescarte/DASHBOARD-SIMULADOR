@@ -76,6 +76,25 @@
     }
   },
   {
+    "id": "guaruja_sp",
+    "label": "Guarujá — SP",
+    "arquivo": "guaruja_SP.md",
+    "latasAlvoM12": 240,
+    "precoMinimoSugerido": 100,
+    "precoMaximoSugerido": 140,
+    "data": {
+      "cidade": "Guarujá — SP",
+      "qtdObras": "~2.540 reformas/ano (estimativa)",
+      "qtdEdif": "~1.570 torres residenciais (estimativa)",
+      "qtdCond": "~1.400 condomínios verticais (estimativa)",
+      "qtdConst": "~55 construtoras e empreiteiras relevantes (hipótese)",
+      "qtdCltes": "~550 clientes comerciais potenciais (estimativa)",
+      "latasAlvo": "240",
+      "score": "7.8",
+      "taxaConversao": "5"
+    }
+  },
+  {
     "id": "jundiai_sp",
     "label": "Jundiaí — SP",
     "arquivo": "jundiai_SP.md",
