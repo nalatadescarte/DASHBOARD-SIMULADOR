@@ -247,6 +247,25 @@
     }
   },
   {
+    "id": "sao_paulo_zona_sul_sp",
+    "label": "São Paulo — Zona Sul (Campo Belo e Santo Amaro) — SP",
+    "arquivo": "sao_paulo_zona_sul_SP.md",
+    "latasAlvoM12": 180,
+    "precoMinimoSugerido": 110,
+    "precoMaximoSugerido": 150,
+    "data": {
+      "cidade": "São Paulo — Zona Sul (Campo Belo e Santo Amaro) — SP",
+      "qtdObras": "~2.070 reformas/ano (estimativa)",
+      "qtdEdif": "~690 torres (estimativa)",
+      "qtdCond": "~575 condomínios (estimativa)",
+      "qtdConst": "~60 empresas relevantes (hipótese)",
+      "qtdCltes": "~300 clientes abordáveis (estimativa)",
+      "latasAlvo": "180",
+      "score": "8.2",
+      "taxaConversao": "5"
+    }
+  },
+  {
     "id": "sorocaba_sp",
     "label": "Sorocaba — SP",
     "arquivo": "sorocaba_SP.md",
