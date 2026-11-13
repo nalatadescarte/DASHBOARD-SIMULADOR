@@ -127,7 +127,7 @@ Validar área de transbordo e triagem (ATT), reciclador ou aterro legalmente hab
 
 ## Premissas para simulação
 
-Usar **REV6** como referência de comparação e **não como previsão direta de 450 latas em uma única franquia**. Baseline: 60 latas, ticket mensal médio de contrato R$460, markup 1,70, conversão 8%, score 8,2 → R$27.600/mês no M12. Ajuste com conversão 5% e score regional 8,7: R$27.600 × (5/8) × (8,7/8,2) ≈ **R$18.311/mês no M12 para unidade hipotética de 60 latas**, antes de reavaliar custos e densidade de clientes locais. A extrapolação matemática para 450 latas não valida faturamento, frota, equipe ou giro, portanto não deve ser vendida como previsão regional.
+Usar **REV6** como referência de comparação e **não como previsão direta de 450 latas em uma única franquia**. Baseline: 60 latas, ticket mensal médio de contrato R$460, markup 1,70, conversão 8%, score 8,2 → R$27.600/mês no M12. Ajuste com conversão 5% e score regional 8,7: R$27.600 × (5/8) × (8,7/8,2) ≈ **R$18.302/mês no M12 para unidade hipotética de 60 latas**, antes de reavaliar custos e densidade de clientes locais. A extrapolação matemática para 450 latas não valida faturamento, frota, equipe ou giro, portanto não deve ser vendida como previsão regional.
 
 A entrada do simulador utiliza `nalata_latasAlvoM12: 450` como **referência regional indicativa**, e `nalata_taxaConversao: 5` como parâmetro conservador. Não utilizar a meta regional para apresentar payback unitário. O plano de implantação de cada cluster deve começar pelas premissas locais do kit inicial de 60 latas.
 
