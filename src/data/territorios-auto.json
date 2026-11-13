@@ -266,6 +266,25 @@
     }
   },
   {
+    "id": "sao_paulo_zona_sul_integral_sp",
+    "label": "São Paulo — Zona Sul Integral (Estudo de Mercado) — SP",
+    "arquivo": "sao_paulo_zona_sul_integral_SP.md",
+    "latasAlvoM12": 450,
+    "precoMinimoSugerido": 100,
+    "precoMaximoSugerido": 150,
+    "data": {
+      "cidade": "São Paulo — Zona Sul Integral (Estudo de Mercado) — SP",
+      "qtdObras": "~20.000 reformas/ano (estimativa)",
+      "qtdEdif": "~8.360 torres (estimativa)",
+      "qtdCond": "~6.190 condomínios (estimativa)",
+      "qtdConst": "~180 empresas relevantes (hipótese)",
+      "qtdCltes": "~2.300 clientes abordáveis (estimativa)",
+      "latasAlvo": "450",
+      "score": "8.7",
+      "taxaConversao": "5"
+    }
+  },
+  {
     "id": "sorocaba_sp",
     "label": "Sorocaba — SP",
     "arquivo": "sorocaba_SP.md",
